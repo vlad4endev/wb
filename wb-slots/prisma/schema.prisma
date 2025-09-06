@@ -1,0 +1,212 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id           String   @id @default(cuid())
+  email        String   @unique
+  phone        String?  @unique
+  passwordHash String   @map("password_hash")
+  name         String?
+  timezone     String   @default("Europe/Moscow")
+  role         UserRole @default(USER)
+  isActive     Boolean  @default(true) @map("is_active")
+  emailVerified DateTime? @map("email_verified")
+  createdAt    DateTime @default(now()) @map("created_at")
+  updatedAt    DateTime @updatedAt @map("updated_at")
+
+  // Relations
+  tokens           UserToken[]
+  warehousePrefs   WarehousePref[]
+  tasks            Task[]
+  runs             Run[]
+  supplySnapshots  SupplySnapshot[]
+  notificationChannels NotificationChannel[]
+  auditLogs        AuditLog[]
+
+  @@map("users")
+}
+
+model UserToken {
+  id          String      @id @default(cuid())
+  userId      String      @map("user_id")
+  category    TokenCategory
+  tokenEncrypted String   @map("token_encrypted")
+  isActive    Boolean     @default(true) @map("is_active")
+  lastUsedAt  DateTime?   @map("last_used_at")
+  createdAt   DateTime    @default(now()) @map("created_at")
+  updatedAt   DateTime    @updatedAt @map("updated_at")
+
+  // Relations
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("user_tokens")
+}
+
+model WarehousePref {
+  id                String  @id @default(cuid())
+  userId            String  @map("user_id")
+  warehouseId       Int     @map("warehouse_id")
+  warehouseName     String  @map("warehouse_name")
+  enabled           Boolean @default(true)
+  boxAllowed        Boolean @default(true) @map("box_allowed")
+  monopalletAllowed Boolean @default(true) @map("monopallet_allowed")
+  supersafeAllowed  Boolean @default(true) @map("supersafe_allowed")
+  createdAt         DateTime @default(now()) @map("created_at")
+  updatedAt         DateTime @updatedAt @map("updated_at")
+
+  // Relations
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, warehouseId])
+  @@map("warehouse_prefs")
+}
+
+model Task {
+  id          String   @id @default(cuid())
+  userId      String   @map("user_id")
+  name        String
+  description String?
+  enabled     Boolean  @default(true)
+  scheduleCron String? @map("schedule_cron")
+  autoBook    Boolean  @default(false) @map("auto_book")
+  autoBookSupplyId String? @map("auto_book_supply_id")
+  filters     Json     // { coefficientMin: 0, coefficientMax: 20, allowUnload: true, dates: {from, to}, boxTypeIDs: [5,6], warehouseIDs: [...] }
+  retryPolicy Json     @map("retry_policy") // { maxRetries: 3, backoffMs: 5000 }
+  priority    Int      @default(0)
+  createdAt   DateTime @default(now()) @map("created_at")
+  updatedAt   DateTime @updatedAt @map("updated_at")
+
+  // Relations
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  runs Run[]
+
+  @@map("tasks")
+}
+
+model Run {
+  id        String   @id @default(cuid())
+  taskId    String   @map("task_id")
+  userId    String   @map("user_id")
+  status    RunStatus
+  startedAt DateTime @map("started_at")
+  finishedAt DateTime? @map("finished_at")
+  summary   Json?    // { foundSlots: 0, bookedSlots: 0, errors: [] }
+  createdAt DateTime @default(now()) @map("created_at")
+
+  // Relations
+  task Task @relation(fields: [taskId], references: [id], onDelete: Cascade)
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  logs RunLog[]
+
+  @@map("runs")
+}
+
+model RunLog {
+  id      String   @id @default(cuid())
+  runId   String   @map("run_id")
+  level   LogLevel
+  message String
+  meta    Json?
+  ts      DateTime @default(now())
+
+  // Relations
+  run Run @relation(fields: [runId], references: [id], onDelete: Cascade)
+
+  @@map("run_logs")
+}
+
+model SupplySnapshot {
+  id          String    @id @default(cuid())
+  userId      String    @map("user_id")
+  preorderId  String?   @map("preorder_id")
+  supplyId    String?   @map("supply_id")
+  warehouseId Int       @map("warehouse_id")
+  boxTypeId   Int       @map("box_type_id")
+  statusName  String    @map("status_name")
+  supplyDate  DateTime? @map("supply_date")
+  factDate    DateTime? @map("fact_date")
+  updatedDate DateTime? @map("updated_date")
+  raw         Json      // Raw WB API response
+  ts          DateTime  @default(now())
+
+  // Relations
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("supply_snapshots")
+}
+
+model NotificationChannel {
+  id      String            @id @default(cuid())
+  userId  String            @map("user_id")
+  type    NotificationType
+  config  Json              // { email: "...", telegramChatId: "...", webhookUrl: "..." }
+  enabled Boolean           @default(true)
+  createdAt DateTime        @default(now()) @map("created_at")
+  updatedAt DateTime        @updatedAt @map("updated_at")
+
+  // Relations
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("notification_channels")
+}
+
+model AuditLog {
+  id     String   @id @default(cuid())
+  userId String   @map("user_id")
+  action String
+  target String
+  meta   Json?
+  ts     DateTime @default(now())
+
+  // Relations
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("audit_logs")
+}
+
+// Enums
+enum UserRole {
+  USER
+  ADMIN
+}
+
+enum TokenCategory {
+  STATISTICS
+  SUPPLIES
+  MARKETPLACE
+  CONTENT
+  PROMOTION
+  ANALYTICS
+  FINANCE
+}
+
+enum RunStatus {
+  QUEUED
+  RUNNING
+  SUCCESS
+  FAILED
+  PARTIAL
+  CANCELLED
+}
+
+enum LogLevel {
+  DEBUG
+  INFO
+  WARN
+  ERROR
+}
+
+enum NotificationType {
+  EMAIL
+  TELEGRAM
+  WEBHOOK
+}
