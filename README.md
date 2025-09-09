@@ -69,7 +69,7 @@
 ### 1️⃣ Клонирование репозитория
 
 ```bash
-git clone https://github.com/your-username/wb-slots.git
+git clone https://github.com/vlad4endev/wb.git
 cd wb-slots
 ```
 
