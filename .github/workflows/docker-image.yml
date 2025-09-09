@@ -1,0 +1,23 @@
+# Основные настройки
+image: name, tag, build_args, labels
+
+# Безопасность
+security: user, capabilities, read-only
+
+# Ресурсы
+resources: memory, CPU limits
+
+# Health check
+healthcheck: test, interval, timeout
+
+# Переменные окружения
+environment: database, redis, JWT, etc.
+
+# Зависимости
+dependencies: postgres, redis
+
+# Скрипты
+scripts: build, push, pull, run, test
+
+# CI/CD
+cicd: triggers, stages, notifications
