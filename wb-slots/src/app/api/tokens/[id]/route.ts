@@ -6,11 +6,11 @@ import { encrypt, maskToken } from '@/lib/encryption';
 
 export async function PUT(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
     const user = await requireAuth(request);
-    const tokenId = params.id;
+    const { id: tokenId } = await params;
     const body = await request.json();
     const validatedData = updateTokenSchema.parse(body);
 
@@ -75,11 +75,11 @@ export async function PUT(
 
 export async function DELETE(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
     const user = await requireAuth(request);
-    const tokenId = params.id;
+    const { id: tokenId } = await params;
 
     // Check if token exists and belongs to user
     const existingToken = await prisma.userToken.findFirst({

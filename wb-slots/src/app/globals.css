@@ -116,6 +116,18 @@
   animation: fadeIn 0.3s ease-out;
 }
 
+.animate-fade-in-delay-1 {
+  animation: fadeIn 0.3s ease-out 0.1s both;
+}
+
+.animate-fade-in-delay-2 {
+  animation: fadeIn 0.3s ease-out 0.2s both;
+}
+
+.animate-fade-in-delay-3 {
+  animation: fadeIn 0.3s ease-out 0.3s both;
+}
+
 /* Status indicators */
 .status-success {
   @apply bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200;

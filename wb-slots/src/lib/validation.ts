@@ -27,47 +27,155 @@ export const createTokenSchema = z.object({
 
 export const updateTokenSchema = z.object({
   token: z.string().min(1, 'Token is required').optional(),
-  isActive: z.boolean().optional(),
+  isActive: z.union([z.boolean(), z.string()]).transform((val) => {
+    if (typeof val === 'boolean') return val;
+    if (typeof val === 'string') {
+      if (val.toLowerCase() === 'true') return true;
+      if (val.toLowerCase() === 'false') return false;
+    }
+    return undefined; // optional field
+  }).optional(),
 });
 
 // Warehouse preferences validation
 export const warehousePrefSchema = z.object({
-  warehouseId: z.number().int().positive('Warehouse ID must be positive'),
+  warehouseId: z.union([z.string(), z.number()]).transform((val) => {
+    const num = typeof val === 'string' ? parseInt(val, 10) : val;
+    if (isNaN(num) || num <= 0) {
+      throw new Error('Warehouse ID must be a positive number');
+    }
+    return num;
+  }),
   warehouseName: z.string().min(1, 'Warehouse name is required'),
-  enabled: z.boolean().default(true),
-  boxAllowed: z.boolean().default(true),
-  monopalletAllowed: z.boolean().default(true),
-  supersafeAllowed: z.boolean().default(true),
+  enabled: z.union([z.boolean(), z.string()]).transform((val) => {
+    if (typeof val === 'boolean') return val;
+    if (typeof val === 'string') {
+      if (val.toLowerCase() === 'true') return true;
+      if (val.toLowerCase() === 'false') return false;
+    }
+    return true; // default
+  }).default(true),
+  boxAllowed: z.union([z.boolean(), z.string()]).transform((val) => {
+    if (typeof val === 'boolean') return val;
+    if (typeof val === 'string') {
+      if (val.toLowerCase() === 'true') return true;
+      if (val.toLowerCase() === 'false') return false;
+    }
+    return true; // default
+  }).default(true),
+  monopalletAllowed: z.union([z.boolean(), z.string()]).transform((val) => {
+    if (typeof val === 'boolean') return val;
+    if (typeof val === 'string') {
+      if (val.toLowerCase() === 'true') return true;
+      if (val.toLowerCase() === 'false') return false;
+    }
+    return true; // default
+  }).default(true),
+  supersafeAllowed: z.union([z.boolean(), z.string()]).transform((val) => {
+    if (typeof val === 'boolean') return val;
+    if (typeof val === 'string') {
+      if (val.toLowerCase() === 'true') return true;
+      if (val.toLowerCase() === 'false') return false;
+    }
+    return true; // default
+  }).default(true),
 });
 
 // Task validation schemas
 export const taskFiltersSchema = z.object({
-  coefficientMin: z.number().min(0).max(20).default(0),
-  coefficientMax: z.number().min(0).max(20).default(20),
-  allowUnload: z.boolean().default(true),
+  coefficientMin: z.union([z.string(), z.number()]).transform((val) => {
+    const num = typeof val === 'string' ? parseFloat(val) : val;
+    if (isNaN(num) || num < 0 || num > 20) {
+      throw new Error('Coefficient must be a number between 0 and 20');
+    }
+    return num;
+  }).default(0),
+  coefficientMax: z.union([z.string(), z.number()]).transform((val) => {
+    const num = typeof val === 'string' ? parseFloat(val) : val;
+    if (isNaN(num) || num < 0 || num > 20) {
+      throw new Error('Coefficient must be a number between 0 and 20');
+    }
+    return num;
+  }).default(20),
+  allowUnload: z.union([z.boolean(), z.string()]).transform((val) => {
+    if (typeof val === 'boolean') return val;
+    if (typeof val === 'string') {
+      if (val.toLowerCase() === 'true') return true;
+      if (val.toLowerCase() === 'false') return false;
+    }
+    throw new Error('Allow unload must be a boolean value');
+  }).default(true),
   dates: z.object({
-    from: z.string().datetime().optional(),
-    to: z.string().datetime().optional(),
+    from: z.string().optional(),
+    to: z.string().optional(),
   }).optional(),
-  boxTypeIds: z.array(z.number().int().positive()).default([5, 6]),
-  warehouseIds: z.array(z.number().int().positive()).min(1, 'At least one warehouse must be selected'),
+  boxTypeIds: z.array(
+    z.union([z.string(), z.number()]).transform((val) => {
+      const num = typeof val === 'string' ? parseInt(val, 10) : val;
+      if (isNaN(num) || num <= 0) {
+        throw new Error('Box type ID must be a positive number');
+      }
+      return num;
+    })
+  ).default([2, 5]), // По умолчанию: Короба и Монопаллеты
+  warehouseIds: z.array(
+    z.union([z.string(), z.number()]).transform((val) => {
+      const num = typeof val === 'string' ? parseInt(val, 10) : val;
+      if (isNaN(num) || num <= 0) {
+        throw new Error('Warehouse ID must be a positive number');
+      }
+      return num;
+    })
+  ).min(1, 'At least one warehouse must be selected'),
 });
 
 export const retryPolicySchema = z.object({
-  maxRetries: z.number().int().min(0).max(10).default(3),
-  backoffMs: z.number().int().min(1000).max(60000).default(5000),
+  maxRetries: z.union([z.string(), z.number()]).transform((val) => {
+    const num = typeof val === 'string' ? parseInt(val, 10) : val;
+    if (isNaN(num) || num < 0 || num > 10) {
+      throw new Error('Max retries must be a number between 0 and 10');
+    }
+    return num;
+  }).default(3),
+  backoffMs: z.union([z.string(), z.number()]).transform((val) => {
+    const num = typeof val === 'string' ? parseInt(val, 10) : val;
+    if (isNaN(num) || num < 1000 || num > 60000) {
+      throw new Error('Backoff must be a number between 1000 and 60000');
+    }
+    return num;
+  }).default(5000),
 });
 
 export const createTaskSchema = z.object({
   name: z.string().min(1, 'Task name is required'),
   description: z.string().optional(),
-  enabled: z.boolean().default(true),
+  enabled: z.union([z.boolean(), z.string()]).transform((val) => {
+    if (typeof val === 'boolean') return val;
+    if (typeof val === 'string') {
+      if (val.toLowerCase() === 'true') return true;
+      if (val.toLowerCase() === 'false') return false;
+    }
+    return true; // default
+  }).default(true),
   scheduleCron: z.string().optional(),
-  autoBook: z.boolean().default(false),
+  autoBook: z.union([z.boolean(), z.string()]).transform((val) => {
+    if (typeof val === 'boolean') return val;
+    if (typeof val === 'string') {
+      if (val.toLowerCase() === 'true') return true;
+      if (val.toLowerCase() === 'false') return false;
+    }
+    return false; // default
+  }).default(false),
   autoBookSupplyId: z.string().optional(),
   filters: taskFiltersSchema,
   retryPolicy: retryPolicySchema,
-  priority: z.number().int().min(0).max(10).default(0),
+  priority: z.union([z.string(), z.number()]).transform((val) => {
+    const num = typeof val === 'string' ? parseInt(val, 10) : val;
+    if (isNaN(num) || num < 0 || num > 10) {
+      throw new Error('Priority must be a number between 0 and 10');
+    }
+    return num;
+  }).default(0),
 });
 
 export const updateTaskSchema = createTaskSchema.partial();
@@ -89,12 +197,26 @@ export const webhookNotificationSchema = z.object({
 export const notificationChannelSchema = z.object({
   type: z.enum(['EMAIL', 'TELEGRAM', 'WEBHOOK']),
   config: z.union([emailNotificationSchema, telegramNotificationSchema, webhookNotificationSchema]),
-  enabled: z.boolean().default(true),
+  enabled: z.union([z.boolean(), z.string()]).transform((val) => {
+    if (typeof val === 'boolean') return val;
+    if (typeof val === 'string') {
+      if (val.toLowerCase() === 'true') return true;
+      if (val.toLowerCase() === 'false') return false;
+    }
+    return true; // default
+  }).default(true),
 });
 
 // API response schemas
 export const apiResponseSchema = z.object({
-  success: z.boolean(),
+  success: z.union([z.boolean(), z.string()]).transform((val) => {
+    if (typeof val === 'boolean') return val;
+    if (typeof val === 'string') {
+      if (val.toLowerCase() === 'true') return true;
+      if (val.toLowerCase() === 'false') return false;
+    }
+    return false; // default
+  }),
   data: z.any().optional(),
   error: z.string().optional(),
   message: z.string().optional(),
@@ -102,8 +224,20 @@ export const apiResponseSchema = z.object({
 
 // Pagination schemas
 export const paginationSchema = z.object({
-  page: z.number().int().min(1).default(1),
-  limit: z.number().int().min(1).max(100).default(20),
+  page: z.union([z.string(), z.number()]).transform((val) => {
+    const num = typeof val === 'string' ? parseInt(val, 10) : val;
+    if (isNaN(num) || num < 1) {
+      throw new Error('Page must be a positive number');
+    }
+    return num;
+  }).default(1),
+  limit: z.union([z.string(), z.number()]).transform((val) => {
+    const num = typeof val === 'string' ? parseInt(val, 10) : val;
+    if (isNaN(num) || num < 1 || num > 100) {
+      throw new Error('Limit must be a number between 1 and 100');
+    }
+    return num;
+  }).default(20),
   sortBy: z.string().optional(),
   sortOrder: z.enum(['asc', 'desc']).default('desc'),
 });
@@ -118,13 +252,38 @@ export const searchSchema = z.object({
 // WB API specific schemas
 export const wbCoefficientSchema = z.object({
   date: z.string(),
-  warehouseId: z.number(),
-  allowUnload: z.boolean(),
-  coefficient: z.number().min(0).max(1),
+  warehouseId: z.union([z.string(), z.number()]).transform((val) => {
+    const num = typeof val === 'string' ? parseInt(val, 10) : val;
+    if (isNaN(num)) {
+      throw new Error('Warehouse ID must be a number');
+    }
+    return num;
+  }),
+  allowUnload: z.union([z.boolean(), z.string()]).transform((val) => {
+    if (typeof val === 'boolean') return val;
+    if (typeof val === 'string') {
+      if (val.toLowerCase() === 'true') return true;
+      if (val.toLowerCase() === 'false') return false;
+    }
+    return false; // default
+  }),
+  coefficient: z.union([z.string(), z.number()]).transform((val) => {
+    const num = typeof val === 'string' ? parseFloat(val) : val;
+    if (isNaN(num) || num < 0 || num > 1) {
+      throw new Error('Coefficient must be a number between 0 and 1');
+    }
+    return num;
+  }),
 });
 
 export const wbWarehouseSchema = z.object({
-  id: z.number(),
+  id: z.union([z.string(), z.number()]).transform((val) => {
+    const num = typeof val === 'string' ? parseInt(val, 10) : val;
+    if (isNaN(num)) {
+      throw new Error('Warehouse ID must be a number');
+    }
+    return num;
+  }),
   name: z.string(),
   address: z.string().optional(),
   city: z.string().optional(),
@@ -134,10 +293,22 @@ export const wbSupplySchema = z.object({
   id: z.string(),
   name: z.string(),
   status: z.string(),
-  warehouseId: z.number(),
-  boxTypeId: z.number(),
-  supplyDate: z.string().datetime().optional(),
-  factDate: z.string().datetime().optional(),
-  createdAt: z.string().datetime(),
-  updatedAt: z.string().datetime(),
+  warehouseId: z.union([z.string(), z.number()]).transform((val) => {
+    const num = typeof val === 'string' ? parseInt(val, 10) : val;
+    if (isNaN(num)) {
+      throw new Error('Warehouse ID must be a number');
+    }
+    return num;
+  }),
+  boxTypeId: z.union([z.string(), z.number()]).transform((val) => {
+    const num = typeof val === 'string' ? parseInt(val, 10) : val;
+    if (isNaN(num)) {
+      throw new Error('Box type ID must be a number');
+    }
+    return num;
+  }),
+  supplyDate: z.string().optional(),
+  factDate: z.string().optional(),
+  createdAt: z.string(),
+  updatedAt: z.string(),
 });

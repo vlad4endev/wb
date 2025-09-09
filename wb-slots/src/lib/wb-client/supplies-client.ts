@@ -22,10 +22,11 @@ export class WBSuppliesClient extends BaseWBClient {
   async getCoefficients(
     warehouseIds: number[],
     dateFrom?: string,
-    dateTo?: string
+    dateTo?: string,
+    isSortingCenter?: boolean
   ): Promise<WBCoefficient[]> {
     const params: Record<string, any> = {
-      warehouseIds: warehouseIds.join(','),
+      warehouseIDs: warehouseIds.join(','), // Исправлено: warehouseIDs вместо warehouseIds
     };
 
     if (dateFrom) {
@@ -34,14 +35,87 @@ export class WBSuppliesClient extends BaseWBClient {
     if (dateTo) {
       params.dateTo = dateTo;
     }
+    if (isSortingCenter !== undefined) {
+      params.isSortingCenter = isSortingCenter;
+    }
+
+    const startTime = Date.now();
+    console.log(`🌐 WB API запрос: GET /api/v1/acceptance/coefficients`);
+    console.log(`📋 Параметры:`, params);
+    console.log(`🕐 Время запроса: ${new Date().toISOString()}`);
+    console.log(`🏪 Склады: ${warehouseIds.join(', ')}`);
+    console.log(`📅 Период: ${dateFrom || 'не указано'} - ${dateTo || 'не указано'}`);
+    console.log(`🏭 Сортировочный центр: ${isSortingCenter ? 'Да' : 'Нет'}`);
+    
+    // Показываем полный curl запрос для отладки
+    let curlCommand = `curl -G "https://supplies-api.wildberries.ru/api/v1/acceptance/coefficients" \\
+  -H "Authorization:${this.token.substring(0, 10)}..." \\
+  --data-urlencode "warehouseIDs=${warehouseIds.join(',')}"`;
+    
+    if (dateFrom) {
+      curlCommand += ` \\
+  --data-urlencode "dateFrom=${dateFrom}"`;
+    }
+    if (dateTo) {
+      curlCommand += ` \\
+  --data-urlencode "dateTo=${dateTo}"`;
+    }
+    if (isSortingCenter !== undefined) {
+      curlCommand += ` \\
+  --data-urlencode "isSortingCenter=${isSortingCenter}"`;
+    }
+    
+    console.log(`🔧 Эквивалентный curl запрос:`);
+    console.log(curlCommand);
 
     const response = await this.get<WBCoefficient[]>('/api/v1/acceptance/coefficients', params);
+    const endTime = Date.now();
+    const requestDuration = endTime - startTime;
     
+    // WB API возвращает данные напрямую как массив, а не в объекте с полем data
+    const coefficients = Array.isArray(response) ? response : (response.data || []);
+    
+    console.log(`📥 Ответ WB API получен за ${requestDuration}ms`);
+    console.log(`📊 Статистика ответа:`, {
+      error: response.error,
+      errorText: response.errorText,
+      dataLength: coefficients.length,
+      hasData: coefficients.length > 0,
+      requestDuration: `${requestDuration}ms`,
+      timestamp: new Date().toISOString()
+    });
+    
+    // Логируем первые несколько элементов для анализа
+    if (coefficients.length > 0) {
+      console.log(`📋 Пример данных из ответа (${coefficients.length} записей):`);
+      console.log(JSON.stringify(coefficients[0], null, 2));
+      
+      // Показываем статистику по коэффициентам
+      const coefficientStats = {
+        min: Math.min(...coefficients.map(c => c.coefficient)),
+        max: Math.max(...coefficients.map(c => c.coefficient)),
+        avg: coefficients.reduce((sum, c) => sum + c.coefficient, 0) / coefficients.length,
+        available: coefficients.filter(c => c.allowUnload).length,
+        total: coefficients.length
+      };
+      console.log(`📈 Статистика коэффициентов:`, coefficientStats);
+    } else {
+      console.log(`⚠️ WB API вернул пустой массив. Возможные причины:`);
+      console.log(`   - Неправильные параметры запроса`);
+      console.log(`   - Проблемы с авторизацией`);
+      console.log(`   - Склад не имеет доступных слотов`);
+      console.log(`   - Неправильный формат дат`);
+      console.log(`   - Период поиска не содержит доступных дат`);
+    }
+
     if (response.error) {
       throw new Error(response.errorText || 'Failed to get coefficients');
     }
 
-    return response.data || [];
+    const result = coefficients;
+    console.log(`✅ Успешно получено коэффициентов: ${result.length}`);
+    
+    return result;
   }
 
   /**
@@ -154,7 +228,7 @@ export class WBSuppliesClient extends BaseWBClient {
     
     // Filter by criteria
     return coefficients.filter(coeff => 
-      warehouseIds.includes(coeff.warehouseId) &&
+      warehouseIds.includes(coeff.warehouseID) &&
       coeff.coefficient >= coefficientThreshold &&
       coeff.allowUnload === allowUnload
     );
@@ -173,7 +247,7 @@ export class WBSuppliesClient extends BaseWBClient {
   ): Promise<boolean> {
     try {
       const coefficients = await this.getCoefficients([warehouseId], date, date);
-      const coeff = coefficients.find(c => c.warehouseId === warehouseId);
+      const coeff = coefficients.find(c => c.warehouseID === warehouseId);
       
       return coeff ? coeff.coefficient >= 0 && coeff.allowUnload : false;
     } catch (error) {

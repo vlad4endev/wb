@@ -15,7 +15,7 @@ export abstract class BaseWBClient {
       timeout: options.timeout || 30000,
       headers: {
         'Content-Type': 'application/json',
-        'Authorization': `Bearer ${token}`,
+        'Authorization': token,
       },
     });
 

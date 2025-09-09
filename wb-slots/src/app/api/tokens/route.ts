@@ -25,6 +25,15 @@ export async function GET(request: NextRequest) {
     });
   } catch (error) {
     console.error('Get tokens error:', error);
+    
+    // Проверяем, является ли ошибка ошибкой аутентификации
+    if (error instanceof Error && error.name === 'AuthError') {
+      return NextResponse.json(
+        { success: false, error: 'Authentication required' },
+        { status: 401 }
+      );
+    }
+    
     return NextResponse.json(
       { success: false, error: 'Internal server error' },
       { status: 500 }
@@ -77,6 +86,14 @@ export async function POST(request: NextRequest) {
     });
   } catch (error) {
     console.error('Create token error:', error);
+
+    // Проверяем, является ли ошибка ошибкой аутентификации
+    if (error instanceof Error && error.name === 'AuthError') {
+      return NextResponse.json(
+        { success: false, error: 'Authentication required' },
+        { status: 401 }
+      );
+    }
 
     if (error instanceof Error && error.name === 'ZodError') {
       return NextResponse.json(

@@ -1,0 +1,324 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id           String   @id @default(cuid())
+  email        String   @unique
+  phone        String?  @unique
+  passwordHash String   @map("password_hash")
+  name         String?
+  timezone     String   @default("Europe/Moscow")
+  role         UserRole @default(USER)
+  isActive     Boolean  @default(true) @map("is_active")
+  isProtected  Boolean  @default(false) @map("is_protected")
+  emailVerified DateTime? @map("email_verified")
+  createdAt    DateTime @default(now()) @map("created_at")
+  updatedAt    DateTime @updatedAt @map("updated_at")
+
+  // Relations
+  tokens           UserToken[]
+  warehousePrefs   WarehousePref[]
+  tasks            Task[]
+  runs             Run[]
+  foundSlots       FoundSlot[]
+  supplySnapshots  SupplySnapshot[]
+  notificationChannels NotificationChannel[]
+  auditLogs        AuditLog[]
+  wbSessions       WBSession[]
+  settings         UserSettings[]
+
+  @@map("users")
+}
+
+model UserToken {
+  id          String      @id @default(cuid())
+  userId      String      @map("user_id")
+  category    TokenCategory
+  tokenEncrypted String   @map("token_encrypted")
+  isActive    Boolean     @default(true) @map("is_active")
+  lastUsedAt  DateTime?   @map("last_used_at")
+  createdAt   DateTime    @default(now()) @map("created_at")
+  updatedAt   DateTime    @updatedAt @map("updated_at")
+
+  // Relations
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("user_tokens")
+}
+
+model WarehousePref {
+  id                String  @id @default(cuid())
+  userId            String  @map("user_id")
+  warehouseId       Int     @map("warehouse_id")
+  warehouseName     String  @map("warehouse_name")
+  enabled           Boolean @default(true)
+  boxAllowed        Boolean @default(true) @map("box_allowed")
+  monopalletAllowed Boolean @default(true) @map("monopallet_allowed")
+  supersafeAllowed  Boolean @default(true) @map("supersafe_allowed")
+  createdAt         DateTime @default(now()) @map("created_at")
+  updatedAt         DateTime @updatedAt @map("updated_at")
+
+  // Relations
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, warehouseId])
+  @@map("warehouse_prefs")
+}
+
+model Task {
+  id          String   @id @default(cuid())
+  taskNumber  Int      @unique @default(autoincrement()) @map("task_number")
+  userId      String   @map("user_id")
+  name        String
+  description String?
+  enabled     Boolean  @default(true)
+  status      TaskStatus @default(PENDING)
+  scheduleCron String? @map("schedule_cron")
+  autoBook    Boolean  @default(false) @map("auto_book")
+  autoBookSupplyId String? @map("auto_book_supply_id")
+  filters     Json
+  retryPolicy Json     @map("retry_policy")
+  priority    Int      @default(0)
+  createdAt   DateTime @default(now()) @map("created_at")
+  updatedAt   DateTime @updatedAt @map("updated_at")
+
+  // Relations
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  runs Run[]
+
+  @@map("tasks")
+}
+
+model Run {
+  id        String   @id @default(cuid())
+  taskId    String   @map("task_id")
+  userId    String   @map("user_id")
+  status    RunStatus
+  startedAt DateTime @map("started_at")
+  finishedAt DateTime? @map("finished_at")
+  foundSlots Int?    @default(0) @map("found_slots")
+  summary   Json?
+  createdAt DateTime @default(now()) @map("created_at")
+
+  // Relations
+  task Task @relation(fields: [taskId], references: [id], onDelete: Cascade)
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  logs RunLog[]
+  foundSlotsDetails FoundSlot[]
+
+  @@map("runs")
+}
+
+model FoundSlot {
+  id          String   @id @default(cuid())
+  runId       String   @map("run_id")
+  userId      String   @map("user_id")
+  warehouseId Int      @map("warehouse_id")
+  warehouseName String @map("warehouse_name")
+  date        String
+  timeSlot    String   @map("time_slot")
+  coefficient Float
+  available   Boolean  @default(true)
+  boxTypes    Json     @map("box_types")
+  supplyId    String?  @map("supply_id")
+  isBooked    Boolean  @default(false) @map("is_booked")
+  bookingId   String?  @map("booking_id")
+  createdAt   DateTime @default(now()) @map("created_at")
+  updatedAt   DateTime @updatedAt @map("updated_at")
+
+  // Relations
+  run Run @relation(fields: [runId], references: [id], onDelete: Cascade)
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("found_slots")
+}
+
+model RunLog {
+  id      String   @id @default(cuid())
+  runId   String   @map("run_id")
+  level   LogLevel
+  message String
+  meta    Json?
+  ts      DateTime @default(now())
+
+  // Relations
+  run Run @relation(fields: [runId], references: [id], onDelete: Cascade)
+
+  @@map("run_logs")
+}
+
+model SupplySnapshot {
+  id          String    @id @default(cuid())
+  userId      String    @map("user_id")
+  preorderId  String?   @map("preorder_id")
+  supplyId    String?   @map("supply_id")
+  warehouseId Int       @map("warehouse_id")
+  boxTypeId   Int       @map("box_type_id")
+  statusName  String    @map("status_name")
+  supplyDate  DateTime? @map("supply_date")
+  factDate    DateTime? @map("fact_date")
+  updatedDate DateTime? @map("updated_date")
+  raw         Json
+  ts          DateTime  @default(now())
+
+  // Relations
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("supply_snapshots")
+}
+
+model NotificationChannel {
+  id      String            @id @default(cuid())
+  userId  String            @map("user_id")
+  type    NotificationType
+  config  Json
+  enabled Boolean           @default(true)
+  createdAt DateTime        @default(now()) @map("created_at")
+  updatedAt DateTime        @updatedAt @map("updated_at")
+
+  // Relations
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("notification_channels")
+}
+
+model AuditLog {
+  id     String   @id @default(cuid())
+  userId String   @map("user_id")
+  action String
+  target String
+  meta   Json?
+  ts     DateTime @default(now())
+
+  // Relations
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("audit_logs")
+}
+
+model WBSession {
+  id          String    @id @default(cuid())
+  userId      String    @map("user_id")
+  sessionId   String    @unique @map("session_id")
+  cookies     Json
+  userAgent   String?   @map("user_agent")
+  ipAddress   String?   @map("ip_address")
+  isActive    Boolean   @default(true) @map("is_active")
+  expiresAt   DateTime  @map("expires_at")
+  lastUsedAt  DateTime? @map("last_used_at")
+  createdAt   DateTime  @default(now()) @map("created_at")
+  updatedAt   DateTime  @updatedAt @map("updated_at")
+
+  // Relations
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("wb_sessions")
+}
+
+model UserSettings {
+  id        String   @id @default(cuid())
+  userId    String   @map("user_id")
+  category  String
+  settings  Json
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  // Relations
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, category])
+  @@map("user_settings")
+}
+
+model Warehouse {
+  id        Int      @id
+  name      String
+  isActive  Boolean  @default(true) @map("is_active")
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  @@map("warehouses")
+}
+
+model NotificationTemplate {
+  id          String   @id @default(cuid())
+  name        String
+  description String?
+  type        NotificationTemplateType
+  template    String
+  variables   Json
+  isActive    Boolean  @default(true) @map("is_active")
+  createdAt   DateTime @default(now()) @map("created_at")
+  updatedAt   DateTime @updatedAt @map("updated_at")
+
+  @@map("notification_templates")
+}
+
+// Enums
+enum UserRole {
+  USER
+  ADMIN
+  DEVELOPER
+}
+
+enum TokenCategory {
+  STATISTICS
+  SUPPLIES
+  MARKETPLACE
+  CONTENT
+  PROMOTION
+  ANALYTICS
+  FINANCE
+}
+
+enum RunStatus {
+  QUEUED
+  RUNNING
+  SUCCESS
+  FAILED
+  PARTIAL
+  CANCELLED
+  COMPLETED
+}
+
+enum TaskStatus {
+  PENDING
+  RUNNING
+  SUCCESS
+  FAILED
+  STOPPED
+  BOOKING
+  COMPLETED
+}
+
+enum LogLevel {
+  DEBUG
+  INFO
+  WARN
+  ERROR
+}
+
+enum NotificationType {
+  EMAIL
+  TELEGRAM
+  WEBHOOK
+}
+
+enum NotificationTemplateType {
+  SLOT_FOUND
+  BOOKING_SUCCESS
+  BOOKING_FAILED
+  TASK_STARTED
+  TASK_COMPLETED
+  TASK_FAILED
+  TASK_STOPPED
+}

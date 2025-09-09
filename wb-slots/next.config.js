@@ -1,13 +1,24 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  experimental: {
-    serverComponentsExternalPackages: ['@prisma/client'],
-  },
+  serverExternalPackages: ['@prisma/client'],
   output: 'standalone',
+  // Разрешенные домены для разработки
+  allowedDevOrigins: ['wbslot.skypath.fun'],
+  // Принудительно использовать порт 3000
   images: {
-    domains: ['wildberries.ru', 'supplies-api.wildberries.ru'],
+    remotePatterns: [
+      {
+        protocol: 'https',
+        hostname: 'wildberries.ru',
+      },
+      {
+        protocol: 'https',
+        hostname: 'supplies-api.wildberries.ru',
+      },
+    ],
   },
   env: {
+    PORT: '3000',
     CUSTOM_KEY: process.env.CUSTOM_KEY,
   },
   async headers() {

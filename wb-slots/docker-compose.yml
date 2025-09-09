@@ -47,15 +47,11 @@ services:
         condition: service_healthy
       redis:
         condition: service_healthy
-    volumes:
-      - ./src:/app/src
-      - ./prisma:/app/prisma
     command: >
       sh -c "
         npx prisma migrate deploy &&
         npx prisma db seed &&
-        npm run build &&
-        npm start
+        node server.js
       "
 
   worker:
@@ -72,9 +68,7 @@ services:
         condition: service_healthy
       redis:
         condition: service_healthy
-    volumes:
-      - ./src:/app/src
-    command: npm run worker
+    command: npx tsx src/workers/index.ts
 
 volumes:
   postgres_data:

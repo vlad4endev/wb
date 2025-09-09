@@ -5,11 +5,11 @@ import { TaskScheduler } from '@/lib/scheduler';
 
 export async function POST(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
     const user = await requireAuth(request);
-    const taskId = params.id;
+    const { id: taskId } = await params;
 
     // Check if task exists and belongs to user
     const task = await prisma.task.findFirst({

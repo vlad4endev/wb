@@ -31,9 +31,19 @@ export interface WBAPIResponse<T = any> {
 // Supplies API types
 export interface WBCoefficient {
   date: string;
-  warehouseId: number;
-  allowUnload: boolean;
   coefficient: number;
+  warehouseID: number;
+  warehouseName: string;
+  allowUnload: boolean;
+  boxTypeName: string;
+  boxTypeID: number;
+  storageCoef: string;
+  deliveryCoef: string;
+  deliveryBaseLiter: string;
+  deliveryAdditionalLiter: string;
+  storageBaseLiter: string;
+  storageAdditionalLiter: string | null;
+  isSortingCenter: boolean;
 }
 
 export interface WBWarehouse {

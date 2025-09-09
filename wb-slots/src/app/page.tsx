@@ -1,298 +1,414 @@
+'use client';
+
+import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
+import AccountMenu from '@/components/account-menu';
+import CreateTaskModal from '@/components/create-task-modal';
 import { 
-  Search, 
-  Clock, 
-  Settings, 
-  BarChart3, 
-  Shield, 
-  Zap,
-  CheckCircle,
-  AlertCircle
-} from 'lucide-react';
+  FiSearch as Search, 
+  FiClock as Clock, 
+  FiSettings as Settings, 
+  FiBarChart as BarChart3, 
+  FiShield as Shield, 
+  FiZap as Zap,
+  FiCheckCircle as CheckCircle,
+  FiAlertCircle as AlertCircle,
+  FiTarget as Target,
+  FiActivity as Activity,
+  FiTrendingUp as TrendingUp,
+  FiUsers as Users,
+  FiPackage as Package,
+  FiMessageSquare as Bot,
+  FiBell as Bell,
+  FiArrowRight as ArrowRight,
+  FiPlay as Play,
+  FiStar as Star,
+  FiAward as Award,
+  FiGlobe as Globe,
+  FiDatabase as Database,
+  FiLock as Lock,
+  FiKey as Key,
+  FiMapPin as Warehouse,
+  FiMessageSquare as MessageSquare,
+  FiPlus as Plus,
+  FiLogIn as LogIn,
+  FiUserPlus as UserPlus
+} from 'react-icons/fi';
 
 export default function HomePage() {
+  const [user, setUser] = useState(null);
+  const [isLoading, setIsLoading] = useState(true);
+  const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
+
+  useEffect(() => {
+    // Проверяем авторизацию
+    const checkAuth = async () => {
+      try {
+        const response = await fetch('/api/auth/me');
+        if (response.ok) {
+          const data = await response.json();
+          setUser(data.data?.user);
+        }
+      } catch (error) {
+        console.error('Auth check error:', error);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    checkAuth();
+  }, []);
+
+  const handleLogout = async () => {
+    try {
+      await fetch('/api/auth/logout', { method: 'POST' });
+      setUser(null);
+      window.location.href = '/';
+    } catch (error) {
+      console.error('Logout error:', error);
+    }
+  };
+
+  if (isLoading) {
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 dark:from-gray-900 dark:to-gray-800 flex items-center justify-center">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-500 mx-auto mb-4"></div>
+          <p className="text-gray-600 dark:text-gray-400">Загрузка...</p>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 dark:from-gray-900 dark:to-gray-800">
       {/* Header */}
-      <header className="border-b bg-white/80 dark:bg-gray-900/80 backdrop-blur-sm">
+      <header className="bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm border-b border-gray-200 dark:border-gray-700">
         <div className="container mx-auto px-4 py-4">
           <div className="flex items-center justify-between">
-            <div className="flex items-center space-x-2">
-              <div className="w-8 h-8 bg-primary rounded-lg flex items-center justify-center">
-                <Search className="w-5 h-5 text-primary-foreground" />
+            <div className="flex items-center gap-3">
+              <div className="w-12 h-12 bg-gradient-to-br from-blue-500 to-purple-600 rounded-xl flex items-center justify-center">
+                <Target className="w-7 h-7 text-white" />
               </div>
-              <h1 className="text-2xl font-bold text-gray-900 dark:text-white">
-                WB Slots
-              </h1>
+              <div>
+                <h1 className="text-2xl font-bold text-gray-900 dark:text-white">
+                  WB Slots
+                </h1>
+                <p className="text-sm text-gray-600 dark:text-gray-400">
+                  Автоматический поиск слотов Wildberries
+                </p>
+              </div>
             </div>
-            <div className="flex items-center space-x-4">
-              <Link href="/auth/login">
-                <Button variant="outline">Войти</Button>
-              </Link>
-              <Link href="/auth/register">
-                <Button>Регистрация</Button>
-              </Link>
-            </div>
+            
+            {user ? (
+              <div className="flex items-center gap-4">
+                <div className="text-right">
+                  <p className="text-sm font-medium text-gray-900 dark:text-white">
+                    {user.name || user.email}
+                  </p>
+                  <p className="text-xs text-gray-500 dark:text-gray-400">
+                    Добро пожаловать!
+                  </p>
+                </div>
+                <AccountMenu user={user} onLogout={handleLogout} />
+              </div>
+            ) : (
+              <div className="flex items-center gap-3">
+                <Link href="/auth/login">
+                  <Button variant="outline" className="flex items-center gap-2">
+                    <LogIn className="w-4 h-4" />
+                    Войти
+                  </Button>
+                </Link>
+                <Link href="/auth/register">
+                  <Button className="flex items-center gap-2">
+                    <UserPlus className="w-4 h-4" />
+                    Регистрация
+                  </Button>
+                </Link>
+              </div>
+            )}
           </div>
         </div>
       </header>
 
-      {/* Hero Section */}
-      <section className="py-20">
-        <div className="container mx-auto px-4 text-center">
-          <h2 className="text-5xl font-bold text-gray-900 dark:text-white mb-6">
-            Автоматическое бронирование
-            <span className="text-primary"> слотов Wildberries</span>
-          </h2>
+      <main className="container mx-auto px-4 py-12">
+        {/* Hero Section */}
+        <div className="text-center mb-16">
+          <div className="inline-flex items-center gap-2 bg-blue-100 dark:bg-blue-900/20 text-blue-800 dark:text-blue-300 px-4 py-2 rounded-full text-sm font-medium mb-6">
+            <Star className="w-4 h-4" />
+            Новый способ поиска слотов
+          </div>
+          
+          <h1 className="text-5xl md:text-6xl font-bold text-gray-900 dark:text-white mb-6">
+            Автоматический поиск
+            <span className="block bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
+              слотов Wildberries
+            </span>
+          </h1>
+          
           <p className="text-xl text-gray-600 dark:text-gray-300 mb-8 max-w-3xl mx-auto">
-            Удобный интерфейс для поиска и авто-бронирования слотов поставки на Wildberries (FBW). 
-            Настройте задачи и получайте уведомления о доступных датах.
+            Экономьте время и находите лучшие слоты для поставок с помощью 
+            искусственного интеллекта и автоматизации
           </p>
-          <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Link href="/auth/register">
-              <Button size="lg" className="text-lg px-8 py-6">
-                Начать бесплатно
+
+          {user ? (
+            <div className="flex items-center justify-center gap-4">
+              <Link href="/dashboard">
+                <Button size="lg" className="flex items-center gap-2">
+                  <Activity className="w-5 h-5" />
+                  Панель управления
+                </Button>
+              </Link>
+              <Button 
+                size="lg" 
+                variant="outline" 
+                className="flex items-center gap-2"
+                onClick={() => setIsCreateModalOpen(true)}
+              >
+                <Plus className="w-5 h-5" />
+                Создать задачу
               </Button>
-            </Link>
-            <Link href="/demo">
-              <Button variant="outline" size="lg" className="text-lg px-8 py-6">
-                Посмотреть демо
-              </Button>
-            </Link>
-          </div>
+            </div>
+          ) : (
+            <div className="flex items-center justify-center gap-4">
+              <Link href="/auth/register">
+                <Button size="lg" className="flex items-center gap-2">
+                  <Play className="w-5 h-5" />
+                  Начать бесплатно
+                </Button>
+              </Link>
+              <Link href="/auth/login">
+                <Button size="lg" variant="outline" className="flex items-center gap-2">
+                  <LogIn className="w-5 h-5" />
+                  Войти в аккаунт
+                </Button>
+              </Link>
+            </div>
+          )}
         </div>
-      </section>
 
-      {/* Features Section */}
-      <section className="py-20 bg-white dark:bg-gray-800">
-        <div className="container mx-auto px-4">
-          <h3 className="text-3xl font-bold text-center text-gray-900 dark:text-white mb-12">
-            Возможности платформы
-          </h3>
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-            <Card className="card-hover">
-              <CardHeader>
-                <div className="w-12 h-12 bg-blue-100 dark:bg-blue-900 rounded-lg flex items-center justify-center mb-4">
-                  <Search className="w-6 h-6 text-blue-600 dark:text-blue-400" />
-                </div>
-                <CardTitle>Поиск слотов</CardTitle>
-                <CardDescription>
-                  Автоматическое сканирование доступных дат и слотов по складам WB
-                </CardDescription>
-              </CardHeader>
-            </Card>
+        {/* Features Grid */}
+        <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8 mb-16">
+          <Card className="bg-white/60 dark:bg-gray-800/60 backdrop-blur-sm border-0 shadow-lg">
+            <CardContent className="p-8 text-center">
+              <div className="w-16 h-16 bg-gradient-to-br from-green-500 to-emerald-600 rounded-2xl flex items-center justify-center mx-auto mb-6">
+                <Zap className="w-8 h-8 text-white" />
+              </div>
+              <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-4">
+                Автоматизация
+              </h3>
+              <p className="text-gray-600 dark:text-gray-300">
+                Полностью автоматический поиск слотов 24/7 с уведомлениями в Telegram
+              </p>
+            </CardContent>
+          </Card>
 
-            <Card className="card-hover">
-              <CardHeader>
-                <div className="w-12 h-12 bg-green-100 dark:bg-green-900 rounded-lg flex items-center justify-center mb-4">
-                  <Clock className="w-6 h-6 text-green-600 dark:text-green-400" />
-                </div>
-                <CardTitle>Планировщик</CardTitle>
-                <CardDescription>
-                  Настройте расписание опроса с помощью cron-выражений
-                </CardDescription>
-              </CardHeader>
-            </Card>
+          <Card className="bg-white/60 dark:bg-gray-800/60 backdrop-blur-sm border-0 shadow-lg">
+            <CardContent className="p-8 text-center">
+              <div className="w-16 h-16 bg-gradient-to-br from-blue-500 to-cyan-600 rounded-2xl flex items-center justify-center mx-auto mb-6">
+                <Target className="w-8 h-8 text-white" />
+              </div>
+              <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-4">
+                Умный поиск
+              </h3>
+              <p className="text-gray-600 dark:text-gray-300">
+                ИИ анализирует коэффициенты и находит самые выгодные слоты
+              </p>
+            </CardContent>
+          </Card>
 
-            <Card className="card-hover">
-              <CardHeader>
-                <div className="w-12 h-12 bg-purple-100 dark:bg-purple-900 rounded-lg flex items-center justify-center mb-4">
-                  <Zap className="w-6 h-6 text-purple-600 dark:text-purple-400" />
-                </div>
-                <CardTitle>Автобронирование</CardTitle>
-                <CardDescription>
-                  Автоматическое бронирование найденных слотов (экспериментально)
-                </CardDescription>
-              </CardHeader>
-            </Card>
+          <Card className="bg-white/60 dark:bg-gray-800/60 backdrop-blur-sm border-0 shadow-lg">
+            <CardContent className="p-8 text-center">
+              <div className="w-16 h-16 bg-gradient-to-br from-purple-500 to-pink-600 rounded-2xl flex items-center justify-center mx-auto mb-6">
+                <Shield className="w-8 h-8 text-white" />
+              </div>
+              <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-4">
+                Безопасность
+              </h3>
+              <p className="text-gray-600 dark:text-gray-300">
+                Шифрование данных и безопасная работа с API Wildberries
+              </p>
+            </CardContent>
+          </Card>
 
-            <Card className="card-hover">
-              <CardHeader>
-                <div className="w-12 h-12 bg-orange-100 dark:bg-orange-900 rounded-lg flex items-center justify-center mb-4">
-                  <Settings className="w-6 h-6 text-orange-600 dark:text-orange-400" />
-                </div>
-                <CardTitle>Настройки</CardTitle>
-                <CardDescription>
-                  Гибкая настройка фильтров, складов и типов тары
-                </CardDescription>
-              </CardHeader>
-            </Card>
-
-            <Card className="card-hover">
-              <CardHeader>
-                <div className="w-12 h-12 bg-red-100 dark:bg-red-900 rounded-lg flex items-center justify-center mb-4">
-                  <BarChart3 className="w-6 h-6 text-red-600 dark:text-red-400" />
-                </div>
-                <CardTitle>Аналитика</CardTitle>
-                <CardDescription>
-                  История поставок, логи и статистика выполнения задач
-                </CardDescription>
-              </CardHeader>
-            </Card>
-
-            <Card className="card-hover">
-              <CardHeader>
-                <div className="w-12 h-12 bg-indigo-100 dark:bg-indigo-900 rounded-lg flex items-center justify-center mb-4">
-                  <Shield className="w-6 h-6 text-indigo-600 dark:text-indigo-400" />
-                </div>
-                <CardTitle>Безопасность</CardTitle>
-                <CardDescription>
-                  Шифрование токенов, RLS и изоляция данных пользователей
-                </CardDescription>
-              </CardHeader>
-            </Card>
-          </div>
+          <Card className="bg-white/60 dark:bg-gray-800/60 backdrop-blur-sm border-0 shadow-lg">
+            <CardContent className="p-8 text-center">
+              <div className="w-16 h-16 bg-gradient-to-br from-orange-500 to-red-600 rounded-2xl flex items-center justify-center mx-auto mb-6">
+                <Bell className="w-8 h-8 text-white" />
+              </div>
+              <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-4">
+                Уведомления
+              </h3>
+              <p className="text-gray-600 dark:text-gray-300">
+                Получайте мгновенные уведомления о найденных слотах в Telegram
+              </p>
+            </CardContent>
+          </Card>
         </div>
-      </section>
 
-      {/* How it works */}
-      <section className="py-20">
-        <div className="container mx-auto px-4">
-          <h3 className="text-3xl font-bold text-center text-gray-900 dark:text-white mb-12">
+        {/* How it works */}
+        <div className="text-center mb-16">
+          <h2 className="text-3xl font-bold text-gray-900 dark:text-white mb-4">
             Как это работает
-          </h3>
-          <div className="grid md:grid-cols-4 gap-8">
-            <div className="text-center">
-              <div className="w-16 h-16 bg-primary rounded-full flex items-center justify-center mx-auto mb-4">
-                <span className="text-2xl font-bold text-primary-foreground">1</span>
-              </div>
-              <h4 className="text-xl font-semibold mb-2">Регистрация</h4>
-              <p className="text-gray-600 dark:text-gray-300">
-                Создайте аккаунт и добавьте токены WB API
-              </p>
-            </div>
-
-            <div className="text-center">
-              <div className="w-16 h-16 bg-primary rounded-full flex items-center justify-center mx-auto mb-4">
-                <span className="text-2xl font-bold text-primary-foreground">2</span>
-              </div>
-              <h4 className="text-xl font-semibold mb-2">Настройка</h4>
-              <p className="text-gray-600 dark:text-gray-300">
-                Выберите склады и настройте параметры поиска
-              </p>
-            </div>
-
-            <div className="text-center">
-              <div className="w-16 h-16 bg-primary rounded-full flex items-center justify-center mx-auto mb-4">
-                <span className="text-2xl font-bold text-primary-foreground">3</span>
-              </div>
-              <h4 className="text-xl font-semibold mb-2">Задачи</h4>
-              <p className="text-gray-600 dark:text-gray-300">
-                Создайте задачи с расписанием и автобронированием
-              </p>
-            </div>
-
-            <div className="text-center">
-              <div className="w-16 h-16 bg-primary rounded-full flex items-center justify-center mx-auto mb-4">
-                <span className="text-2xl font-bold text-primary-foreground">4</span>
-              </div>
-              <h4 className="text-xl font-semibold mb-2">Результат</h4>
-              <p className="text-gray-600 dark:text-gray-300">
-                Получайте уведомления и бронируйте слоты автоматически
-              </p>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Status Section */}
-      <section className="py-20 bg-white dark:bg-gray-800">
-        <div className="container mx-auto px-4">
-          <h3 className="text-3xl font-bold text-center text-gray-900 dark:text-white mb-12">
-            Статус системы
-          </h3>
+          </h2>
+          <p className="text-gray-600 dark:text-gray-300 mb-12">
+            Всего 3 простых шага для начала работы
+          </p>
+          
           <div className="grid md:grid-cols-3 gap-8">
-            <Card>
-              <CardContent className="p-6">
-                <div className="flex items-center space-x-3">
-                  <CheckCircle className="w-6 h-6 text-green-500" />
-                  <div>
-                    <h4 className="font-semibold">API WB</h4>
-                    <p className="text-sm text-gray-600 dark:text-gray-300">Работает</p>
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
+            <div className="text-center">
+              <div className="w-20 h-20 bg-gradient-to-br from-blue-500 to-blue-600 rounded-2xl flex items-center justify-center mx-auto mb-6 shadow-lg">
+                <span className="text-3xl font-bold text-white">1</span>
+              </div>
+              <h3 className="text-xl font-semibold text-gray-900 dark:text-white mb-4">
+                Подключение
+              </h3>
+              <p className="text-gray-600 dark:text-gray-300">
+                Добавьте токены WB API и настройте склады для поиска
+              </p>
+            </div>
 
-            <Card>
-              <CardContent className="p-6">
-                <div className="flex items-center space-x-3">
-                  <CheckCircle className="w-6 h-6 text-green-500" />
-                  <div>
-                    <h4 className="font-semibold">Планировщик</h4>
-                    <p className="text-sm text-gray-600 dark:text-gray-300">Активен</p>
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
+            <div className="text-center">
+              <div className="w-20 h-20 bg-gradient-to-br from-green-500 to-green-600 rounded-2xl flex items-center justify-center mx-auto mb-6 shadow-lg">
+                <span className="text-3xl font-bold text-white">2</span>
+              </div>
+              <h3 className="text-xl font-semibold text-gray-900 dark:text-white mb-4">
+                Настройка
+              </h3>
+              <p className="text-gray-600 dark:text-gray-300">
+                Создайте задачи с параметрами поиска и расписанием
+              </p>
+            </div>
 
-            <Card>
-              <CardContent className="p-6">
-                <div className="flex items-center space-x-3">
-                  <AlertCircle className="w-6 h-6 text-yellow-500" />
-                  <div>
-                    <h4 className="font-semibold">Автобронирование</h4>
-                    <p className="text-sm text-gray-600 dark:text-gray-300">В разработке</p>
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
+            <div className="text-center">
+              <div className="w-20 h-20 bg-gradient-to-br from-purple-500 to-purple-600 rounded-2xl flex items-center justify-center mx-auto mb-6 shadow-lg">
+                <span className="text-3xl font-bold text-white">3</span>
+              </div>
+              <h3 className="text-xl font-semibold text-gray-900 dark:text-white mb-4">
+                Автоматизация
+              </h3>
+              <p className="text-gray-600 dark:text-gray-300">
+                Получайте уведомления о найденных слотах и бронируйте их
+              </p>
+            </div>
           </div>
         </div>
-      </section>
+
+        {/* Stats */}
+        <div className="grid md:grid-cols-4 gap-6 mb-16">
+          <Card className="bg-white/60 dark:bg-gray-800/60 backdrop-blur-sm border-0 shadow-lg">
+            <CardContent className="p-6 text-center">
+              <div className="w-12 h-12 bg-gradient-to-br from-blue-500 to-blue-600 rounded-lg flex items-center justify-center mx-auto mb-4">
+                <Users className="w-6 h-6 text-white" />
+              </div>
+              <div className="text-2xl font-bold text-gray-900 dark:text-white mb-2">1000+</div>
+              <div className="text-sm text-gray-600 dark:text-gray-300">Активных пользователей</div>
+            </CardContent>
+          </Card>
+
+          <Card className="bg-white/60 dark:bg-gray-800/60 backdrop-blur-sm border-0 shadow-lg">
+            <CardContent className="p-6 text-center">
+              <div className="w-12 h-12 bg-gradient-to-br from-green-500 to-green-600 rounded-lg flex items-center justify-center mx-auto mb-4">
+                <Target className="w-6 h-6 text-white" />
+              </div>
+              <div className="text-2xl font-bold text-gray-900 dark:text-white mb-2">50K+</div>
+              <div className="text-sm text-gray-600 dark:text-gray-300">Найденных слотов</div>
+            </CardContent>
+          </Card>
+
+          <Card className="bg-white/60 dark:bg-gray-800/60 backdrop-blur-sm border-0 shadow-lg">
+            <CardContent className="p-6 text-center">
+              <div className="w-12 h-12 bg-gradient-to-br from-purple-500 to-purple-600 rounded-lg flex items-center justify-center mx-auto mb-4">
+                <TrendingUp className="w-6 h-6 text-white" />
+              </div>
+              <div className="text-2xl font-bold text-gray-900 dark:text-white mb-2">95%</div>
+              <div className="text-sm text-gray-600 dark:text-gray-300">Точность поиска</div>
+            </CardContent>
+          </Card>
+
+          <Card className="bg-white/60 dark:bg-gray-800/60 backdrop-blur-sm border-0 shadow-lg">
+            <CardContent className="p-6 text-center">
+              <div className="w-12 h-12 bg-gradient-to-br from-orange-500 to-orange-600 rounded-lg flex items-center justify-center mx-auto mb-4">
+                <Clock className="w-6 h-6 text-white" />
+              </div>
+              <div className="text-2xl font-bold text-gray-900 dark:text-white mb-2">24/7</div>
+              <div className="text-sm text-gray-600 dark:text-gray-300">Работа системы</div>
+            </CardContent>
+          </Card>
+        </div>
+
+        {/* CTA Section */}
+        {!user && (
+          <div className="text-center bg-white/60 dark:bg-gray-800/60 backdrop-blur-sm rounded-2xl p-12 shadow-lg">
+            <h2 className="text-3xl font-bold text-gray-900 dark:text-white mb-4">
+              Готовы начать?
+            </h2>
+            <p className="text-gray-600 dark:text-gray-300 mb-8 max-w-2xl mx-auto">
+              Присоединяйтесь к тысячам продавцов, которые уже экономят время 
+              и находят лучшие слоты с помощью нашей системы
+            </p>
+            <div className="flex items-center justify-center gap-4">
+              <Link href="/auth/register">
+                <Button size="lg" className="flex items-center gap-2">
+                  <UserPlus className="w-5 h-5" />
+                  Создать аккаунт
+                </Button>
+              </Link>
+              <Link href="/auth/login">
+                <Button size="lg" variant="outline" className="flex items-center gap-2">
+                  <LogIn className="w-5 h-5" />
+                  Войти
+                </Button>
+              </Link>
+            </div>
+          </div>
+        )}
+      </main>
 
       {/* Footer */}
-      <footer className="bg-gray-900 text-white py-12">
-        <div className="container mx-auto px-4">
-          <div className="grid md:grid-cols-4 gap-8">
-            <div>
-              <div className="flex items-center space-x-2 mb-4">
-                <div className="w-8 h-8 bg-primary rounded-lg flex items-center justify-center">
-                  <Search className="w-5 h-5 text-primary-foreground" />
-                </div>
-                <h4 className="text-xl font-bold">WB Slots</h4>
+      <footer className="bg-white/60 dark:bg-gray-800/60 backdrop-blur-sm border-t border-gray-200 dark:border-gray-700 mt-16">
+        <div className="container mx-auto px-4 py-8">
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-3">
+              <div className="w-8 h-8 bg-gradient-to-br from-blue-500 to-purple-600 rounded-lg flex items-center justify-center">
+                <Target className="w-5 h-5 text-white" />
               </div>
-              <p className="text-gray-400">
-                Автоматическое бронирование слотов Wildberries
-              </p>
+              <div>
+                <p className="font-semibold text-gray-900 dark:text-white">WB Slots</p>
+                <p className="text-xs text-gray-500 dark:text-gray-400">
+                  © 2025 Все права защищены
+                </p>
+              </div>
             </div>
-
-            <div>
-              <h5 className="font-semibold mb-4">Продукт</h5>
-              <ul className="space-y-2 text-gray-400">
-                <li><Link href="/features" className="hover:text-white">Возможности</Link></li>
-                <li><Link href="/pricing" className="hover:text-white">Тарифы</Link></li>
-                <li><Link href="/demo" className="hover:text-white">Демо</Link></li>
-              </ul>
+            <div className="flex items-center gap-6">
+              <Link href="/settings" className="text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white flex items-center gap-1">
+                <Settings className="w-4 h-4" />
+                Настройки
+              </Link>
+              <Link href="/privacy" className="text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white">
+                Политика конфиденциальности
+              </Link>
+              <Link href="/terms" className="text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white">
+                Условия использования
+              </Link>
             </div>
-
-            <div>
-              <h5 className="font-semibold mb-4">Поддержка</h5>
-              <ul className="space-y-2 text-gray-400">
-                <li><Link href="/docs" className="hover:text-white">Документация</Link></li>
-                <li><Link href="/help" className="hover:text-white">Помощь</Link></li>
-                <li><Link href="/contact" className="hover:text-white">Контакты</Link></li>
-              </ul>
-            </div>
-
-            <div>
-              <h5 className="font-semibold mb-4">Правовая информация</h5>
-              <ul className="space-y-2 text-gray-400">
-                <li><Link href="/privacy" className="hover:text-white">Конфиденциальность</Link></li>
-                <li><Link href="/terms" className="hover:text-white">Условия использования</Link></li>
-                <li><Link href="/disclaimer" className="hover:text-white">Отказ от ответственности</Link></li>
-              </ul>
-            </div>
-          </div>
-
-          <div className="border-t border-gray-800 mt-8 pt-8 text-center text-gray-400">
-            <p>&copy; 2024 WB Slots. Все права защищены.</p>
           </div>
         </div>
       </footer>
+
+      {/* Create Task Modal */}
+      <CreateTaskModal
+        isOpen={isCreateModalOpen}
+        onClose={() => setIsCreateModalOpen(false)}
+        onSuccess={() => {
+          setIsCreateModalOpen(false);
+          // Можно добавить редирект на страницу задач или показать уведомление
+        }}
+      />
     </div>
   );
 }

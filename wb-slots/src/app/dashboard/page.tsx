@@ -4,20 +4,29 @@ import { useState, useEffect } from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
-import { 
-  Plus, 
-  Play, 
-  Pause, 
-  Settings, 
-  BarChart3, 
-  Clock, 
-  CheckCircle, 
-  AlertCircle,
-  Activity,
-  Calendar,
-  Warehouse
-} from 'lucide-react';
+import { Progress } from '@/components/ui/progress';
+import {
+  FiPlay as Play,
+  FiSquare as Square,
+  FiSettings as Settings,
+  FiBarChart as BarChart3,
+  FiClock as Clock,
+  FiCheckCircle as CheckCircle,
+  FiActivity as Activity,
+  FiMapPin as Warehouse,
+  FiZap as Zap,
+  FiEye as Eye,
+  FiLoader as Loader2,
+  FiMessageSquare as MessageSquare,
+  FiTrendingUp as TrendingUp,
+  FiTarget as Target,
+  FiArrowRight as ArrowRight,
+  FiRefreshCw as RefreshCw,
+  FiCheckCircle as CheckCircle2,
+  FiXCircle as XCircle
+} from 'react-icons/fi';
 import Link from 'next/link';
+import DashboardLayout from '@/app/dashboard-layout';
 
 interface Task {
   id: string;
@@ -29,6 +38,7 @@ interface Task {
   filters: any;
   priority: number;
   createdAt: string;
+  updatedAt: string;
   runs: Array<{
     id: string;
     status: string;
@@ -49,8 +59,20 @@ interface Stats {
   foundSlots: number;
 }
 
+interface Event {
+  id: string;
+  type: string;
+  taskName: string;
+  status: string;
+  timestamp: string;
+  icon: string;
+  color: string;
+  foundSlots?: number;
+}
+
 export default function DashboardPage() {
   const [tasks, setTasks] = useState<Task[]>([]);
+  const [user, setUser] = useState(null);
   const [stats, setStats] = useState<Stats>({
     totalTasks: 0,
     activeTasks: 0,
@@ -59,6 +81,7 @@ export default function DashboardPage() {
     foundSlots: 0,
   });
   const [isLoading, setIsLoading] = useState(true);
+  const [actionLoading, setActionLoading] = useState<string | null>(null);
 
   useEffect(() => {
     fetchDashboardData();
@@ -66,13 +89,15 @@ export default function DashboardPage() {
 
   const fetchDashboardData = async () => {
     try {
-      const [tasksResponse, statsResponse] = await Promise.all([
-        fetch('/api/tasks'),
-        fetch('/api/dashboard/stats'),
+      const [tasksResponse, statsResponse, userResponse] = await Promise.all([
+        fetch('/api/tasks', { credentials: 'include' }),
+        fetch('/api/dashboard/stats', { credentials: 'include' }),
+        fetch('/api/auth/me', { credentials: 'include' }),
       ]);
 
       const tasksData = await tasksResponse.json();
       const statsData = await statsResponse.json();
+      const userData = await userResponse.json();
 
       if (tasksData.success) {
         setTasks(tasksData.data.tasks);
@@ -81,6 +106,10 @@ export default function DashboardPage() {
       if (statsData.success) {
         setStats(statsData.data);
       }
+
+      if (userData.success) {
+        setUser(userData.data.user);
+      }
     } catch (error) {
       console.error('Error fetching dashboard data:', error);
     } finally {
@@ -88,349 +117,331 @@ export default function DashboardPage() {
     }
   };
 
-  const runTask = async (taskId: string) => {
+  const handleTaskAction = async (taskId: string, action: 'start' | 'stop') => {
+    setActionLoading(taskId);
     try {
-      const response = await fetch(`/api/tasks/${taskId}/run`, {
+      const response = await fetch(`/api/tasks/${taskId}/${action}`, {
         method: 'POST',
+        credentials: 'include',
       });
-
-      const data = await response.json();
-      if (data.success) {
-        // Refresh tasks
-        fetchDashboardData();
+      
+      if (response.ok) {
+        await fetchDashboardData(); // Refresh data
       }
     } catch (error) {
-      console.error('Error running task:', error);
+      console.error(`Error ${action}ing task:`, error);
+    } finally {
+      setActionLoading(null);
     }
   };
 
-  const getStatusBadge = (status: string) => {
+  const getStatusIcon = (status: string) => {
     switch (status) {
-      case 'SUCCESS':
-        return <Badge variant="success">Успешно</Badge>;
-      case 'RUNNING':
-        return <Badge variant="info">Выполняется</Badge>;
-      case 'FAILED':
-        return <Badge variant="error">Ошибка</Badge>;
-      case 'QUEUED':
-        return <Badge variant="warning">В очереди</Badge>;
+      case 'completed':
+        return <CheckCircle2 className="w-4 h-4 text-green-500" />;
+      case 'running':
+        return <Loader2 className="w-4 h-4 text-blue-500 animate-spin" />;
+      case 'failed':
+        return <XCircle className="w-4 h-4 text-red-500" />;
       default:
-        return <Badge variant="secondary">{status}</Badge>;
+        return <Clock className="w-4 h-4 text-gray-500" />;
     }
   };
 
-  const getLastRunStatus = (task: Task) => {
-    if (task.runs.length === 0) return null;
-    const lastRun = task.runs[0];
-    return getStatusBadge(lastRun.status);
+  const getStatusColor = (status: string) => {
+    switch (status) {
+      case 'completed':
+        return 'bg-green-100 text-green-800 dark:bg-green-900/20 dark:text-green-300';
+      case 'running':
+        return 'bg-blue-100 text-blue-800 dark:bg-blue-900/20 dark:text-blue-300';
+      case 'failed':
+        return 'bg-red-100 text-red-800 dark:bg-red-900/20 dark:text-red-300';
+      default:
+        return 'bg-gray-100 text-gray-800 dark:bg-gray-900/20 dark:text-gray-300';
+    }
   };
+
+  const successRate = stats.totalRuns > 0 ? (stats.successfulRuns / stats.totalRuns) * 100 : 0;
 
   if (isLoading) {
     return (
-      <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
-        <div className="container mx-auto px-4 py-8">
-          <div className="animate-pulse">
-            <div className="h-8 bg-gray-200 dark:bg-gray-700 rounded w-1/4 mb-6"></div>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
-              {[...Array(4)].map((_, i) => (
-                <div key={i} className="h-32 bg-gray-200 dark:bg-gray-700 rounded"></div>
-              ))}
-            </div>
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-              {[...Array(2)].map((_, i) => (
-                <div key={i} className="h-64 bg-gray-200 dark:bg-gray-700 rounded"></div>
-              ))}
-            </div>
+      <DashboardLayout>
+        <div className="flex items-center justify-center min-h-screen">
+          <div className="text-center">
+            <Loader2 className="w-8 h-8 animate-spin mx-auto mb-4 text-blue-500" />
+            <p className="text-gray-600 dark:text-gray-400">Загрузка панели управления...</p>
           </div>
         </div>
-      </div>
+      </DashboardLayout>
     );
   }
 
   return (
-    <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
-      {/* Header */}
-      <header className="bg-white dark:bg-gray-800 shadow-sm border-b">
-        <div className="container mx-auto px-4 py-4">
-          <div className="flex items-center justify-between">
-            <div>
-              <h1 className="text-2xl font-bold text-gray-900 dark:text-white">
-                Дашборд
-              </h1>
-              <p className="text-gray-600 dark:text-gray-400">
-                Управление задачами и мониторинг слотов
-              </p>
-            </div>
-            <div className="flex items-center space-x-4">
-              <Link href="/tasks/new">
-                <Button>
-                  <Plus className="w-4 h-4 mr-2" />
-                  Новая задача
+    <DashboardLayout>
+      <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
+        {/* Header */}
+        <div className="bg-white dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700">
+          <div className="px-6 py-4">
+            <div className="flex items-center justify-between">
+              <div>
+                <h1 className="text-2xl font-bold text-gray-900 dark:text-white">
+                  Панель управления
+                </h1>
+                <p className="text-gray-600 dark:text-gray-400 mt-1">
+                  Мониторинг и управление задачами поиска слотов
+                </p>
+              </div>
+              <div className="flex items-center space-x-3">
+                <Button
+                  onClick={fetchDashboardData}
+                  variant="outline"
+                  size="sm"
+                  disabled={isLoading}
+                >
+                  <RefreshCw className={`w-4 h-4 mr-2 ${isLoading ? 'animate-spin' : ''}`} />
+                  Обновить
                 </Button>
-              </Link>
-              <Link href="/settings">
-                <Button variant="outline">
-                  <Settings className="w-4 h-4 mr-2" />
-                  Настройки
-                </Button>
-              </Link>
+              </div>
             </div>
           </div>
         </div>
-      </header>
 
-      <div className="container mx-auto px-4 py-8">
-        {/* Stats Cards */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
-          <Card>
-            <CardContent className="p-6">
-              <div className="flex items-center">
-                <div className="p-2 bg-blue-100 dark:bg-blue-900 rounded-lg">
-                  <Activity className="w-6 h-6 text-blue-600 dark:text-blue-400" />
+        <div className="p-6 space-y-6">
+          {/* Stats Cards */}
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+            <Card className="bg-gradient-to-br from-blue-50 to-blue-100 dark:from-blue-900/20 dark:to-blue-800/20 border-blue-200 dark:border-blue-800">
+              <CardContent className="p-6">
+                <div className="flex items-center justify-between">
+                  <div>
+                    <p className="text-sm font-medium text-blue-600 dark:text-blue-400">Всего задач</p>
+                    <p className="text-2xl font-bold text-blue-900 dark:text-blue-100">{stats.totalTasks}</p>
+                  </div>
+                  <div className="w-12 h-12 bg-blue-500 rounded-lg flex items-center justify-center">
+                    <Target className="w-6 h-6 text-white" />
+                  </div>
                 </div>
-                <div className="ml-4">
-                  <p className="text-sm font-medium text-gray-600 dark:text-gray-400">
-                    Всего задач
-                  </p>
-                  <p className="text-2xl font-bold text-gray-900 dark:text-white">
-                    {stats.totalTasks}
-                  </p>
-                </div>
-              </div>
-            </CardContent>
-          </Card>
+              </CardContent>
+            </Card>
 
-          <Card>
-            <CardContent className="p-6">
-              <div className="flex items-center">
-                <div className="p-2 bg-green-100 dark:bg-green-900 rounded-lg">
-                  <CheckCircle className="w-6 h-6 text-green-600 dark:text-green-400" />
+            <Card className="bg-gradient-to-br from-green-50 to-green-100 dark:from-green-900/20 dark:to-green-800/20 border-green-200 dark:border-green-800">
+              <CardContent className="p-6">
+                <div className="flex items-center justify-between">
+                  <div>
+                    <p className="text-sm font-medium text-green-600 dark:text-green-400">Активные задачи</p>
+                    <p className="text-2xl font-bold text-green-900 dark:text-green-100">{stats.activeTasks}</p>
+                  </div>
+                  <div className="w-12 h-12 bg-green-500 rounded-lg flex items-center justify-center">
+                    <Activity className="w-6 h-6 text-white" />
+                  </div>
                 </div>
-                <div className="ml-4">
-                  <p className="text-sm font-medium text-gray-600 dark:text-gray-400">
-                    Активные
-                  </p>
-                  <p className="text-2xl font-bold text-gray-900 dark:text-white">
-                    {stats.activeTasks}
-                  </p>
-                </div>
-              </div>
-            </CardContent>
-          </Card>
+              </CardContent>
+            </Card>
 
-          <Card>
-            <CardContent className="p-6">
-              <div className="flex items-center">
-                <div className="p-2 bg-purple-100 dark:bg-purple-900 rounded-lg">
-                  <BarChart3 className="w-6 h-6 text-purple-600 dark:text-purple-400" />
+            <Card className="bg-gradient-to-br from-purple-50 to-purple-100 dark:from-purple-900/20 dark:to-purple-800/20 border-purple-200 dark:border-purple-800">
+              <CardContent className="p-6">
+                <div className="flex items-center justify-between">
+                  <div>
+                    <p className="text-sm font-medium text-purple-600 dark:text-purple-400">Всего запусков</p>
+                    <p className="text-2xl font-bold text-purple-900 dark:text-purple-100">{stats.totalRuns}</p>
+                  </div>
+                  <div className="w-12 h-12 bg-purple-500 rounded-lg flex items-center justify-center">
+                    <BarChart3 className="w-6 h-6 text-white" />
+                  </div>
                 </div>
-                <div className="ml-4">
-                  <p className="text-sm font-medium text-gray-600 dark:text-gray-400">
-                    Выполнений
-                  </p>
-                  <p className="text-2xl font-bold text-gray-900 dark:text-white">
-                    {stats.totalRuns}
-                  </p>
-                </div>
-              </div>
-            </CardContent>
-          </Card>
+              </CardContent>
+            </Card>
 
-          <Card>
-            <CardContent className="p-6">
-              <div className="flex items-center">
-                <div className="p-2 bg-orange-100 dark:bg-orange-900 rounded-lg">
-                  <Calendar className="w-6 h-6 text-orange-600 dark:text-orange-400" />
+            <Card className="bg-gradient-to-br from-orange-50 to-orange-100 dark:from-orange-900/20 dark:to-orange-800/20 border-orange-200 dark:border-orange-800">
+              <CardContent className="p-6">
+                <div className="flex items-center justify-between">
+                  <div>
+                    <p className="text-sm font-medium text-orange-600 dark:text-orange-400">Найдено слотов</p>
+                    <p className="text-2xl font-bold text-orange-900 dark:text-orange-100">{stats.foundSlots}</p>
+                  </div>
+                  <div className="w-12 h-12 bg-orange-500 rounded-lg flex items-center justify-center">
+                    <TrendingUp className="w-6 h-6 text-white" />
+                  </div>
                 </div>
-                <div className="ml-4">
-                  <p className="text-sm font-medium text-gray-600 dark:text-gray-400">
-                    Найдено слотов
-                  </p>
-                  <p className="text-2xl font-bold text-gray-900 dark:text-white">
-                    {stats.foundSlots}
-                  </p>
-                </div>
-              </div>
-            </CardContent>
-          </Card>
-        </div>
+              </CardContent>
+            </Card>
+          </div>
 
-        {/* Tasks */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+          {/* Success Rate */}
           <Card>
             <CardHeader>
-              <CardTitle>Мои задачи</CardTitle>
+              <CardTitle className="flex items-center gap-2">
+                <CheckCircle className="w-5 h-5 text-green-500" />
+                Успешность выполнения
+              </CardTitle>
               <CardDescription>
-                Управление задачами поиска слотов
+                Процент успешных запусков задач
+              </CardDescription>
+            </CardHeader>
+            <CardContent>
+              <div className="space-y-4">
+                <div className="flex items-center justify-between">
+                  <span className="text-sm font-medium text-gray-700 dark:text-gray-300">
+                    {successRate.toFixed(1)}% успешных запусков
+                  </span>
+                  <span className="text-sm text-gray-500 dark:text-gray-400">
+                    {stats.successfulRuns} из {stats.totalRuns}
+                  </span>
+                </div>
+                <Progress value={successRate} className="h-2" />
+              </div>
+            </CardContent>
+          </Card>
+
+          {/* Tasks List */}
+          <Card>
+            <CardHeader>
+              <CardTitle className="flex items-center gap-2">
+                <Activity className="w-5 h-5" />
+                Задачи поиска слотов
+              </CardTitle>
+              <CardDescription>
+                Управление и мониторинг ваших задач
               </CardDescription>
             </CardHeader>
             <CardContent>
               {tasks.length === 0 ? (
-                <div className="text-center py-8">
-                  <Activity className="w-12 h-12 text-gray-400 mx-auto mb-4" />
-                  <p className="text-gray-500 dark:text-gray-400 mb-4">
-                    У вас пока нет задач
+                <div className="text-center py-12">
+                  <Target className="w-12 h-12 text-gray-400 mx-auto mb-4" />
+                  <h3 className="text-lg font-medium text-gray-900 dark:text-white mb-2">
+                    Нет задач
+                  </h3>
+                  <p className="text-gray-500 dark:text-gray-400">
+                    Создайте первую задачу для поиска слотов используя кнопку в сайдбаре
                   </p>
-                  <Link href="/tasks/new">
-                    <Button>
-                      <Plus className="w-4 h-4 mr-2" />
-                      Создать первую задачу
-                    </Button>
-                  </Link>
                 </div>
               ) : (
                 <div className="space-y-4">
-                  {tasks.slice(0, 5).map((task) => (
+                  {tasks.map((task) => (
                     <div
                       key={task.id}
-                      className="flex items-center justify-between p-4 border rounded-lg hover:bg-gray-50 dark:hover:bg-gray-800"
+                      className="flex items-center justify-between p-4 bg-gray-50 dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700"
                     >
                       <div className="flex-1">
-                        <div className="flex items-center space-x-2 mb-1">
+                        <div className="flex items-center gap-3 mb-2">
                           <h3 className="font-medium text-gray-900 dark:text-white">
                             {task.name}
                           </h3>
-                          {task.enabled ? (
-                            <Badge variant="success">Активна</Badge>
-                          ) : (
-                            <Badge variant="secondary">Отключена</Badge>
-                          )}
+                          <Badge
+                            variant={task.enabled ? "default" : "secondary"}
+                            className={task.enabled ? "bg-green-100 text-green-800 dark:bg-green-900/20 dark:text-green-300" : ""}
+                          >
+                            {task.enabled ? "Активна" : "Неактивна"}
+                          </Badge>
                           {task.autoBook && (
-                            <Badge variant="warning">Автобронирование</Badge>
+                            <Badge variant="outline" className="text-blue-600 border-blue-200">
+                              <Zap className="w-3 h-3 mr-1" />
+                              Автобронирование
+                            </Badge>
                           )}
                         </div>
-                        <p className="text-sm text-gray-600 dark:text-gray-400">
-                          {task.description || 'Без описания'}
-                        </p>
-                        <div className="flex items-center space-x-4 mt-2 text-xs text-gray-500 dark:text-gray-400">
-                          <span>Приоритет: {task.priority}</span>
-                          <span>Запусков: {task._count.runs}</span>
-                          {getLastRunStatus(task)}
+                        {task.description && (
+                          <p className="text-sm text-gray-600 dark:text-gray-400 mb-2">
+                            {task.description}
+                          </p>
+                        )}
+                        <div className="flex items-center gap-4 text-xs text-gray-500 dark:text-gray-400">
+                          <span className="flex items-center gap-1">
+                            <Clock className="w-3 h-3" />
+                            {task.scheduleCron ? 'По расписанию' : 'Ручной запуск'}
+                          </span>
+                          <span className="flex items-center gap-1">
+                            <BarChart3 className="w-3 h-3" />
+                            {task._count.runs} запусков
+                          </span>
+                          <span className="flex items-center gap-1">
+                            <Warehouse className="w-3 h-3" />
+                            Приоритет: {task.priority}
+                          </span>
                         </div>
                       </div>
-                      <div className="flex items-center space-x-2">
-                        <Button
-                          size="sm"
-                          variant="outline"
-                          onClick={() => runTask(task.id)}
-                        >
-                          <Play className="w-4 h-4" />
-                        </Button>
+                      <div className="flex items-center gap-2">
                         <Link href={`/tasks/${task.id}`}>
-                          <Button size="sm" variant="ghost">
-                            <Settings className="w-4 h-4" />
+                          <Button variant="outline" size="sm">
+                            <Eye className="w-4 h-4 mr-1" />
+                            Просмотр
                           </Button>
                         </Link>
+                        {task.enabled ? (
+                          <Button
+                            variant="outline"
+                            size="sm"
+                            onClick={() => handleTaskAction(task.id, 'stop')}
+                            disabled={actionLoading === task.id}
+                            className="text-red-600 border-red-200 hover:bg-red-50 dark:text-red-400 dark:border-red-800 dark:hover:bg-red-900/20"
+                          >
+                            {actionLoading === task.id ? (
+                              <Loader2 className="w-4 h-4 animate-spin" />
+                            ) : (
+                              <Square className="w-4 h-4" />
+                            )}
+                          </Button>
+                        ) : (
+                          <Button
+                            variant="outline"
+                            size="sm"
+                            onClick={() => handleTaskAction(task.id, 'start')}
+                            disabled={actionLoading === task.id}
+                            className="text-green-600 border-green-200 hover:bg-green-50 dark:text-green-400 dark:border-green-800 dark:hover:bg-green-900/20"
+                          >
+                            {actionLoading === task.id ? (
+                              <Loader2 className="w-4 h-4 animate-spin" />
+                            ) : (
+                              <Play className="w-4 h-4" />
+                            )}
+                          </Button>
+                        )}
                       </div>
                     </div>
                   ))}
-                  {tasks.length > 5 && (
-                    <div className="text-center pt-4">
-                      <Link href="/tasks">
-                        <Button variant="outline">
-                          Показать все задачи ({tasks.length})
-                        </Button>
-                      </Link>
-                    </div>
-                  )}
                 </div>
               )}
             </CardContent>
           </Card>
 
-          <Card>
-            <CardHeader>
-              <CardTitle>Последние события</CardTitle>
-              <CardDescription>
-                История выполнения задач
-              </CardDescription>
-            </CardHeader>
-            <CardContent>
-              <div className="space-y-4">
-                {tasks.flatMap(task => 
-                  task.runs.slice(0, 2).map(run => (
-                    <div
-                      key={run.id}
-                      className="flex items-center space-x-3 p-3 border rounded-lg"
-                    >
-                      <div className="flex-shrink-0">
-                        {run.status === 'SUCCESS' ? (
-                          <CheckCircle className="w-5 h-5 text-green-500" />
-                        ) : run.status === 'FAILED' ? (
-                          <AlertCircle className="w-5 h-5 text-red-500" />
-                        ) : run.status === 'RUNNING' ? (
-                          <Clock className="w-5 h-5 text-blue-500 animate-spin" />
-                        ) : (
-                          <Clock className="w-5 h-5 text-gray-500" />
-                        )}
-                      </div>
-                      <div className="flex-1 min-w-0">
-                        <p className="text-sm font-medium text-gray-900 dark:text-white truncate">
-                          {task.name}
-                        </p>
-                        <p className="text-xs text-gray-500 dark:text-gray-400">
-                          {new Date(run.startedAt).toLocaleString('ru-RU')}
-                        </p>
-                        {run.summary?.foundSlots && (
-                          <p className="text-xs text-green-600 dark:text-green-400">
-                            Найдено слотов: {run.summary.foundSlots}
-                          </p>
-                        )}
-                      </div>
-                      <div className="flex-shrink-0">
-                        {getStatusBadge(run.status)}
-                      </div>
+          {/* Quick Actions */}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <Card className="hover:shadow-lg transition-shadow cursor-pointer">
+              <Link href="/settings/telegram">
+                <CardContent className="p-6">
+                  <div className="flex items-center gap-4">
+                    <div className="w-12 h-12 bg-green-500 rounded-lg flex items-center justify-center">
+                      <MessageSquare className="w-6 h-6 text-white" />
                     </div>
-                  ))
-                ).slice(0, 5)}
-                
-                {tasks.length === 0 && (
-                  <div className="text-center py-8">
-                    <Clock className="w-12 h-12 text-gray-400 mx-auto mb-4" />
-                    <p className="text-gray-500 dark:text-gray-400">
-                      Пока нет событий
-                    </p>
+                    <div>
+                      <h3 className="font-medium text-gray-900 dark:text-white">Telegram</h3>
+                      <p className="text-sm text-gray-500 dark:text-gray-400">Настройка уведомлений</p>
+                    </div>
+                    <ArrowRight className="w-5 h-5 text-gray-400 ml-auto" />
                   </div>
-                )}
-              </div>
-            </CardContent>
-          </Card>
+                </CardContent>
+              </Link>
+            </Card>
+
+            <Card className="hover:shadow-lg transition-shadow cursor-pointer">
+              <Link href="/settings">
+                <CardContent className="p-6">
+                  <div className="flex items-center gap-4">
+                    <div className="w-12 h-12 bg-purple-500 rounded-lg flex items-center justify-center">
+                      <Settings className="w-6 h-6 text-white" />
+                    </div>
+                    <div>
+                      <h3 className="font-medium text-gray-900 dark:text-white">Настройки</h3>
+                      <p className="text-sm text-gray-500 dark:text-gray-400">Конфигурация системы</p>
+                    </div>
+                    <ArrowRight className="w-5 h-5 text-gray-400 ml-auto" />
+                  </div>
+                </CardContent>
+              </Link>
+            </Card>
+          </div>
         </div>
 
-        {/* Quick Actions */}
-        <div className="mt-8">
-          <Card>
-            <CardHeader>
-              <CardTitle>Быстрые действия</CardTitle>
-              <CardDescription>
-                Часто используемые функции
-              </CardDescription>
-            </CardHeader>
-            <CardContent>
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                <Link href="/tasks/new">
-                  <Button variant="outline" className="w-full h-20 flex-col">
-                    <Plus className="w-6 h-6 mb-2" />
-                    Создать задачу
-                  </Button>
-                </Link>
-                <Link href="/tokens">
-                  <Button variant="outline" className="w-full h-20 flex-col">
-                    <Settings className="w-6 h-6 mb-2" />
-                    Управление токенами
-                  </Button>
-                </Link>
-                <Link href="/warehouses">
-                  <Button variant="outline" className="w-full h-20 flex-col">
-                    <Warehouse className="w-6 h-6 mb-2" />
-                    Настройка складов
-                  </Button>
-                </Link>
-              </div>
-            </CardContent>
-          </Card>
-        </div>
       </div>
-    </div>
+    </DashboardLayout>
   );
 }

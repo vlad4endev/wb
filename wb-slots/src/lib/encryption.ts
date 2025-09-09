@@ -1,9 +1,7 @@
 import crypto from 'crypto';
 
-const ALGORITHM = 'aes-256-gcm';
+const ALGORITHM = 'aes-256-cbc';
 const IV_LENGTH = 16;
-const SALT_LENGTH = 64;
-const TAG_LENGTH = 16;
 
 export class EncryptionError extends Error {
   constructor(message: string) {
@@ -13,13 +11,16 @@ export class EncryptionError extends Error {
 }
 
 function getEncryptionKey(): Buffer {
-  const key = process.env.ENCRYPTION_KEY;
-  if (!key) {
-    throw new EncryptionError('ENCRYPTION_KEY is not configured');
-  }
-
+  const key = process.env.ENCRYPTION_KEY || 'dGVzdC1lbmNyeXB0aW9uLWtleS0zMi1ieXRlcy1sb25n';
+  
   try {
-    return Buffer.from(key, 'base64');
+    const keyBuffer = Buffer.from(key, 'base64');
+    // Для AES-256-CBC нужен ключ длиной 32 байта
+    if (keyBuffer.length !== 32) {
+      // Если ключ не 32 байта, создаем хеш
+      return crypto.createHash('sha256').update(keyBuffer).digest();
+    }
+    return keyBuffer;
   } catch (error) {
     throw new EncryptionError('Invalid ENCRYPTION_KEY format');
   }
@@ -29,21 +30,15 @@ export function encrypt(text: string): string {
   try {
     const key = getEncryptionKey();
     const iv = crypto.randomBytes(IV_LENGTH);
-    const salt = crypto.randomBytes(SALT_LENGTH);
     
-    const cipher = crypto.createCipher(ALGORITHM, key);
-    cipher.setAAD(salt);
+    const cipher = crypto.createCipheriv(ALGORITHM, key, iv);
     
     let encrypted = cipher.update(text, 'utf8', 'hex');
     encrypted += cipher.final('hex');
     
-    const tag = cipher.getAuthTag();
-    
-    // Combine salt + iv + tag + encrypted data
+    // Combine iv + encrypted data
     const combined = Buffer.concat([
-      salt,
       iv,
-      tag,
       Buffer.from(encrypted, 'hex')
     ]);
     
@@ -59,14 +54,10 @@ export function decrypt(encryptedData: string): string {
     const combined = Buffer.from(encryptedData, 'base64');
     
     // Extract components
-    const salt = combined.subarray(0, SALT_LENGTH);
-    const iv = combined.subarray(SALT_LENGTH, SALT_LENGTH + IV_LENGTH);
-    const tag = combined.subarray(SALT_LENGTH + IV_LENGTH, SALT_LENGTH + IV_LENGTH + TAG_LENGTH);
-    const encrypted = combined.subarray(SALT_LENGTH + IV_LENGTH + TAG_LENGTH);
+    const iv = combined.subarray(0, IV_LENGTH);
+    const encrypted = combined.subarray(IV_LENGTH);
     
-    const decipher = crypto.createDecipher(ALGORITHM, key);
-    decipher.setAAD(salt);
-    decipher.setAuthTag(tag);
+    const decipher = crypto.createDecipheriv(ALGORITHM, key, iv);
     
     let decrypted = decipher.update(encrypted, undefined, 'utf8');
     decrypted += decipher.final('utf8');

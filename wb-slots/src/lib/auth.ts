@@ -1,5 +1,5 @@
 import { NextRequest } from 'next/server';
-import jwt from 'jsonwebtoken';
+import { SignJWT, jwtVerify } from 'jose';
 import bcrypt from 'bcryptjs';
 import { prisma } from './prisma';
 import { User } from '@prisma/client';
@@ -27,25 +27,23 @@ export async function verifyPassword(password: string, hash: string): Promise<bo
   return bcrypt.compare(password, hash);
 }
 
-export function generateToken(payload: Omit<JWTPayload, 'iat' | 'exp'>): string {
-  const secret = process.env.JWT_SECRET;
-  if (!secret) {
-    throw new Error('JWT_SECRET is not configured');
-  }
-
-  return jwt.sign(payload, secret, {
-    expiresIn: process.env.JWT_EXPIRES_IN || '7d',
-  });
+export async function generateToken(payload: Omit<JWTPayload, 'iat' | 'exp'>): Promise<string> {
+  const secret = new TextEncoder().encode(process.env.JWT_SECRET || 'wb-slots-super-secret-jwt-key-2024');
+  const expiresIn = process.env.JWT_EXPIRES_IN || '30d'; // Увеличиваем до 30 дней
+  
+  return await new SignJWT(payload)
+    .setProtectedHeader({ alg: 'HS256' })
+    .setIssuedAt()
+    .setExpirationTime(expiresIn)
+    .sign(secret);
 }
 
-export function verifyToken(token: string): JWTPayload {
-  const secret = process.env.JWT_SECRET;
-  if (!secret) {
-    throw new AuthError('JWT_SECRET is not configured', 500);
-  }
+export async function verifyToken(token: string): Promise<JWTPayload> {
+  const secret = new TextEncoder().encode(process.env.JWT_SECRET || 'wb-slots-super-secret-jwt-key-2024');
 
   try {
-    return jwt.verify(token, secret) as JWTPayload;
+    const { payload } = await jwtVerify(token, secret);
+    return payload as JWTPayload;
   } catch (error) {
     throw new AuthError('Invalid or expired token', 401);
   }
@@ -54,15 +52,31 @@ export function verifyToken(token: string): JWTPayload {
 export async function getCurrentUser(request: NextRequest): Promise<User | null> {
   try {
     const token = extractTokenFromRequest(request);
-    if (!token) return null;
+    if (!token) {
+      console.log('No token found in request');
+      return null;
+    }
 
-    const payload = verifyToken(token);
+    const payload = await verifyToken(token);
     const user = await prisma.user.findUnique({
       where: { id: payload.userId },
     });
 
+    if (!user) {
+      console.log('User not found for token payload:', payload);
+      console.log('This might indicate that the user was deleted or the token is invalid');
+      return null;
+    }
+
+    if (!user.isActive) {
+      console.log('User is inactive:', user.id);
+      return null;
+    }
+
+    console.log('User authenticated successfully:', { id: user.id, email: user.email });
     return user;
   } catch (error) {
+    console.log('Error in getCurrentUser:', error);
     return null;
   }
 }
@@ -71,12 +85,20 @@ export function extractTokenFromRequest(request: NextRequest): string | null {
   // Try Authorization header first
   const authHeader = request.headers.get('authorization');
   if (authHeader?.startsWith('Bearer ')) {
-    return authHeader.substring(7);
+    const token = authHeader.substring(7);
+    console.log('Token found in Authorization header');
+    return token;
   }
 
   // Try cookie
   const token = request.cookies.get('auth-token')?.value;
-  return token || null;
+  if (token) {
+    console.log('Token found in cookie');
+    return token;
+  }
+
+  console.log('No token found in request headers or cookies');
+  return null;
 }
 
 export async function requireAuth(request: NextRequest): Promise<User> {
@@ -96,15 +118,33 @@ export async function requireAdmin(request: NextRequest): Promise<User> {
 }
 
 export function setAuthCookie(response: Response, token: string): void {
+  const isProduction = process.env.NODE_ENV === 'production';
+  const secureFlag = isProduction ? 'Secure; ' : '';
+  
   response.headers.set(
     'Set-Cookie',
-    `auth-token=${token}; HttpOnly; Secure; SameSite=Strict; Path=/; Max-Age=${7 * 24 * 60 * 60}`
+    `auth-token=${token}; HttpOnly; ${secureFlag}SameSite=Lax; Path=/; Max-Age=${7 * 24 * 60 * 60}`
   );
 }
 
 export function clearAuthCookie(response: Response): void {
+  const isProduction = process.env.NODE_ENV === 'production';
+  const secureFlag = isProduction ? 'Secure; ' : '';
+  
   response.headers.set(
     'Set-Cookie',
-    'auth-token=; HttpOnly; Secure; SameSite=Strict; Path=/; Max-Age=0'
+    `auth-token=; HttpOnly; ${secureFlag}SameSite=Lax; Path=/; Max-Age=0`
   );
+}
+
+export async function getServerSession(request: NextRequest): Promise<{ user: JWTPayload } | null> {
+  try {
+    const token = extractTokenFromRequest(request);
+    if (!token) return null;
+
+    const payload = await verifyToken(token);
+    return { user: payload };
+  } catch (error) {
+    return null;
+  }
 }
