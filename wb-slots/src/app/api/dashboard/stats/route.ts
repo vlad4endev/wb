@@ -62,6 +62,7 @@ export async function GET(request: NextRequest) {
   } catch (error) {
     console.error('Dashboard stats error:', error);
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
     
     // Проверяем, является ли ошибка ошибкой аутентификации
     if (error instanceof Error && error.name === 'AuthError') {
@@ -71,6 +72,8 @@ export async function GET(request: NextRequest) {
       );
     }
     
+=======
+>>>>>>> Stashed changes
 =======
 >>>>>>> Stashed changes
     return NextResponse.json(

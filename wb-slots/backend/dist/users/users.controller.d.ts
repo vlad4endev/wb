@@ -16,7 +16,11 @@ export declare class UsersController {
         createdAt: Date;
         updatedAt: Date;
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
     } | null>;
+=======
+    }>;
+>>>>>>> Stashed changes
 =======
     }>;
 >>>>>>> Stashed changes
@@ -68,7 +72,11 @@ export declare class UsersController {
         createdAt: Date;
         updatedAt: Date;
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
     } | null>;
+=======
+    }>;
+>>>>>>> Stashed changes
 =======
     }>;
 >>>>>>> Stashed changes

@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useCallback } from 'react';
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 import { useParams, useRouter } from 'next/navigation';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -51,6 +52,8 @@ interface Task {
   updatedAt: string;
   runs: Array<{
 =======
+=======
+>>>>>>> Stashed changes
 import { useParams } from 'next/navigation';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -85,6 +88,9 @@ interface Task {
   createdAt: string;
   updatedAt: string;
   runs?: Array<{
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
 >>>>>>> Stashed changes
     id: string;
     status: string;
@@ -92,6 +98,7 @@ interface Task {
     finishedAt?: string;
     foundSlots?: number;
     summary?: any;
+<<<<<<< Updated upstream
 <<<<<<< Updated upstream
     foundSlotsDetails?: Array<{
       id: string;
@@ -142,6 +149,8 @@ export default function TaskDetailPage() {
 
   // Загружаем данные задачи
 =======
+=======
+>>>>>>> Stashed changes
   }>;
   _count?: {
     runs: number;
@@ -155,6 +164,9 @@ export default function TaskViewPage() {
   const [isLoading, setIsLoading] = useState(true);
   const [isActionLoading, setIsActionLoading] = useState(false);
 
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
 >>>>>>> Stashed changes
   const fetchTask = useCallback(async () => {
     try {
@@ -163,6 +175,7 @@ export default function TaskViewPage() {
       
       if (data.success) {
         setTask(data.data);
+<<<<<<< Updated upstream
 <<<<<<< Updated upstream
         
         // Загружаем информацию о складах
@@ -203,6 +216,8 @@ export default function TaskViewPage() {
     }
   };
 =======
+=======
+>>>>>>> Stashed changes
       } else {
         console.error('Error fetching task:', data.error);
       }
@@ -212,6 +227,9 @@ export default function TaskViewPage() {
       setIsLoading(false);
     }
   }, [taskId]);
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
 >>>>>>> Stashed changes
 
   useEffect(() => {
@@ -221,6 +239,7 @@ export default function TaskViewPage() {
   }, [taskId, fetchTask]);
 
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
   if (loading) {
     return (
       <DashboardLayout>
@@ -229,6 +248,8 @@ export default function TaskViewPage() {
             <Loader2 className="h-6 w-6 animate-spin" />
             <span>Загрузка задачи...</span>
 =======
+=======
+>>>>>>> Stashed changes
   const toggleTask = async (action: 'start' | 'stop') => {
     setIsActionLoading(true);
     try {
@@ -311,6 +332,9 @@ export default function TaskViewPage() {
           <div className="text-center">
             <Loader2 className="w-8 h-8 animate-spin mx-auto mb-4 text-blue-500" />
             <p className="text-gray-600 dark:text-gray-400">Загрузка задачи...</p>
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
 >>>>>>> Stashed changes
           </div>
         </div>
@@ -318,6 +342,7 @@ export default function TaskViewPage() {
     );
   }
 
+<<<<<<< Updated upstream
 <<<<<<< Updated upstream
   if (error || !task) {
     return (
@@ -329,6 +354,8 @@ export default function TaskViewPage() {
           </AlertDescription>
         </Alert>
 =======
+=======
+>>>>>>> Stashed changes
   if (!task) {
     return (
       <DashboardLayout>
@@ -338,11 +365,15 @@ export default function TaskViewPage() {
             <p className="text-gray-600 dark:text-gray-400">Задача не найдена</p>
           </div>
         </div>
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
 >>>>>>> Stashed changes
       </DashboardLayout>
     );
   }
 
+<<<<<<< Updated upstream
 <<<<<<< Updated upstream
   const getStatusColor = (status: string) => {
     switch (status) {
@@ -434,6 +465,8 @@ export default function TaskViewPage() {
                   Настройки задачи
                 </CardTitle>
 =======
+=======
+>>>>>>> Stashed changes
   return (
     <DashboardLayout>
       <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
@@ -518,11 +551,15 @@ export default function TaskViewPage() {
                 <CardDescription>
                   Основные параметры и настройки
                 </CardDescription>
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
 >>>>>>> Stashed changes
               </CardHeader>
               <CardContent className="space-y-4">
                 <div className="grid grid-cols-2 gap-4">
                   <div>
+<<<<<<< Updated upstream
 <<<<<<< Updated upstream
                     <label className="text-sm font-medium text-gray-500">Статус</label>
                     <div className="mt-1">
@@ -567,6 +604,8 @@ export default function TaskViewPage() {
                     <label className="text-sm font-medium text-gray-500">ID поставки для бронирования</label>
                     <p className="mt-1 text-sm font-mono text-gray-900 dark:text-white">
 =======
+=======
+>>>>>>> Stashed changes
                     <p className="text-sm font-medium text-gray-500">Статус</p>
                     <p className="text-sm">
                       {task.enabled ? (
@@ -600,11 +639,15 @@ export default function TaskViewPage() {
                   <div>
                     <p className="text-sm font-medium text-gray-500">ID приемки для автобронирования</p>
                     <p className="text-sm font-mono bg-gray-100 dark:bg-gray-800 px-2 py-1 rounded">
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
 >>>>>>> Stashed changes
                       {task.autoBookSupplyId}
                     </p>
                   </div>
                 )}
+<<<<<<< Updated upstream
 <<<<<<< Updated upstream
               </CardContent>
             </Card>
@@ -681,15 +724,21 @@ export default function TaskViewPage() {
                     </div>
                   </div>
 =======
+=======
+>>>>>>> Stashed changes
 
                 <div>
                   <p className="text-sm font-medium text-gray-500">Создана</p>
                   <p className="text-sm">{new Date(task.createdAt).toLocaleString('ru-RU')}</p>
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
 >>>>>>> Stashed changes
                 </div>
               </CardContent>
             </Card>
 
+<<<<<<< Updated upstream
 <<<<<<< Updated upstream
             {/* Непрерывный поиск слотов */}
             <ContinuousSearchStatus
@@ -737,6 +786,8 @@ export default function TaskViewPage() {
                     </span>
                   </div>
 =======
+=======
+>>>>>>> Stashed changes
             {/* Filters */}
             <Card>
               <CardHeader>
@@ -778,11 +829,15 @@ export default function TaskViewPage() {
                       }
                     }).join(', ') || 'Не указаны'}
                   </p>
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
 >>>>>>> Stashed changes
                 </div>
               </CardContent>
             </Card>
 
+<<<<<<< Updated upstream
 <<<<<<< Updated upstream
             {/* Последние запуски */}
             <Card>
@@ -832,6 +887,8 @@ export default function TaskViewPage() {
                   ))}
                 </div>
 =======
+=======
+>>>>>>> Stashed changes
             {/* Recent Runs */}
             <Card className="lg:col-span-2">
               <CardHeader>
@@ -887,6 +944,9 @@ export default function TaskViewPage() {
                     ))}
                   </div>
                 )}
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
 >>>>>>> Stashed changes
               </CardContent>
             </Card>

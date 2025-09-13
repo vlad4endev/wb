@@ -46,6 +46,7 @@ export async function GET(
     }
 
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
     // Убеждаемся, что filters всегда является объектом, а runs - массивом
     const taskWithFilters = {
       ...task,
@@ -53,6 +54,8 @@ export async function GET(
       runs: task.runs || []
     };
 
+=======
+>>>>>>> Stashed changes
 =======
 >>>>>>> Stashed changes
     return NextResponse.json({
@@ -164,6 +167,95 @@ export async function POST(
     const taskId = params.id;
 >>>>>>> Stashed changes
     const body = await request.json();
+<<<<<<< Updated upstream
+    const { action } = body;
+=======
+>>>>>>> Stashed changes
+
+    const task = await prisma.task.findUnique({
+      where: { id: taskId },
+    });
+
+    if (!task) {
+      return NextResponse.json(
+        { success: false, error: 'Задача не найдена' },
+        { status: 404 }
+      );
+    }
+
+    if (task.userId !== user.id) {
+      return NextResponse.json(
+        { success: false, error: 'Доступ запрещен' },
+        { status: 403 }
+<<<<<<< Updated upstream
+      );
+    }
+
+=======
+      );
+    }
+
+    // Валидация данных
+    if (!body.name || body.name.trim() === '') {
+      return NextResponse.json(
+        { success: false, error: 'Название задачи обязательно' },
+        { status: 400 }
+      );
+    }
+
+    if (!body.filters.warehouseIds || body.filters.warehouseIds.length === 0) {
+      return NextResponse.json(
+        { success: false, error: 'Необходимо выбрать хотя бы один склад' },
+        { status: 400 }
+      );
+    }
+
+    if (!body.filters.boxTypeIds || body.filters.boxTypeIds.length === 0) {
+      return NextResponse.json(
+        { success: false, error: 'Необходимо выбрать хотя бы один тип поставки' },
+        { status: 400 }
+      );
+    }
+
+    const updatedTask = await prisma.task.update({
+      where: { id: taskId },
+      data: {
+        name: body.name.trim(),
+        description: body.description?.trim() || null,
+        autoBook: body.autoBook || false,
+        autoBookSupplyId: body.autoBookSupplyId?.trim() || null,
+        filters: body.filters,
+        retryPolicy: body.retryPolicy || {
+          maxRetries: 3,
+          backoffMs: 5000
+        },
+        priority: body.priority || 1,
+        updatedAt: new Date(),
+      },
+    });
+
+    return NextResponse.json({
+      success: true,
+      message: 'Задача обновлена успешно',
+      data: { task: updatedTask },
+    });
+  } catch (error) {
+    console.error('Update task error:', error);
+    return NextResponse.json(
+      { success: false, error: 'Internal server error' },
+      { status: 500 }
+    );
+  }
+}
+
+export async function POST(
+  request: NextRequest,
+  { params }: { params: { id: string } }
+) {
+  try {
+    const user = await requireAuth(request);
+    const taskId = params.id;
+    const body = await request.json();
     const { action } = body;
 
     const task = await prisma.task.findUnique({
@@ -184,6 +276,7 @@ export async function POST(
       );
     }
 
+>>>>>>> Stashed changes
     if (action === 'stop') {
       // Останавливаем задачу
       await prisma.task.update({

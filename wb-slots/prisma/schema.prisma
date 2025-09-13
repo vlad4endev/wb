@@ -77,7 +77,11 @@ model WarehousePref {
 model Task {
   id          String   @id @default(cuid())
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
   taskNumber  Int      @unique @default(autoincrement()) @map("task_number")
+=======
+  taskNumber  Int      @unique @default(autoincrement()) @map("task_number") // Автоинкрементный номер задачи
+>>>>>>> Stashed changes
 =======
   taskNumber  Int      @unique @default(autoincrement()) @map("task_number") // Автоинкрементный номер задачи
 >>>>>>> Stashed changes
@@ -111,8 +115,11 @@ model Run {
   finishedAt DateTime? @map("finished_at")
   foundSlots Int?    @default(0) @map("found_slots")
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
   summary   Json?
 =======
+=======
+>>>>>>> Stashed changes
   summary   Json?    // { foundSlots: 0, bookedSlots: 0, errors: [] }
 >>>>>>> Stashed changes
   createdAt DateTime @default(now()) @map("created_at")
@@ -318,6 +325,16 @@ enum TaskStatus {
   COMPLETED
 }
 
+enum TaskStatus {
+  PENDING
+  RUNNING
+  SUCCESS
+  FAILED
+  STOPPED
+  BOOKING
+  COMPLETED
+}
+
 enum LogLevel {
   DEBUG
   INFO
@@ -332,7 +349,10 @@ enum NotificationType {
 }
 
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 =======
+=======
+>>>>>>> Stashed changes
 model WBSession {
   id          String    @id @default(cuid())
   userId      String    @map("user_id")
@@ -391,6 +411,9 @@ model NotificationTemplate {
   @@map("notification_templates")
 }
 
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
 >>>>>>> Stashed changes
 enum NotificationTemplateType {
   SLOT_FOUND

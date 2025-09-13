@@ -1,8 +1,13 @@
 'use client';
 
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 import { useState, useEffect, useCallback } from 'react';
 import { useParams, useRouter } from 'next/navigation';
+=======
+import { useState, useEffect } from 'react';
+import { useParams } from 'next/navigation';
+>>>>>>> Stashed changes
 =======
 import { useState, useEffect } from 'react';
 import { useParams } from 'next/navigation';
@@ -11,6 +16,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Alert, AlertDescription } from '@/components/ui/alert';
+<<<<<<< Updated upstream
 <<<<<<< Updated upstream
 import { Progress } from '@/components/ui/progress';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
@@ -46,6 +52,8 @@ import {
 import Link from 'next/link';
 import DashboardLayout from '@/app/dashboard-layout';
 =======
+=======
+>>>>>>> Stashed changes
 import { 
   ArrowLeft, 
   Activity, 
@@ -60,6 +68,9 @@ import {
   EyeOff
 } from 'lucide-react';
 import Link from 'next/link';
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
 >>>>>>> Stashed changes
 
 interface LogEntry {
@@ -82,8 +93,11 @@ interface ActiveRun {
   startedAt: string;
   finishedAt?: string;
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
   foundSlots?: number;
   summary?: any;
+=======
+>>>>>>> Stashed changes
 =======
 >>>>>>> Stashed changes
 }
@@ -93,6 +107,7 @@ interface TaskMonitorData {
   activeRuns: ActiveRun[];
   taskStatus: string;
   taskEnabled: boolean;
+<<<<<<< Updated upstream
 <<<<<<< Updated upstream
   task: {
     id: string;
@@ -114,13 +129,19 @@ interface TaskMonitorData {
   };
 =======
 >>>>>>> Stashed changes
+=======
+>>>>>>> Stashed changes
 }
 
 export default function TaskMonitorPage() {
   const params = useParams();
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
   const router = useRouter();
   const taskId = params?.id as string;
+=======
+  const taskId = params.id as string;
+>>>>>>> Stashed changes
 =======
   const taskId = params.id as string;
 >>>>>>> Stashed changes
@@ -131,6 +152,7 @@ export default function TaskMonitorPage() {
   const [isRefreshing, setIsRefreshing] = useState(false);
   const [autoRefresh, setAutoRefresh] = useState(true);
   const [showDebugLogs, setShowDebugLogs] = useState(false);
+<<<<<<< Updated upstream
 <<<<<<< Updated upstream
   const [activeTab, setActiveTab] = useState('overview');
   const [logLevelFilter, setLogLevelFilter] = useState('all');
@@ -181,6 +203,8 @@ export default function TaskMonitorPage() {
   }, [taskId]);
 =======
 >>>>>>> Stashed changes
+=======
+>>>>>>> Stashed changes
 
   useEffect(() => {
     loadData();
@@ -190,8 +214,11 @@ export default function TaskMonitorPage() {
       return () => clearInterval(interval);
     }
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
   }, [taskId, autoRefresh, loadData]);
 =======
+=======
+>>>>>>> Stashed changes
   }, [taskId, autoRefresh]);
 
   const loadData = async () => {
@@ -212,6 +239,9 @@ export default function TaskMonitorPage() {
       setIsRefreshing(false);
     }
   };
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
 >>>>>>> Stashed changes
 
   const handleRefresh = () => {
@@ -219,6 +249,7 @@ export default function TaskMonitorPage() {
     loadData();
   };
 
+<<<<<<< Updated upstream
 <<<<<<< Updated upstream
   const handleTaskAction = async (action: 'start' | 'stop') => {
     try {
@@ -262,6 +293,8 @@ export default function TaskMonitorPage() {
     URL.revokeObjectURL(url);
   };
 
+=======
+>>>>>>> Stashed changes
 =======
 >>>>>>> Stashed changes
   const getStatusBadge = (status: string) => {
@@ -316,6 +349,7 @@ export default function TaskMonitorPage() {
   };
 
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
   const filteredLogs = data?.logs.filter(log => {
     if (!showDebugLogs && log.level === 'DEBUG') return false;
     if (logLevelFilter !== 'all' && log.level !== logLevelFilter) return false;
@@ -333,6 +367,8 @@ export default function TaskMonitorPage() {
         </div>
       </DashboardLayout>
 =======
+=======
+>>>>>>> Stashed changes
   const filteredLogs = data?.logs.filter(log => 
     showDebugLogs || log.level !== 'DEBUG'
   ) || [];
@@ -346,12 +382,16 @@ export default function TaskMonitorPage() {
           </div>
         </div>
       </div>
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
 >>>>>>> Stashed changes
     );
   }
 
   if (error) {
     return (
+<<<<<<< Updated upstream
 <<<<<<< Updated upstream
       <DashboardLayout>
         <div className="flex items-center justify-center min-h-[400px]">
@@ -373,6 +413,8 @@ export default function TaskMonitorPage() {
         </div>
       </DashboardLayout>
 =======
+=======
+>>>>>>> Stashed changes
       <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
         <div className="container mx-auto px-4 py-8">
           <div className="text-center">
@@ -388,6 +430,9 @@ export default function TaskMonitorPage() {
           </div>
         </div>
       </div>
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
 >>>>>>> Stashed changes
     );
   }
@@ -395,6 +440,7 @@ export default function TaskMonitorPage() {
   // Обработка случая, когда задача не найдена
   if (data?.taskStatus === 'NOT_FOUND') {
     return (
+<<<<<<< Updated upstream
 <<<<<<< Updated upstream
       <DashboardLayout>
         <div className="flex items-center justify-center min-h-[400px]">
@@ -405,6 +451,8 @@ export default function TaskMonitorPage() {
             </h1>
             <p className="text-gray-600 dark:text-gray-400 mb-6">
 =======
+=======
+>>>>>>> Stashed changes
       <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
         <div className="container mx-auto px-4 py-8">
           <div className="text-center">
@@ -413,6 +461,9 @@ export default function TaskMonitorPage() {
               Задача не найдена
             </h1>
             <p className="text-gray-600 dark:text-gray-400 mb-4">
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
 >>>>>>> Stashed changes
               Задача с ID "{taskId}" не существует или была удалена.
             </p>
@@ -421,6 +472,7 @@ export default function TaskMonitorPage() {
                 <RefreshCw className="w-4 h-4 mr-2" />
                 Обновить
               </Button>
+<<<<<<< Updated upstream
 <<<<<<< Updated upstream
               <Button variant="outline" onClick={() => router.push('/tasks')}>
                 <ArrowLeft className="w-4 h-4 mr-2" />
@@ -431,6 +483,8 @@ export default function TaskMonitorPage() {
         </div>
       </DashboardLayout>
 =======
+=======
+>>>>>>> Stashed changes
               <Link href="/dashboard">
                 <Button variant="outline">
                   <ArrowLeft className="w-4 h-4 mr-2" />
@@ -441,11 +495,15 @@ export default function TaskMonitorPage() {
           </div>
         </div>
       </div>
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
 >>>>>>> Stashed changes
     );
   }
 
   return (
+<<<<<<< Updated upstream
 <<<<<<< Updated upstream
     <DashboardLayout>
       <div className="space-y-6">
@@ -693,6 +751,8 @@ export default function TaskMonitorPage() {
                   </Button>
                 )}
 =======
+=======
+>>>>>>> Stashed changes
     <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
       <header className="bg-white dark:bg-gray-800 shadow-sm border-b">
         <div className="container mx-auto px-4 py-4">
@@ -759,6 +819,9 @@ export default function TaskMonitorPage() {
                 <Badge variant="outline">
                   {data?.activeRuns.length || 0}
                 </Badge>
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
 >>>>>>> Stashed changes
               </div>
             </div>
@@ -768,7 +831,11 @@ export default function TaskMonitorPage() {
         {/* Активные запуски */}
         {data?.activeRuns && data.activeRuns.length > 0 && (
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
           <Card>
+=======
+          <Card className="mb-6">
+>>>>>>> Stashed changes
 =======
           <Card className="mb-6">
 >>>>>>> Stashed changes
@@ -779,6 +846,7 @@ export default function TaskMonitorPage() {
               </CardTitle>
             </CardHeader>
             <CardContent>
+<<<<<<< Updated upstream
 <<<<<<< Updated upstream
               <div className="space-y-3">
                 {data.activeRuns.map((run) => (
@@ -801,6 +869,8 @@ export default function TaskMonitorPage() {
                     </div>
                     <Badge variant="default" className="bg-green-100 text-green-800 dark:bg-green-800 dark:text-green-100">
 =======
+=======
+>>>>>>> Stashed changes
               <div className="space-y-2">
                 {data.activeRuns.map((run) => (
                   <div key={run.id} className="flex items-center justify-between p-3 bg-green-50 rounded-lg">
@@ -814,6 +884,9 @@ export default function TaskMonitorPage() {
                       </div>
                     </div>
                     <Badge variant="default" className="bg-green-100 text-green-800">
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
 >>>>>>> Stashed changes
                       {run.status}
                     </Badge>
@@ -825,7 +898,11 @@ export default function TaskMonitorPage() {
         )}
 
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
         {/* Вкладки с логами */}
+=======
+        {/* Логи */}
+>>>>>>> Stashed changes
 =======
         {/* Логи */}
 >>>>>>> Stashed changes
@@ -846,6 +923,7 @@ export default function TaskMonitorPage() {
                   {showDebugLogs ? 'Скрыть DEBUG' : 'Показать DEBUG'}
                 </Button>
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
                 <Button
                   variant="outline"
                   size="sm"
@@ -857,6 +935,8 @@ export default function TaskMonitorPage() {
                 </Button>
 =======
 >>>>>>> Stashed changes
+=======
+>>>>>>> Stashed changes
               </div>
             </div>
             <CardDescription>
@@ -864,6 +944,7 @@ export default function TaskMonitorPage() {
             </CardDescription>
           </CardHeader>
           <CardContent>
+<<<<<<< Updated upstream
 <<<<<<< Updated upstream
             <Tabs value={activeTab} onValueChange={setActiveTab}>
               <TabsList className="grid w-full grid-cols-3">
@@ -999,6 +1080,8 @@ export default function TaskMonitorPage() {
       </div>
     </DashboardLayout>
 =======
+=======
+>>>>>>> Stashed changes
             <div className="space-y-2 max-h-96 overflow-y-auto">
               {filteredLogs.length === 0 ? (
                 <div className="text-center py-8 text-gray-500">
@@ -1048,6 +1131,9 @@ export default function TaskMonitorPage() {
         </Card>
       </div>
     </div>
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
 >>>>>>> Stashed changes
   );
 }

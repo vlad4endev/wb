@@ -9,6 +9,7 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Alert, AlertDescription } from '@/components/ui/alert';
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 import {
   FiLoader as Loader2,
   FiEye as Eye,
@@ -24,6 +25,9 @@ import {
   FiLock as Lock,
   FiLogIn as LogIn
 } from 'react-icons/fi';
+=======
+import { Loader2, Eye, EyeOff, ArrowRight, CheckCircle, UserPlus } from 'lucide-react';
+>>>>>>> Stashed changes
 =======
 import { Loader2, Eye, EyeOff, ArrowRight, CheckCircle, UserPlus } from 'lucide-react';
 >>>>>>> Stashed changes
@@ -89,6 +93,7 @@ export default function RegisterPage() {
   };
 
   return (
+<<<<<<< Updated upstream
 <<<<<<< Updated upstream
     <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 dark:from-gray-900 dark:to-gray-800">
       {/* Background Pattern */}
@@ -166,6 +171,70 @@ export default function RegisterPage() {
         <div className="w-full lg:w-1/2 flex items-center justify-center px-4 sm:px-6 lg:px-8 py-8 lg:py-0">
           <div className="w-full max-w-md">
             <Card className="border-0 shadow-2xl bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm animate-fade-in">
+=======
+    <div className="min-h-screen bg-gradient-to-br from-indigo-50 via-white to-blue-50 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900">
+      {/* Background Pattern */}
+      <div className="absolute inset-0 bg-[url('data:image/svg+xml,%3Csvg%20width%3D%2260%22%20height%3D%2260%22%20viewBox%3D%220%200%2060%2060%22%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%3E%3Cg%20fill%3D%22none%22%20fill-rule%3D%22evenodd%22%3E%3Cg%20fill%3D%22%236366f1%22%20fill-opacity%3D%220.05%22%3E%3Ccircle%20cx%3D%2230%22%20cy%3D%2230%22%20r%3D%222%22/%3E%3C/g%3E%3C/g%3E%3C/svg%3E')] opacity-40"></div>
+      
+      <div className="relative flex min-h-screen">
+        {/* Left Side - Benefits */}
+        <div className="hidden lg:flex lg:w-1/2 flex-col justify-center px-12 xl:px-16">
+          <div className="max-w-md">
+            <div className="flex items-center space-x-3 mb-8">
+              <img src="/logo.svg" alt="Авто Лоты WB" className="w-12 h-12" />
+              <div>
+                <h1 className="text-3xl font-bold text-gray-900 dark:text-white">
+                  Авто Лоты WB
+                </h1>
+                <p className="text-gray-600 dark:text-gray-400">
+                  WB стал проще
+                </p>
+              </div>
+            </div>
+            
+            <div className="space-y-6">
+              <div className="flex items-start space-x-3">
+                <CheckCircle className="w-6 h-6 text-green-500 mt-0.5" />
+                <div>
+                  <h3 className="font-semibold text-gray-900 dark:text-white">Бесплатная регистрация</h3>
+                  <p className="text-sm text-gray-600 dark:text-gray-400">Создайте аккаунт за 2 минуты и начните работу</p>
+                </div>
+              </div>
+              
+              <div className="flex items-start space-x-3">
+                <CheckCircle className="w-6 h-6 text-green-500 mt-0.5" />
+                <div>
+                  <h3 className="font-semibold text-gray-900 dark:text-white">Мультипользовательская система</h3>
+                  <p className="text-sm text-gray-600 dark:text-gray-400">Каждый пользователь имеет изолированные данные</p>
+                </div>
+              </div>
+              
+              <div className="flex items-start space-x-3">
+                <CheckCircle className="w-6 h-6 text-green-500 mt-0.5" />
+                <div>
+                  <h3 className="font-semibold text-gray-900 dark:text-white">Безопасность данных</h3>
+                  <p className="text-sm text-gray-600 dark:text-gray-400">Все данные зашифрованы и защищены</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Right Side - Register Form */}
+        <div className="w-full lg:w-1/2 flex items-center justify-center px-4 sm:px-6 lg:px-8">
+          <div className="w-full max-w-md">
+            {/* Mobile Logo */}
+            <div className="lg:hidden text-center mb-8">
+              <Link href="/" className="inline-flex items-center space-x-2">
+                <img src="/logo.svg" alt="Авто Лоты WB" className="w-10 h-10" />
+                <span className="text-2xl font-bold text-gray-900 dark:text-white">
+                  Авто Лоты WB
+                </span>
+              </Link>
+            </div>
+
+            <Card className="border-0 shadow-2xl bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm">
+>>>>>>> Stashed changes
 =======
     <div className="min-h-screen bg-gradient-to-br from-indigo-50 via-white to-blue-50 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900">
       {/* Background Pattern */}

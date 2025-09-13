@@ -99,7 +99,11 @@ export default function HomePage() {
       await fetch('/api/auth/logout', { method: 'POST' });
       setUser(null);
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
       window.location.href = '/';
+=======
+      window.location.href = '/auth/login';
+>>>>>>> Stashed changes
 =======
       window.location.href = '/auth/login';
 >>>>>>> Stashed changes
@@ -229,7 +233,11 @@ export default function HomePage() {
 
         {/* Features Grid */}
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
         <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8 mb-16">
+=======
+        <div className="grid md:grid-cols-3 gap-8 mb-16">
+>>>>>>> Stashed changes
 =======
         <div className="grid md:grid-cols-3 gap-8 mb-16">
 >>>>>>> Stashed changes
@@ -275,6 +283,7 @@ export default function HomePage() {
             </CardContent>
           </Card>
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 
           <Card className="bg-white/60 dark:bg-gray-800/60 backdrop-blur-sm border-0 shadow-lg">
             <CardContent className="p-8 text-center">
@@ -289,6 +298,8 @@ export default function HomePage() {
               </p>
             </CardContent>
           </Card>
+=======
+>>>>>>> Stashed changes
 =======
 >>>>>>> Stashed changes
         </div>
@@ -429,10 +440,13 @@ export default function HomePage() {
             </div>
             <div className="flex items-center gap-6">
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
               <Link href="/settings" className="text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white flex items-center gap-1">
                 <Settings className="w-4 h-4" />
                 Настройки
               </Link>
+=======
+>>>>>>> Stashed changes
 =======
 >>>>>>> Stashed changes
               <Link href="/privacy" className="text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white">

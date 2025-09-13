@@ -5,6 +5,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Button } from '@/components/ui/button';
 import { Alert, AlertDescription } from '@/components/ui/alert';
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 import {
   FiDownload as Download,
   FiUpload as Upload,
@@ -16,6 +17,8 @@ import {
   FiShield as Shield
 } from 'react-icons/fi';
 =======
+=======
+>>>>>>> Stashed changes
 import { 
   Download, 
   Upload, 
@@ -26,6 +29,9 @@ import {
   Database,
   Shield
 } from 'lucide-react';
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
 >>>>>>> Stashed changes
 import DashboardLayout from '@/app/dashboard-layout';
 
@@ -55,15 +61,21 @@ export default function ExtractCookiesPage() {
 
       // Извлекаем localStorage
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
       const localStorage: Record<string, string | null> = {};
       for (let i = 0; i < window.localStorage.length; i++) {
         const key = window.localStorage.key(i);
         if (key && (key.includes('wb') || key.includes('wildberries'))) {
 =======
+=======
+>>>>>>> Stashed changes
       const localStorage = {};
       for (let i = 0; i < window.localStorage.length; i++) {
         const key = window.localStorage.key(i);
         if (key && key.includes('wb') || key?.includes('wildberries')) {
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
 >>>>>>> Stashed changes
           localStorage[key] = window.localStorage.getItem(key);
         }
@@ -71,15 +83,21 @@ export default function ExtractCookiesPage() {
 
       // Извлекаем sessionStorage
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
       const sessionStorage: Record<string, string | null> = {};
       for (let i = 0; i < window.sessionStorage.length; i++) {
         const key = window.sessionStorage.key(i);
         if (key && (key.includes('wb') || key.includes('wildberries'))) {
 =======
+=======
+>>>>>>> Stashed changes
       const sessionStorage = {};
       for (let i = 0; i < window.sessionStorage.length; i++) {
         const key = window.sessionStorage.key(i);
         if (key && key.includes('wb') || key?.includes('wildberries')) {
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
 >>>>>>> Stashed changes
           sessionStorage[key] = window.sessionStorage.getItem(key);
         }

@@ -13,16 +13,22 @@
     "incremental": true,
     "skipLibCheck": true,
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
     "strict": true,
     "strictNullChecks": true,
     "noImplicitAny": true,
     "strictBindCallApply": true,
     "forceConsistentCasingInFileNames": true,
 =======
+=======
+>>>>>>> Stashed changes
     "strictNullChecks": false,
     "noImplicitAny": false,
     "strictBindCallApply": false,
     "forceConsistentCasingInFileNames": false,
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
 >>>>>>> Stashed changes
     "noFallthroughCasesInSwitch": false,
     "paths": {

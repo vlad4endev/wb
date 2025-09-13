@@ -1,7 +1,11 @@
 'use client';
 
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 import { useState, useEffect, useCallback } from 'react';
+=======
+import { useState, useEffect } from 'react';
+>>>>>>> Stashed changes
 =======
 import { useState, useEffect } from 'react';
 >>>>>>> Stashed changes
@@ -13,6 +17,7 @@ import { Label } from '@/components/ui/label';
 import { Alert, AlertDescription } from '@/components/ui/alert';
 import { Badge } from '@/components/ui/badge';
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 import {
   FiLoader as Loader2,
   FiSave as Save,
@@ -22,6 +27,9 @@ import {
   FiCheck as Check,
   FiEdit as Edit
 } from 'react-icons/fi';
+=======
+import { Loader2, Save, ArrowLeft, Search, X, Check, Edit } from 'lucide-react';
+>>>>>>> Stashed changes
 =======
 import { Loader2, Save, ArrowLeft, Search, X, Check, Edit } from 'lucide-react';
 >>>>>>> Stashed changes
@@ -65,7 +73,11 @@ export default function EditTaskPage() {
   const router = useRouter();
   const params = useParams();
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
   const taskId = params?.id as string;
+=======
+  const taskId = params.id as string;
+>>>>>>> Stashed changes
 =======
   const taskId = params.id as string;
 >>>>>>> Stashed changes
@@ -105,8 +117,11 @@ export default function EditTaskPage() {
   });
 
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
   const fetchTask = useCallback(async () => {
 =======
+=======
+>>>>>>> Stashed changes
   useEffect(() => {
     if (taskId) {
       fetchTask();
@@ -117,6 +132,9 @@ export default function EditTaskPage() {
   }, [taskId]);
 
   const fetchTask = async () => {
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
 >>>>>>> Stashed changes
     try {
       setIsLoading(true);
@@ -164,6 +182,7 @@ export default function EditTaskPage() {
       setIsLoading(false);
     }
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
   }, [taskId]);
 
   useEffect(() => {
@@ -174,6 +193,9 @@ export default function EditTaskPage() {
       fetchCurrentUser();
     }
   }, [taskId, fetchTask]);
+=======
+  };
+>>>>>>> Stashed changes
 =======
   };
 >>>>>>> Stashed changes

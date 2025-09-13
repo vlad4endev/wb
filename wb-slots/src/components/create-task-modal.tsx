@@ -9,6 +9,7 @@ import { Badge } from '@/components/ui/badge';
 import { Alert, AlertDescription } from '@/components/ui/alert';
 import { Card, CardContent } from '@/components/ui/card';
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 import {
   FiPlus as Plus,
   FiSave as Save,
@@ -25,6 +26,8 @@ import {
   FiX as X
 } from 'react-icons/fi';
 =======
+=======
+>>>>>>> Stashed changes
 import { 
   Plus, 
   Save, 
@@ -40,6 +43,9 @@ import {
   CheckCircle,
   XCircle
 } from 'lucide-react';
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
 >>>>>>> Stashed changes
 
 interface Warehouse {
@@ -51,6 +57,7 @@ interface Warehouse {
 
 interface WarehouseReference {
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
   id: string;
   warehouseId: number;
   warehouseName: string;
@@ -58,6 +65,11 @@ interface WarehouseReference {
   boxAllowed: boolean;
   monopalletAllowed: boolean;
   supersafeAllowed: boolean;
+=======
+  id: number;
+  name: string;
+  isActive: boolean;
+>>>>>>> Stashed changes
 =======
   id: number;
   name: string;
@@ -119,7 +131,11 @@ export default function CreateTaskModal({ isOpen, onClose, onSuccess }: CreateTa
   const fetchWarehouses = async () => {
     try {
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
       const response = await fetch('/api/warehouses/user');
+=======
+      const response = await fetch('/api/warehouses');
+>>>>>>> Stashed changes
 =======
       const response = await fetch('/api/warehouses');
 >>>>>>> Stashed changes
@@ -135,6 +151,7 @@ export default function CreateTaskModal({ isOpen, onClose, onSuccess }: CreateTa
   const fetchWarehouseReferences = async () => {
     try {
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
       // Загружаем только пользовательские склады (те, что выбрал пользователь)
       const response = await fetch('/api/warehouses/user');
       const data = await response.json();
@@ -143,10 +160,15 @@ export default function CreateTaskModal({ isOpen, onClose, onSuccess }: CreateTa
         const userWarehouses = (data.data?.warehouses || []).filter((w: any) => w.enabled);
         setWarehouseRefs(userWarehouses);
 =======
+=======
+>>>>>>> Stashed changes
       const response = await fetch('/api/warehouses');
       const data = await response.json();
       if (data.success) {
         setWarehouseRefs(data.data?.warehouses || []);
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
 >>>>>>> Stashed changes
       }
     } catch (error) {
@@ -242,7 +264,12 @@ export default function CreateTaskModal({ isOpen, onClose, onSuccess }: CreateTa
 
   const filteredWarehouses = warehouseRefs.filter(warehouse =>
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
     warehouse.warehouseName.toLowerCase().includes(searchQuery.toLowerCase())
+=======
+    warehouse.name.toLowerCase().includes(searchQuery.toLowerCase()) &&
+    warehouse.isActive
+>>>>>>> Stashed changes
 =======
     warehouse.name.toLowerCase().includes(searchQuery.toLowerCase()) &&
     warehouse.isActive
@@ -341,7 +368,11 @@ export default function CreateTaskModal({ isOpen, onClose, onSuccess }: CreateTa
                   <div className="space-y-2">
                     <Label className="text-sm font-medium text-gray-700 dark:text-gray-300">
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
                       Выберите склады * (только включенные в настройках)
+=======
+                      Выберите склады *
+>>>>>>> Stashed changes
 =======
                       Выберите склады *
 >>>>>>> Stashed changes
@@ -376,9 +407,15 @@ export default function CreateTaskModal({ isOpen, onClose, onSuccess }: CreateTa
                             {filteredWarehouses.map((warehouse) => (
                               <div
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
                                 key={warehouse.warehouseId}
                                 className="flex items-center p-2 hover:bg-green-50 dark:hover:bg-green-900/20 cursor-pointer transition-colors"
                                 onClick={() => handleWarehouseToggle(warehouse.warehouseId)}
+=======
+                                key={warehouse.id}
+                                className="flex items-center p-2 hover:bg-green-50 dark:hover:bg-green-900/20 cursor-pointer transition-colors"
+                                onClick={() => handleWarehouseToggle(warehouse.id)}
+>>>>>>> Stashed changes
 =======
                                 key={warehouse.id}
                                 className="flex items-center p-2 hover:bg-green-50 dark:hover:bg-green-900/20 cursor-pointer transition-colors"
@@ -389,6 +426,7 @@ export default function CreateTaskModal({ isOpen, onClose, onSuccess }: CreateTa
                                   <input
                                     type="checkbox"
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
                                     checked={selectedWarehouses.includes(warehouse.warehouseId)}
                                     onChange={() => {}}
                                     className="mr-2"
@@ -397,6 +435,8 @@ export default function CreateTaskModal({ isOpen, onClose, onSuccess }: CreateTa
                                   <span className="text-sm text-gray-700 dark:text-gray-300">
                                     {warehouse.warehouseName} (ID: {warehouse.warehouseId})
 =======
+=======
+>>>>>>> Stashed changes
                                     checked={selectedWarehouses.includes(warehouse.id)}
                                     onChange={() => {}}
                                     className="mr-2"
@@ -404,6 +444,9 @@ export default function CreateTaskModal({ isOpen, onClose, onSuccess }: CreateTa
                                   />
                                   <span className="text-sm text-gray-700 dark:text-gray-300">
                                     {warehouse.name}
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
 >>>>>>> Stashed changes
                                   </span>
                                 </div>
@@ -413,6 +456,7 @@ export default function CreateTaskModal({ isOpen, onClose, onSuccess }: CreateTa
                         </div>
                       )}
                     </div>
+<<<<<<< Updated upstream
 <<<<<<< Updated upstream
                     
                     {/* Selected Warehouses Display */}
@@ -444,6 +488,8 @@ export default function CreateTaskModal({ isOpen, onClose, onSuccess }: CreateTa
                         </div>
                       </div>
                     )}
+=======
+>>>>>>> Stashed changes
 =======
 >>>>>>> Stashed changes
                   </div>

@@ -6,6 +6,7 @@ import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Progress } from '@/components/ui/progress';
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 import {
   FiPlay as Play,
   FiSquare as Square,
@@ -27,6 +28,8 @@ import {
   FiXCircle as XCircle
 } from 'react-icons/fi';
 =======
+=======
+>>>>>>> Stashed changes
 import { 
   Play, 
   Square,
@@ -114,9 +117,15 @@ export default function DashboardPage() {
     try {
       const [tasksResponse, statsResponse, userResponse] = await Promise.all([
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
         fetch('/api/tasks', { credentials: 'include' }),
         fetch('/api/dashboard/stats', { credentials: 'include' }),
         fetch('/api/auth/me', { credentials: 'include' }),
+=======
+        fetch('/api/tasks'),
+        fetch('/api/dashboard/stats'),
+        fetch('/api/auth/me'),
+>>>>>>> Stashed changes
 =======
         fetch('/api/tasks'),
         fetch('/api/dashboard/stats'),

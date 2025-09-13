@@ -7,6 +7,7 @@ import { Badge } from '@/components/ui/badge';
 import { Alert, AlertDescription } from '@/components/ui/alert';
 import { Progress } from '@/components/ui/progress';
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 import {
   FiMonitor as Monitor,
   FiActivity as Activity,
@@ -24,6 +25,8 @@ import {
   FiZap as Zap
 } from 'react-icons/fi';
 =======
+=======
+>>>>>>> Stashed changes
 import { 
   Monitor, 
   Activity, 
@@ -40,6 +43,9 @@ import {
   Users,
   Zap
 } from 'lucide-react';
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
 >>>>>>> Stashed changes
 import Link from 'next/link';
 

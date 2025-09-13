@@ -9,6 +9,7 @@ import { Label } from '@/components/ui/label';
 import { Badge } from '@/components/ui/badge';
 import { Alert, AlertDescription } from '@/components/ui/alert';
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 import {
   FiDatabase as Database,
   FiPlay as Play,
@@ -22,6 +23,8 @@ import {
   FiClock as Clock
 } from 'react-icons/fi';
 =======
+=======
+>>>>>>> Stashed changes
 import { 
   Database, 
   Play, 
@@ -34,6 +37,9 @@ import {
   FileText,
   Clock
 } from 'lucide-react';
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
 >>>>>>> Stashed changes
 import Link from 'next/link';
 

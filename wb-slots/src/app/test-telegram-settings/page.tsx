@@ -8,6 +8,7 @@ import { Label } from '@/components/ui/label';
 import { Badge } from '@/components/ui/badge';
 import { Alert, AlertDescription } from '@/components/ui/alert';
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 import {
   FiLoader2 as Loader2,
   FiMessageSquare as MessageSquare,
@@ -15,6 +16,9 @@ import {
   FiX as X,
   FiSettings as Settings
 } from 'react-icons/fi';
+=======
+import { Loader2, MessageSquare, Check, X, Settings } from 'lucide-react';
+>>>>>>> Stashed changes
 =======
 import { Loader2, MessageSquare, Check, X, Settings } from 'lucide-react';
 >>>>>>> Stashed changes

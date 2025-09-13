@@ -13,8 +13,13 @@ export declare class AuthService {
             id: string;
             email: string;
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
             phone: string | null;
             name: string | null;
+=======
+            phone: string;
+            name: string;
+>>>>>>> Stashed changes
 =======
             phone: string;
             name: string;
@@ -28,8 +33,13 @@ export declare class AuthService {
             id: string;
             email: string;
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
             phone: string | null;
             name: string | null;
+=======
+            phone: string;
+            name: string;
+>>>>>>> Stashed changes
 =======
             phone: string;
             name: string;
@@ -52,7 +62,11 @@ export declare class AuthService {
         createdAt: Date;
         updatedAt: Date;
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
     } | null>;
+=======
+    }>;
+>>>>>>> Stashed changes
 =======
     }>;
 >>>>>>> Stashed changes

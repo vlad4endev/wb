@@ -7,6 +7,7 @@ import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { 
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
   FiHome as Home, 
   FiSearch as Search, 
   FiSettings as Settings, 
@@ -24,6 +25,8 @@ import {
   FiDatabase as Database
 } from 'react-icons/fi';
 =======
+=======
+>>>>>>> Stashed changes
   Home, 
   Search, 
   Settings, 
@@ -40,6 +43,9 @@ import {
   Shield,
   Database
 } from 'lucide-react';
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
 >>>>>>> Stashed changes
 import CreateTaskModal from '@/components/create-task-modal';
 
@@ -50,8 +56,11 @@ interface UserProfile {
   phone?: string;
   timezone: string;
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
   role?: string;
   isProtected?: boolean;
+=======
+>>>>>>> Stashed changes
 =======
 >>>>>>> Stashed changes
 }
@@ -118,7 +127,11 @@ export default function ModernNavigation({ user }: ModernNavigationProps) {
       return pathname === '/dashboard' || pathname === '/';
     }
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
     return pathname?.startsWith(href) || false;
+=======
+    return pathname.startsWith(href);
+>>>>>>> Stashed changes
 =======
     return pathname.startsWith(href);
 >>>>>>> Stashed changes

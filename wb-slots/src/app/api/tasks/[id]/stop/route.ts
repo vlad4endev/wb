@@ -5,7 +5,11 @@ import { prisma } from '@/lib/prisma';
 export async function POST(
   request: NextRequest,
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
   { params }: { params: Promise<{ id: string }> }
+=======
+  { params }: { params: { id: string } }
+>>>>>>> Stashed changes
 =======
   { params }: { params: { id: string } }
 >>>>>>> Stashed changes
@@ -17,7 +21,11 @@ export async function POST(
     }
 
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
     const { id: taskId } = await params;
+=======
+    const taskId = params.id;
+>>>>>>> Stashed changes
 =======
     const taskId = params.id;
 >>>>>>> Stashed changes

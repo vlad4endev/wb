@@ -9,6 +9,7 @@ import { Label } from '@/components/ui/label';
 import { Alert, AlertDescription } from '@/components/ui/alert';
 import { Badge } from '@/components/ui/badge';
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 import {
   FiLoader as Loader2,
   FiSave as Save,
@@ -17,6 +18,9 @@ import {
   FiX as X,
   FiCheck as Check
 } from 'react-icons/fi';
+=======
+import { Loader2, Save, ArrowLeft, Search, X, Check } from 'lucide-react';
+>>>>>>> Stashed changes
 =======
 import { Loader2, Save, ArrowLeft, Search, X, Check } from 'lucide-react';
 >>>>>>> Stashed changes
@@ -242,6 +246,7 @@ export default function NewTaskPage() {
     setSelectedWarehouses(prev => 
       prev.includes(warehouseId) 
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
         ? prev.filter(id => id !== warehouseId) // Убираем из выбранных
         : [...prev, warehouseId] // Добавляем к выбранным
     );
@@ -281,11 +286,16 @@ export default function NewTaskPage() {
   };
 
 =======
+=======
+>>>>>>> Stashed changes
         ? [] // Если уже выбран, снимаем выбор
         : [warehouseId] // Выбираем только один склад
     );
   };
 
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
 >>>>>>> Stashed changes
   const addSelectedWarehouses = () => {
     if (selectedWarehouses.length > 0) {
@@ -294,7 +304,11 @@ export default function NewTaskPage() {
         filters: {
           ...prev.filters,
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
           warehouseIds: Array.from(new Set([...prev.filters.warehouseIds, ...selectedWarehouses])), // Добавляем к существующим
+=======
+          warehouseIds: selectedWarehouses, // Заменяем выбранные склады
+>>>>>>> Stashed changes
 =======
           warehouseIds: selectedWarehouses, // Заменяем выбранные склады
 >>>>>>> Stashed changes
@@ -546,6 +560,7 @@ export default function NewTaskPage() {
                 <Label>Склад *</Label>
                 
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
                 {/* Включенные склады */}
                 <div className="space-y-2">
                   <p className="text-sm font-medium text-gray-700 dark:text-gray-300">
@@ -583,6 +598,8 @@ export default function NewTaskPage() {
                         </div>
                       ))}
 =======
+=======
+>>>>>>> Stashed changes
                 {/* Выбранные склады */}
                 {formData.filters.warehouseIds.length > 0 && (
                   <div className="space-y-2">
@@ -688,11 +705,15 @@ export default function NewTaskPage() {
                       >
                         Отмена
                       </Button>
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
 >>>>>>> Stashed changes
                     </div>
                   )}
                 </div>
 
+<<<<<<< Updated upstream
 <<<<<<< Updated upstream
                 {/* Выбранные склады для задачи */}
                 {formData.filters.warehouseIds.length > 0 && (
@@ -803,6 +824,8 @@ export default function NewTaskPage() {
                   )}
                 </div>
 
+=======
+>>>>>>> Stashed changes
 =======
 >>>>>>> Stashed changes
                 {formData.filters.warehouseIds.length === 0 && (

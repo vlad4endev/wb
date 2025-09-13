@@ -24,7 +24,11 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
     const checkAuth = async () => {
       try {
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
         const response = await fetch('/api/auth/me', { credentials: 'include' });
+=======
+        const response = await fetch('/api/auth/me');
+>>>>>>> Stashed changes
 =======
         const response = await fetch('/api/auth/me');
 >>>>>>> Stashed changes
@@ -45,12 +49,18 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
   const handleLogout = async () => {
     try {
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
       await fetch('/api/auth/logout', { 
         method: 'POST',
         credentials: 'include'
       });
       setUser(null);
       window.location.href = '/';
+=======
+      await fetch('/api/auth/logout', { method: 'POST' });
+      setUser(null);
+      window.location.href = '/auth/login';
+>>>>>>> Stashed changes
 =======
       await fetch('/api/auth/logout', { method: 'POST' });
       setUser(null);

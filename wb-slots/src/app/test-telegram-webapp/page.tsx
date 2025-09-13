@@ -6,6 +6,7 @@ import { Button } from '@/components/ui/button';
 import { Alert, AlertDescription } from '@/components/ui/alert';
 import { Badge } from '@/components/ui/badge';
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 import {
   FiLoader as Loader2,
   FiMessageSquare as MessageSquare,
@@ -16,6 +17,9 @@ import {
   FiExternalLink as ExternalLink,
   FiArrowLeft as ArrowLeft
 } from 'react-icons/fi';
+=======
+import { Loader2, MessageSquare, Check, X, User, Bot, ExternalLink, ArrowLeft } from 'lucide-react';
+>>>>>>> Stashed changes
 =======
 import { Loader2, MessageSquare, Check, X, User, Bot, ExternalLink, ArrowLeft } from 'lucide-react';
 >>>>>>> Stashed changes
@@ -205,6 +209,7 @@ export default function TestTelegramWebAppPage() {
 
       <div className="container mx-auto p-6 space-y-6">
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
         <div className="grid gap-6 md:grid-cols-2">
           {/* Статус Telegram Web App */}
           <Card>
@@ -331,6 +336,8 @@ export default function TestTelegramWebAppPage() {
                 <AlertDescription>{error}</AlertDescription>
               </Alert>
 =======
+=======
+>>>>>>> Stashed changes
 
       <div className="grid gap-6 md:grid-cols-2">
         {/* Статус Telegram Web App */}
@@ -377,11 +384,15 @@ export default function TestTelegramWebAppPage() {
                 <ExternalLink className="h-4 w-4 mr-2" />
                 Открыть в Telegram
               </Button>
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
 >>>>>>> Stashed changes
             )}
           </CardContent>
         </Card>
 
+<<<<<<< Updated upstream
 <<<<<<< Updated upstream
         {/* Данные Web App */}
         {webAppData && (
@@ -404,6 +415,8 @@ export default function TestTelegramWebAppPage() {
   );
 }
 =======
+=======
+>>>>>>> Stashed changes
         {/* Данные пользователя */}
         <Card>
           <CardHeader>
@@ -503,4 +516,7 @@ export default function TestTelegramWebAppPage() {
     </div>
   );
 }
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
 >>>>>>> Stashed changes

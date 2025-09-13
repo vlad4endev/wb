@@ -5,6 +5,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Button } from '@/components/ui/button';
 import { Alert, AlertDescription } from '@/components/ui/alert';
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 import {
   FiShield as Shield,
   FiCheckCircle as CheckCircle,
@@ -14,6 +15,8 @@ import {
   FiX as X
 } from 'react-icons/fi';
 =======
+=======
+>>>>>>> Stashed changes
 import { 
   Shield, 
   CheckCircle, 
@@ -22,6 +25,9 @@ import {
   ExternalLink,
   X
 } from 'lucide-react';
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
 >>>>>>> Stashed changes
 
 interface WBAuthPopupProps {

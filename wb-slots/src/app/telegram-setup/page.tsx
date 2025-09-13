@@ -5,6 +5,7 @@ import { Button } from '@/components/ui/button';
 import { Alert, AlertDescription } from '@/components/ui/alert';
 import { Badge } from '@/components/ui/badge';
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 import {
   FiMessageSquare as MessageSquare,
   FiMessageSquare as Bot,
@@ -16,6 +17,8 @@ import {
   FiSettings as Settings
 } from 'react-icons/fi';
 =======
+=======
+>>>>>>> Stashed changes
 import { 
   MessageSquare, 
   Bot, 
@@ -26,6 +29,9 @@ import {
   ExternalLink,
   Settings
 } from 'lucide-react';
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
 >>>>>>> Stashed changes
 import Link from 'next/link';
 import { useState } from 'react';

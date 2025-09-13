@@ -9,6 +9,7 @@ import { Badge } from '@/components/ui/badge';
 import { Alert, AlertDescription } from '@/components/ui/alert';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 import ProtectedRoute from '@/components/protected-route';
 import ChangePasswordForm from '@/components/change-password-form';
 import { 
@@ -49,6 +50,8 @@ import {
   FiFileText as FileText
 } from 'react-icons/fi';
 =======
+=======
+>>>>>>> Stashed changes
 import { 
   Settings, 
   Key, 
@@ -86,6 +89,9 @@ import {
   DollarSign,
   FileText
 } from 'lucide-react';
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
 >>>>>>> Stashed changes
 import Link from 'next/link';
 import DashboardLayout from '@/app/dashboard-layout';
@@ -140,8 +146,11 @@ export default function SettingsPage() {
   const [showToken, setShowToken] = useState<string | null>(null);
   const [isSaving, setIsSaving] = useState(false);
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
   const [isSyncingWarehouses, setIsSyncingWarehouses] = useState(false);
   const [warehouseStats, setWarehouseStats] = useState({ total: 0, active: 0, inactive: 0 });
+=======
+>>>>>>> Stashed changes
 =======
 >>>>>>> Stashed changes
 
@@ -175,6 +184,7 @@ export default function SettingsPage() {
       setIsLoading(true);
       setError('');
       
+<<<<<<< Updated upstream
 <<<<<<< Updated upstream
       // Сначала проверяем аутентификацию
       const profileRes = await fetch('/api/auth/me');
@@ -212,6 +222,8 @@ export default function SettingsPage() {
       } else {
         console.error('Error loading tokens:', tokensData.error);
 =======
+=======
+>>>>>>> Stashed changes
       const [tokensRes, warehousesRes, warehouseRefsRes, profileRes] = await Promise.all([
         fetch('/api/tokens'),
         fetch('/api/warehouses'),
@@ -245,6 +257,22 @@ export default function SettingsPage() {
         setWarehouseRefs(warehouseRefsData.data?.warehouses || []);
       } else {
         console.error('Error loading warehouse refs:', warehouseRefsData.error);
+<<<<<<< Updated upstream
+=======
+      }
+
+      // Обрабатываем профиль
+      if (profileData.success) {
+        const userData = profileData.data?.user;
+        setProfile(userData);
+        setProfileForm({
+          name: userData?.name || '',
+          phone: userData?.phone || '',
+          timezone: userData?.timezone || 'Europe/Moscow',
+        });
+      } else {
+        console.error('Error loading profile:', profileData.error);
+>>>>>>> Stashed changes
       }
 
       // Обрабатываем профиль
@@ -411,7 +439,11 @@ export default function SettingsPage() {
       });
 
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
       const response = await fetch('/api/warehouses/user', {
+=======
+      const response = await fetch('/api/warehouses', {
+>>>>>>> Stashed changes
 =======
       const response = await fetch('/api/warehouses', {
 >>>>>>> Stashed changes
@@ -433,6 +465,7 @@ export default function SettingsPage() {
     }
   };
 
+<<<<<<< Updated upstream
 <<<<<<< Updated upstream
   const handleToggleWarehouse = async (warehouseId: number, enabled: boolean) => {
     try {
@@ -521,6 +554,8 @@ export default function SettingsPage() {
 
 =======
 >>>>>>> Stashed changes
+=======
+>>>>>>> Stashed changes
   const filteredWarehouses = warehouseRefs.filter(warehouse =>
     warehouse.name.toLowerCase().includes(searchQuery.toLowerCase())
   );
@@ -550,9 +585,14 @@ export default function SettingsPage() {
 
   return (
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
     <ProtectedRoute>
       <DashboardLayout>
         <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
+=======
+    <DashboardLayout>
+      <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
+>>>>>>> Stashed changes
 =======
     <DashboardLayout>
       <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
@@ -575,6 +615,7 @@ export default function SettingsPage() {
                 </div>
               </div>
               <div className="flex items-center space-x-3">
+<<<<<<< Updated upstream
 <<<<<<< Updated upstream
                 {profile && (
                   <div className="flex items-center space-x-2">
@@ -600,6 +641,8 @@ export default function SettingsPage() {
                     )}
                   </div>
                 )}
+=======
+>>>>>>> Stashed changes
 =======
 >>>>>>> Stashed changes
                 <Button
@@ -704,7 +747,11 @@ export default function SettingsPage() {
             <CardContent>
               <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
                 <TabsList className="grid w-full grid-cols-5">
+=======
+                <TabsList className="grid w-full grid-cols-4">
+>>>>>>> Stashed changes
 =======
                 <TabsList className="grid w-full grid-cols-4">
 >>>>>>> Stashed changes
@@ -713,10 +760,13 @@ export default function SettingsPage() {
                     Профиль
                   </TabsTrigger>
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
                   <TabsTrigger value="security" className="flex items-center gap-2">
                     <Lock className="w-4 h-4" />
                     Безопасность
                   </TabsTrigger>
+=======
+>>>>>>> Stashed changes
 =======
 >>>>>>> Stashed changes
                   <TabsTrigger value="tokens" className="flex items-center gap-2">
@@ -726,7 +776,11 @@ export default function SettingsPage() {
                   <TabsTrigger value="warehouses" className="flex items-center gap-2">
                     <Warehouse className="w-4 h-4" />
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
                     Склады и справочник
+=======
+                    Склады
+>>>>>>> Stashed changes
 =======
                     Склады
 >>>>>>> Stashed changes
@@ -745,6 +799,7 @@ export default function SettingsPage() {
                         <User className="w-5 h-5" />
                         Профиль пользователя
                       </CardTitle>
+<<<<<<< Updated upstream
 <<<<<<< Updated upstream
                     <CardDescription>
                       Основная информация о вашем аккаунте
@@ -898,12 +953,17 @@ export default function SettingsPage() {
 
                     <form onSubmit={handleUpdateProfile} className="space-y-4">
 =======
+=======
+>>>>>>> Stashed changes
                       <CardDescription>
                         Основная информация о вашем аккаунте
                       </CardDescription>
                     </CardHeader>
                     <CardContent>
                       <form onSubmit={handleUpdateProfile} className="space-y-4">
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
 >>>>>>> Stashed changes
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                           <div className="space-y-2">
@@ -961,6 +1021,7 @@ export default function SettingsPage() {
                 </TabsContent>
 
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
                 {/* Security Tab */}
                 <TabsContent value="security" className="space-y-6">
                   <ChangePasswordForm 
@@ -974,6 +1035,8 @@ export default function SettingsPage() {
                   />
                 </TabsContent>
 
+=======
+>>>>>>> Stashed changes
 =======
 >>>>>>> Stashed changes
                 {/* Tokens Tab */}
@@ -1100,6 +1163,7 @@ export default function SettingsPage() {
                     </CardContent>
                   </Card>
                 </TabsContent>
+<<<<<<< Updated upstream
 <<<<<<< Updated upstream
 
                 {/* Warehouses Tab */}
@@ -1286,6 +1350,53 @@ export default function SettingsPage() {
                         </form>
 
 >>>>>>> Stashed changes
+=======
+
+                {/* Warehouses Tab */}
+                <TabsContent value="warehouses" className="space-y-6">
+                  <Card>
+                    <CardHeader>
+                      <CardTitle className="flex items-center gap-2">
+                        <Warehouse className="w-5 h-5" />
+                        Управление складами
+                      </CardTitle>
+                      <CardDescription>
+                        Настройка складов для поиска слотов
+                      </CardDescription>
+                    </CardHeader>
+                    <CardContent>
+                      <div className="space-y-6">
+                        {/* Add Warehouse Form */}
+                        <form onSubmit={handleAddWarehouse} className="space-y-4">
+                          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div className="space-y-2">
+                              <Label htmlFor="warehouseId">ID склада</Label>
+                              <Input
+                                id="warehouseId"
+                                value={newWarehouse.warehouseId}
+                                onChange={(e) => setNewWarehouse(prev => ({ ...prev, warehouseId: e.target.value }))}
+                                placeholder="301983"
+                                required
+                              />
+                            </div>
+                            <div className="space-y-2">
+                              <Label htmlFor="warehouseName">Название склада</Label>
+                              <Input
+                                id="warehouseName"
+                                value={newWarehouse.warehouseName}
+                                onChange={(e) => setNewWarehouse(prev => ({ ...prev, warehouseName: e.target.value }))}
+                                placeholder="Москва"
+                                required
+                              />
+                            </div>
+                          </div>
+                          <Button type="submit">
+                            <Plus className="w-4 h-4 mr-2" />
+                            Добавить склад
+                          </Button>
+                        </form>
+
+>>>>>>> Stashed changes
                         {/* Warehouse List */}
                         <div className="space-y-4">
                           {warehouses.map((warehouse) => (
@@ -1335,6 +1446,7 @@ export default function SettingsPage() {
                               </div>
                               <div className="flex items-center gap-2">
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
                                 <Button
                                   variant="outline"
                                   size="sm"
@@ -1358,6 +1470,8 @@ export default function SettingsPage() {
                                 </Button>
 =======
 >>>>>>> Stashed changes
+=======
+>>>>>>> Stashed changes
                                 <Button variant="outline" size="sm">
                                   <Edit className="w-4 h-4" />
                                 </Button>
@@ -1365,7 +1479,10 @@ export default function SettingsPage() {
                                   variant="outline"
                                   size="sm"
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
                                   onClick={() => handleDeleteWarehouse(warehouse.warehouseId)}
+=======
+>>>>>>> Stashed changes
 =======
 >>>>>>> Stashed changes
                                   className="text-red-600 border-red-200 hover:bg-red-50 dark:text-red-400 dark:border-red-800 dark:hover:bg-red-900/20"
@@ -1451,7 +1568,10 @@ export default function SettingsPage() {
       </div>
     </DashboardLayout>
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
     </ProtectedRoute>
+=======
+>>>>>>> Stashed changes
 =======
 >>>>>>> Stashed changes
   );

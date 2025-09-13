@@ -5,7 +5,11 @@ import { prisma } from '@/lib/prisma';
 export async function POST(
   request: NextRequest,
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
   { params }: { params: Promise<{ id: string }> }
+=======
+  { params }: { params: { id: string } }
+>>>>>>> Stashed changes
 =======
   { params }: { params: { id: string } }
 >>>>>>> Stashed changes
@@ -17,7 +21,11 @@ export async function POST(
     }
 
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
     const { id: taskId } = await params;
+=======
+    const taskId = params.id;
+>>>>>>> Stashed changes
 =======
     const taskId = params.id;
 >>>>>>> Stashed changes
@@ -35,6 +43,7 @@ export async function POST(
     }
 
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
     // Проверяем, не закрыта ли задача
     if (task.status === 'COMPLETED') {
       return NextResponse.json({ 
@@ -42,6 +51,8 @@ export async function POST(
       }, { status: 400 });
     }
 
+=======
+>>>>>>> Stashed changes
 =======
 >>>>>>> Stashed changes
     // Активируем задачу

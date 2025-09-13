@@ -39,6 +39,9 @@
 <<<<<<< Updated upstream
 =======
     "lucide-react": "^0.294.0",
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
 >>>>>>> Stashed changes
     "next": "^15.5.2",
     "nodemailer": "^6.9.7",

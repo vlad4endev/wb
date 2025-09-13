@@ -7,6 +7,7 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Alert, AlertDescription } from '@/components/ui/alert';
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 import {
   FiSearch as Search,
   FiArrowLeft as ArrowLeft,
@@ -16,6 +17,8 @@ import {
   FiSettings as Settings
 } from 'react-icons/fi';
 =======
+=======
+>>>>>>> Stashed changes
 import { 
   Search, 
   ArrowLeft, 
@@ -24,6 +27,9 @@ import {
   RefreshCw,
   Settings
 } from 'lucide-react';
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
 >>>>>>> Stashed changes
 import Link from 'next/link';
 

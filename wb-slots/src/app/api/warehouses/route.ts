@@ -34,6 +34,7 @@ export async function GET(request: NextRequest) {
   } catch (error) {
     console.error('Get warehouses error:', error);
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
     
     // Проверяем, является ли ошибка ошибкой аутентификации
     if (error instanceof Error && error.name === 'AuthError') {
@@ -43,6 +44,8 @@ export async function GET(request: NextRequest) {
       );
     }
     
+=======
+>>>>>>> Stashed changes
 =======
 >>>>>>> Stashed changes
     return NextResponse.json(
@@ -82,7 +85,11 @@ export async function POST(request: NextRequest) {
       const warehouses = await Promise.all(
         validatedData.warehouses.map(async (warehouseData) => {
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
           return await prisma.warehousePref.create({
+=======
+          return await prisma.userWarehouse.create({
+>>>>>>> Stashed changes
 =======
           return await prisma.userWarehouse.create({
 >>>>>>> Stashed changes
@@ -107,7 +114,11 @@ export async function POST(request: NextRequest) {
     } else {
       // Добавляем один склад
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
       const warehouse = await prisma.warehousePref.create({
+=======
+      const warehouse = await prisma.userWarehouse.create({
+>>>>>>> Stashed changes
 =======
       const warehouse = await prisma.userWarehouse.create({
 >>>>>>> Stashed changes
@@ -131,6 +142,7 @@ export async function POST(request: NextRequest) {
   } catch (error) {
     console.error('Create warehouse error:', error);
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
     
     // Проверяем, является ли ошибка ошибкой аутентификации
     if (error instanceof Error && error.name === 'AuthError') {
@@ -142,6 +154,8 @@ export async function POST(request: NextRequest) {
     
 =======
 >>>>>>> Stashed changes
+=======
+>>>>>>> Stashed changes
     if (error instanceof z.ZodError) {
       return NextResponse.json(
         { success: false, error: 'Неверные данные', details: error.errors },
@@ -149,7 +163,10 @@ export async function POST(request: NextRequest) {
       );
     }
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
     
+=======
+>>>>>>> Stashed changes
 =======
 >>>>>>> Stashed changes
     return NextResponse.json(

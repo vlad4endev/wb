@@ -20,7 +20,10 @@ model User {
   role         UserRole @default(USER)
   isActive     Boolean  @default(true) @map("is_active")
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
   isProtected  Boolean  @default(false) @map("is_protected")
+=======
+>>>>>>> Stashed changes
 =======
 >>>>>>> Stashed changes
   emailVerified DateTime? @map("email_verified")
@@ -33,12 +36,18 @@ model User {
   tasks            Task[]
   runs             Run[]
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
   foundSlots       FoundSlot[]
   supplySnapshots  SupplySnapshot[]
   notificationChannels NotificationChannel[]
   auditLogs        AuditLog[]
   wbSessions       WBSession[]
   settings         UserSettings[]
+=======
+  supplySnapshots  SupplySnapshot[]
+  notificationChannels NotificationChannel[]
+  auditLogs        AuditLog[]
+>>>>>>> Stashed changes
 =======
   supplySnapshots  SupplySnapshot[]
   notificationChannels NotificationChannel[]
@@ -86,13 +95,17 @@ model WarehousePref {
 model Task {
   id          String   @id @default(cuid())
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
   taskNumber  Int      @unique @default(autoincrement()) @map("task_number")
+=======
+>>>>>>> Stashed changes
 =======
 >>>>>>> Stashed changes
   userId      String   @map("user_id")
   name        String
   description String?
   enabled     Boolean  @default(true)
+<<<<<<< Updated upstream
 <<<<<<< Updated upstream
   status      TaskStatus @default(PENDING)
   scheduleCron String? @map("schedule_cron")
@@ -101,11 +114,16 @@ model Task {
   filters     Json
   retryPolicy Json     @map("retry_policy")
 =======
+=======
+>>>>>>> Stashed changes
   scheduleCron String? @map("schedule_cron")
   autoBook    Boolean  @default(false) @map("auto_book")
   autoBookSupplyId String? @map("auto_book_supply_id")
   filters     Json     // { coefficientMin: 0, coefficientMax: 20, allowUnload: true, dates: {from, to}, boxTypeIDs: [5,6], warehouseIDs: [...] }
   retryPolicy Json     @map("retry_policy") // { maxRetries: 3, backoffMs: 5000 }
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
 >>>>>>> Stashed changes
   priority    Int      @default(0)
   createdAt   DateTime @default(now()) @map("created_at")
@@ -126,8 +144,12 @@ model Run {
   startedAt DateTime @map("started_at")
   finishedAt DateTime? @map("finished_at")
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
   foundSlots Int?    @default(0) @map("found_slots")
   summary   Json?
+=======
+  summary   Json?    // { foundSlots: 0, bookedSlots: 0, errors: [] }
+>>>>>>> Stashed changes
 =======
   summary   Json?    // { foundSlots: 0, bookedSlots: 0, errors: [] }
 >>>>>>> Stashed changes
@@ -138,13 +160,17 @@ model Run {
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
   logs RunLog[]
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
   foundSlotsDetails FoundSlot[]
+=======
+>>>>>>> Stashed changes
 =======
 >>>>>>> Stashed changes
 
   @@map("runs")
 }
 
+<<<<<<< Updated upstream
 <<<<<<< Updated upstream
 model FoundSlot {
   id          String   @id @default(cuid())
@@ -170,6 +196,8 @@ model FoundSlot {
   @@map("found_slots")
 }
 
+=======
+>>>>>>> Stashed changes
 =======
 >>>>>>> Stashed changes
 model RunLog {
@@ -198,7 +226,11 @@ model SupplySnapshot {
   factDate    DateTime? @map("fact_date")
   updatedDate DateTime? @map("updated_date")
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
   raw         Json
+=======
+  raw         Json      // Raw WB API response
+>>>>>>> Stashed changes
 =======
   raw         Json      // Raw WB API response
 >>>>>>> Stashed changes
@@ -215,7 +247,11 @@ model NotificationChannel {
   userId  String            @map("user_id")
   type    NotificationType
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
   config  Json
+=======
+  config  Json              // { email: "...", telegramChatId: "...", webhookUrl: "..." }
+>>>>>>> Stashed changes
 =======
   config  Json              // { email: "...", telegramChatId: "...", webhookUrl: "..." }
 >>>>>>> Stashed changes
@@ -243,6 +279,7 @@ model AuditLog {
   @@map("audit_logs")
 }
 
+<<<<<<< Updated upstream
 <<<<<<< Updated upstream
 model WBSession {
   id          String    @id @default(cuid())
@@ -304,12 +341,17 @@ model NotificationTemplate {
 
 =======
 >>>>>>> Stashed changes
+=======
+>>>>>>> Stashed changes
 // Enums
 enum UserRole {
   USER
   ADMIN
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
   DEVELOPER
+=======
+>>>>>>> Stashed changes
 =======
 >>>>>>> Stashed changes
 }
@@ -332,6 +374,7 @@ enum RunStatus {
   PARTIAL
   CANCELLED
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
   COMPLETED
 }
 
@@ -343,6 +386,8 @@ enum TaskStatus {
   STOPPED
   BOOKING
   COMPLETED
+=======
+>>>>>>> Stashed changes
 =======
 >>>>>>> Stashed changes
 }
@@ -360,6 +405,7 @@ enum NotificationType {
   WEBHOOK
 }
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 
 enum NotificationTemplateType {
   SLOT_FOUND
@@ -370,5 +416,7 @@ enum NotificationTemplateType {
   TASK_FAILED
   TASK_STOPPED
 }
+=======
+>>>>>>> Stashed changes
 =======
 >>>>>>> Stashed changes

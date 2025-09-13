@@ -8,6 +8,7 @@ export async function middleware(request: NextRequest) {
   console.log('Middleware checking:', request.nextUrl.pathname);
   
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
   // Пропускаем маршруты авторизации и главную страницу
   if (request.nextUrl.pathname.startsWith('/auth/') || 
       request.nextUrl.pathname.startsWith('/api/auth/login') ||
@@ -15,11 +16,16 @@ export async function middleware(request: NextRequest) {
       request.nextUrl.pathname === '/') {
     console.log('Skipping auth route or home page:', request.nextUrl.pathname);
 =======
+=======
+>>>>>>> Stashed changes
   // Пропускаем маршруты авторизации
   if (request.nextUrl.pathname.startsWith('/auth/') || 
       request.nextUrl.pathname.startsWith('/api/auth/login') ||
       request.nextUrl.pathname.startsWith('/api/auth/register')) {
     console.log('Skipping auth route:', request.nextUrl.pathname);
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
 >>>>>>> Stashed changes
     return NextResponse.next();
   }
@@ -36,8 +42,13 @@ export async function middleware(request: NextRequest) {
     
     if (!token) {
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
       console.log('No token, redirecting to home page');
       // Если нет токена, перенаправляем на главную страницу
+=======
+      console.log('No token, redirecting to login');
+      // Если нет токена, перенаправляем на страницу входа
+>>>>>>> Stashed changes
 =======
       console.log('No token, redirecting to login');
       // Если нет токена, перенаправляем на страницу входа
@@ -49,7 +60,11 @@ export async function middleware(request: NextRequest) {
         );
       }
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
       return NextResponse.redirect(new URL('/', request.url));
+=======
+      return NextResponse.redirect(new URL('/auth/login', request.url));
+>>>>>>> Stashed changes
 =======
       return NextResponse.redirect(new URL('/auth/login', request.url));
 >>>>>>> Stashed changes
@@ -73,7 +88,11 @@ export async function middleware(request: NextRequest) {
             { status: 401 }
           )
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
         : NextResponse.redirect(new URL('/', request.url));
+=======
+        : NextResponse.redirect(new URL('/auth/login', request.url));
+>>>>>>> Stashed changes
 =======
         : NextResponse.redirect(new URL('/auth/login', request.url));
 >>>>>>> Stashed changes

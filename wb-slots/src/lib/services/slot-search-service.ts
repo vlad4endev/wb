@@ -95,6 +95,7 @@ export class SlotSearchService {
 
       if (!suppliesToken) {
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
         // Диагностика: проверяем, есть ли токены у пользователя вообще
         const userTokens = await prisma.userToken.findMany({
           where: { userId: config.userId },
@@ -105,6 +106,9 @@ export class SlotSearchService {
         console.error(`User has ${userTokens.length} tokens:`, userTokens);
         
         throw new Error(`No active supplies token found. User has ${userTokens.length} tokens. Please add a SUPPLIES token in settings.`);
+=======
+        throw new Error('No active supplies token found');
+>>>>>>> Stashed changes
 =======
         throw new Error('No active supplies token found');
 >>>>>>> Stashed changes
