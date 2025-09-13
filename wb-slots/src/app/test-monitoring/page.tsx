@@ -6,6 +6,7 @@ import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Alert, AlertDescription } from '@/components/ui/alert';
 import { Progress } from '@/components/ui/progress';
+<<<<<<< Updated upstream
 import {
   FiMonitor as Monitor,
   FiActivity as Activity,
@@ -22,6 +23,24 @@ import {
   FiUsers as Users,
   FiZap as Zap
 } from 'react-icons/fi';
+=======
+import { 
+  Monitor, 
+  Activity, 
+  Server, 
+  Database, 
+  Clock, 
+  CheckCircle, 
+  XCircle, 
+  AlertTriangle,
+  ArrowLeft,
+  RefreshCw,
+  Loader2,
+  TrendingUp,
+  Users,
+  Zap
+} from 'lucide-react';
+>>>>>>> Stashed changes
 import Link from 'next/link';
 
 interface SystemStatus {

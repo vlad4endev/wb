@@ -4,7 +4,11 @@ import { prisma } from '@/lib/prisma';
 
 export async function POST(
   request: NextRequest,
+<<<<<<< Updated upstream
   { params }: { params: Promise<{ id: string }> }
+=======
+  { params }: { params: { id: string } }
+>>>>>>> Stashed changes
 ) {
   try {
     const user = await getCurrentUser(request);
@@ -12,7 +16,11 @@ export async function POST(
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
 
+<<<<<<< Updated upstream
     const { id: taskId } = await params;
+=======
+    const taskId = params.id;
+>>>>>>> Stashed changes
 
     // Находим задачу
     const task = await prisma.task.findFirst({
@@ -26,6 +34,7 @@ export async function POST(
       return NextResponse.json({ error: 'Task not found' }, { status: 404 });
     }
 
+<<<<<<< Updated upstream
     // Проверяем, не закрыта ли задача
     if (task.status === 'COMPLETED') {
       return NextResponse.json({ 
@@ -33,6 +42,8 @@ export async function POST(
       }, { status: 400 });
     }
 
+=======
+>>>>>>> Stashed changes
     // Активируем задачу
     const updatedTask = await prisma.task.update({
       where: { id: taskId },

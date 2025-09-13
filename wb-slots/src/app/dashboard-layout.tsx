@@ -23,7 +23,11 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
   useEffect(() => {
     const checkAuth = async () => {
       try {
+<<<<<<< Updated upstream
         const response = await fetch('/api/auth/me', { credentials: 'include' });
+=======
+        const response = await fetch('/api/auth/me');
+>>>>>>> Stashed changes
         if (response.ok) {
           const data = await response.json();
           setUser(data.data?.user);
@@ -40,12 +44,18 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
 
   const handleLogout = async () => {
     try {
+<<<<<<< Updated upstream
       await fetch('/api/auth/logout', { 
         method: 'POST',
         credentials: 'include'
       });
       setUser(null);
       window.location.href = '/';
+=======
+      await fetch('/api/auth/logout', { method: 'POST' });
+      setUser(null);
+      window.location.href = '/auth/login';
+>>>>>>> Stashed changes
     } catch (error) {
       console.error('Logout error:', error);
     }

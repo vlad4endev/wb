@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import { prisma } from '@/lib/prisma';
 import { getCurrentUser } from '@/lib/auth';
 
+<<<<<<< Updated upstream
 export async function GET(request: NextRequest) {
   try {
     const user = await getCurrentUser(request);
@@ -12,6 +13,15 @@ export async function GET(request: NextRequest) {
     // Проверяем роль пользователя - доступ для DEVELOPER и ADMIN
     if (user.role !== 'DEVELOPER' && user.role !== 'ADMIN') {
       return NextResponse.json({ error: 'Access denied. Developer role required.' }, { status: 403 });
+=======
+const ADMIN_USER_ID = 'cmf8sg2w8000085vkomhit4hv';
+
+export async function GET(request: NextRequest) {
+  try {
+    const user = await getCurrentUser(request);
+    if (!user || user.id !== ADMIN_USER_ID) {
+      return NextResponse.json({ error: 'Access denied' }, { status: 403 });
+>>>>>>> Stashed changes
     }
 
     // Get bot token from environment
@@ -41,6 +51,7 @@ export async function GET(request: NextRequest) {
 export async function POST(request: NextRequest) {
   try {
     const user = await getCurrentUser(request);
+<<<<<<< Updated upstream
     if (!user) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
@@ -48,6 +59,10 @@ export async function POST(request: NextRequest) {
     // Проверяем роль пользователя - доступ для DEVELOPER и ADMIN
     if (user.role !== 'DEVELOPER' && user.role !== 'ADMIN') {
       return NextResponse.json({ error: 'Access denied. Developer role required.' }, { status: 403 });
+=======
+    if (!user || user.id !== ADMIN_USER_ID) {
+      return NextResponse.json({ error: 'Access denied' }, { status: 403 });
+>>>>>>> Stashed changes
     }
 
     const { action, data } = await request.json();

@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Alert, AlertDescription } from '@/components/ui/alert';
+<<<<<<< Updated upstream
 import {
   FiArrowLeft as ArrowLeft,
   FiShield as Shield,
@@ -12,6 +13,9 @@ import {
   FiTrash2 as Trash2,
   FiClock as Clock
 } from 'react-icons/fi';
+=======
+import { ArrowLeft, Shield, CheckCircle, AlertCircle, Trash2, Clock } from 'lucide-react';
+>>>>>>> Stashed changes
 import DashboardLayout from '@/app/dashboard-layout';
 import Link from 'next/link';
 import WBAuthPopup from '@/components/wb-auth-popup';

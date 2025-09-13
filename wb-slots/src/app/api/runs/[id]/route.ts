@@ -4,11 +4,19 @@ import { prisma } from '@/lib/prisma';
 
 export async function DELETE(
   request: NextRequest,
+<<<<<<< Updated upstream
   { params }: { params: Promise<{ id: string }> }
 ) {
   try {
     const user = await requireAuth(request);
     const { id: runId } = await params;
+=======
+  { params }: { params: { id: string } }
+) {
+  try {
+    const user = await requireAuth(request);
+    const runId = params.id;
+>>>>>>> Stashed changes
 
     const run = await prisma.run.findUnique({
       where: { id: runId },

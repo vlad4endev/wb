@@ -5,12 +5,16 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Button } from '@/components/ui/button';
 import { Alert, AlertDescription } from '@/components/ui/alert';
 import { Badge } from '@/components/ui/badge';
+<<<<<<< Updated upstream
 import {
   FiLoader2 as Loader2,
   FiCheck as Check,
   FiX as X,
   FiRefreshCw as RefreshCw
 } from 'react-icons/fi';
+=======
+import { Loader2, Check, X, RefreshCw } from 'lucide-react';
+>>>>>>> Stashed changes
 
 export default function DebugAuthPage() {
   const [authStatus, setAuthStatus] = useState<any>(null);

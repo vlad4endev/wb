@@ -1,11 +1,17 @@
 'use client';
 
+<<<<<<< Updated upstream
 import { useState, useEffect, useCallback } from 'react';
 import { useParams, useRouter } from 'next/navigation';
+=======
+import { useState, useEffect } from 'react';
+import { useParams } from 'next/navigation';
+>>>>>>> Stashed changes
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Alert, AlertDescription } from '@/components/ui/alert';
+<<<<<<< Updated upstream
 import { Progress } from '@/components/ui/progress';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import {
@@ -39,6 +45,22 @@ import {
 } from 'react-icons/fi';
 import Link from 'next/link';
 import DashboardLayout from '@/app/dashboard-layout';
+=======
+import { 
+  ArrowLeft, 
+  Activity, 
+  Clock, 
+  CheckCircle, 
+  AlertCircle,
+  Loader2,
+  Play,
+  Square,
+  RefreshCw,
+  Eye,
+  EyeOff
+} from 'lucide-react';
+import Link from 'next/link';
+>>>>>>> Stashed changes
 
 interface LogEntry {
   id: string;
@@ -59,8 +81,11 @@ interface ActiveRun {
   status: string;
   startedAt: string;
   finishedAt?: string;
+<<<<<<< Updated upstream
   foundSlots?: number;
   summary?: any;
+=======
+>>>>>>> Stashed changes
 }
 
 interface TaskMonitorData {
@@ -68,6 +93,7 @@ interface TaskMonitorData {
   activeRuns: ActiveRun[];
   taskStatus: string;
   taskEnabled: boolean;
+<<<<<<< Updated upstream
   task: {
     id: string;
     taskNumber: number;
@@ -86,12 +112,18 @@ interface TaskMonitorData {
     totalFoundSlots: number;
     avgExecutionTime: number;
   };
+=======
+>>>>>>> Stashed changes
 }
 
 export default function TaskMonitorPage() {
   const params = useParams();
+<<<<<<< Updated upstream
   const router = useRouter();
   const taskId = params?.id as string;
+=======
+  const taskId = params.id as string;
+>>>>>>> Stashed changes
   
   const [data, setData] = useState<TaskMonitorData | null>(null);
   const [isLoading, setIsLoading] = useState(true);
@@ -99,6 +131,7 @@ export default function TaskMonitorPage() {
   const [isRefreshing, setIsRefreshing] = useState(false);
   const [autoRefresh, setAutoRefresh] = useState(true);
   const [showDebugLogs, setShowDebugLogs] = useState(false);
+<<<<<<< Updated upstream
   const [activeTab, setActiveTab] = useState('overview');
   const [logLevelFilter, setLogLevelFilter] = useState('all');
 
@@ -146,6 +179,8 @@ export default function TaskMonitorPage() {
       setIsRefreshing(false);
     }
   }, [taskId]);
+=======
+>>>>>>> Stashed changes
 
   useEffect(() => {
     loadData();
@@ -154,13 +189,37 @@ export default function TaskMonitorPage() {
       const interval = setInterval(loadData, 3000); // Обновляем каждые 3 секунды
       return () => clearInterval(interval);
     }
+<<<<<<< Updated upstream
   }, [taskId, autoRefresh, loadData]);
+=======
+  }, [taskId, autoRefresh]);
+
+  const loadData = async () => {
+    try {
+      const response = await fetch(`/api/tasks/${taskId}/logs`);
+      const result = await response.json();
+
+      if (result.success) {
+        setData(result.data);
+        setError('');
+      } else {
+        setError(result.error || 'Ошибка загрузки данных');
+      }
+    } catch (error) {
+      setError('Ошибка загрузки данных');
+    } finally {
+      setIsLoading(false);
+      setIsRefreshing(false);
+    }
+  };
+>>>>>>> Stashed changes
 
   const handleRefresh = () => {
     setIsRefreshing(true);
     loadData();
   };
 
+<<<<<<< Updated upstream
   const handleTaskAction = async (action: 'start' | 'stop') => {
     try {
       const response = await fetch(`/api/tasks/${taskId}/${action}`, {
@@ -203,6 +262,8 @@ export default function TaskMonitorPage() {
     URL.revokeObjectURL(url);
   };
 
+=======
+>>>>>>> Stashed changes
   const getStatusBadge = (status: string) => {
     switch (status) {
       case 'SUCCESS':
@@ -254,6 +315,7 @@ export default function TaskMonitorPage() {
     }
   };
 
+<<<<<<< Updated upstream
   const filteredLogs = data?.logs.filter(log => {
     if (!showDebugLogs && log.level === 'DEBUG') return false;
     if (logLevelFilter !== 'all' && log.level !== logLevelFilter) return false;
@@ -270,11 +332,27 @@ export default function TaskMonitorPage() {
           </div>
         </div>
       </DashboardLayout>
+=======
+  const filteredLogs = data?.logs.filter(log => 
+    showDebugLogs || log.level !== 'DEBUG'
+  ) || [];
+
+  if (isLoading) {
+    return (
+      <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
+        <div className="container mx-auto px-4 py-8">
+          <div className="flex items-center justify-center">
+            <Loader2 className="h-8 w-8 animate-spin" />
+          </div>
+        </div>
+      </div>
+>>>>>>> Stashed changes
     );
   }
 
   if (error) {
     return (
+<<<<<<< Updated upstream
       <DashboardLayout>
         <div className="flex items-center justify-center min-h-[400px]">
           <div className="text-center">
@@ -294,12 +372,30 @@ export default function TaskMonitorPage() {
           </div>
         </div>
       </DashboardLayout>
+=======
+      <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
+        <div className="container mx-auto px-4 py-8">
+          <div className="text-center">
+            <AlertCircle className="w-12 h-12 text-red-500 mx-auto mb-4" />
+            <h1 className="text-2xl font-bold text-gray-900 dark:text-white mb-2">
+              Ошибка загрузки
+            </h1>
+            <p className="text-gray-600 dark:text-gray-400 mb-4">{error}</p>
+            <Button onClick={handleRefresh}>
+              <RefreshCw className="w-4 h-4 mr-2" />
+              Попробовать снова
+            </Button>
+          </div>
+        </div>
+      </div>
+>>>>>>> Stashed changes
     );
   }
 
   // Обработка случая, когда задача не найдена
   if (data?.taskStatus === 'NOT_FOUND') {
     return (
+<<<<<<< Updated upstream
       <DashboardLayout>
         <div className="flex items-center justify-center min-h-[400px]">
           <div className="text-center">
@@ -308,6 +404,16 @@ export default function TaskMonitorPage() {
               Задача не найдена
             </h1>
             <p className="text-gray-600 dark:text-gray-400 mb-6">
+=======
+      <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
+        <div className="container mx-auto px-4 py-8">
+          <div className="text-center">
+            <AlertCircle className="w-12 h-12 text-yellow-500 mx-auto mb-4" />
+            <h1 className="text-2xl font-bold text-gray-900 dark:text-white mb-2">
+              Задача не найдена
+            </h1>
+            <p className="text-gray-600 dark:text-gray-400 mb-4">
+>>>>>>> Stashed changes
               Задача с ID "{taskId}" не существует или была удалена.
             </p>
             <div className="space-x-4">
@@ -315,6 +421,7 @@ export default function TaskMonitorPage() {
                 <RefreshCw className="w-4 h-4 mr-2" />
                 Обновить
               </Button>
+<<<<<<< Updated upstream
               <Button variant="outline" onClick={() => router.push('/tasks')}>
                 <ArrowLeft className="w-4 h-4 mr-2" />
                 Вернуться к задачам
@@ -323,10 +430,23 @@ export default function TaskMonitorPage() {
           </div>
         </div>
       </DashboardLayout>
+=======
+              <Link href="/dashboard">
+                <Button variant="outline">
+                  <ArrowLeft className="w-4 h-4 mr-2" />
+                  Вернуться к задачам
+                </Button>
+              </Link>
+            </div>
+          </div>
+        </div>
+      </div>
+>>>>>>> Stashed changes
     );
   }
 
   return (
+<<<<<<< Updated upstream
     <DashboardLayout>
       <div className="space-y-6">
         {/* Заголовок и действия */}
@@ -572,6 +692,74 @@ export default function TaskMonitorPage() {
                     Запустить
                   </Button>
                 )}
+=======
+    <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
+      <header className="bg-white dark:bg-gray-800 shadow-sm border-b">
+        <div className="container mx-auto px-4 py-4">
+          <div className="flex items-center justify-between">
+            <div className="flex items-center space-x-4">
+              <Activity className="w-6 h-6 text-primary" />
+              <div>
+                <h1 className="text-2xl font-bold text-gray-900 dark:text-white">
+                  Мониторинг задачи
+                </h1>
+                <p className="text-gray-600 dark:text-gray-400">
+                  Логи и статус выполнения в реальном времени
+                </p>
+              </div>
+            </div>
+            <div className="flex items-center space-x-2">
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={() => setAutoRefresh(!autoRefresh)}
+                className={autoRefresh ? 'bg-green-50 text-green-700' : ''}
+              >
+                {autoRefresh ? <Eye className="w-4 h-4 mr-2" /> : <EyeOff className="w-4 h-4 mr-2" />}
+                {autoRefresh ? 'Авто-обновление' : 'Обновление отключено'}
+              </Button>
+              <Button variant="outline" size="sm" onClick={handleRefresh} disabled={isRefreshing}>
+                <RefreshCw className={`w-4 h-4 mr-2 ${isRefreshing ? 'animate-spin' : ''}`} />
+                Обновить
+              </Button>
+              <Link href={`/tasks/${taskId}`}>
+                <Button variant="outline" size="sm">
+                  <ArrowLeft className="w-4 h-4 mr-2" />
+                  Назад
+                </Button>
+              </Link>
+            </div>
+          </div>
+        </div>
+      </header>
+
+      <div className="container mx-auto px-4 py-8">
+        {/* Статус задачи */}
+        <Card className="mb-6">
+          <CardHeader>
+            <CardTitle className="flex items-center space-x-2">
+              <Activity className="w-5 h-5" />
+              <span>Статус задачи</span>
+            </CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="flex items-center space-x-4">
+              <div className="flex items-center space-x-2">
+                <span className="text-sm font-medium">Статус:</span>
+                {getStatusBadge(data?.taskStatus || 'PENDING')}
+              </div>
+              <div className="flex items-center space-x-2">
+                <span className="text-sm font-medium">Активна:</span>
+                <Badge variant={data?.taskEnabled ? 'default' : 'secondary'}>
+                  {data?.taskEnabled ? 'Да' : 'Нет'}
+                </Badge>
+              </div>
+              <div className="flex items-center space-x-2">
+                <span className="text-sm font-medium">Активных запусков:</span>
+                <Badge variant="outline">
+                  {data?.activeRuns.length || 0}
+                </Badge>
+>>>>>>> Stashed changes
               </div>
             </div>
           </CardContent>
@@ -579,7 +767,11 @@ export default function TaskMonitorPage() {
 
         {/* Активные запуски */}
         {data?.activeRuns && data.activeRuns.length > 0 && (
+<<<<<<< Updated upstream
           <Card>
+=======
+          <Card className="mb-6">
+>>>>>>> Stashed changes
             <CardHeader>
               <CardTitle className="flex items-center space-x-2">
                 <Play className="w-5 h-5 text-green-500" />
@@ -587,6 +779,7 @@ export default function TaskMonitorPage() {
               </CardTitle>
             </CardHeader>
             <CardContent>
+<<<<<<< Updated upstream
               <div className="space-y-3">
                 {data.activeRuns.map((run) => (
                   <div key={run.id} className="flex items-center justify-between p-4 bg-green-50 dark:bg-green-900/20 rounded-lg border border-green-200 dark:border-green-800">
@@ -607,6 +800,21 @@ export default function TaskMonitorPage() {
                       </div>
                     </div>
                     <Badge variant="default" className="bg-green-100 text-green-800 dark:bg-green-800 dark:text-green-100">
+=======
+              <div className="space-y-2">
+                {data.activeRuns.map((run) => (
+                  <div key={run.id} className="flex items-center justify-between p-3 bg-green-50 rounded-lg">
+                    <div className="flex items-center space-x-3">
+                      <Loader2 className="w-4 h-4 text-green-500 animate-spin" />
+                      <div>
+                        <p className="text-sm font-medium">Запуск {run.id.slice(-8)}</p>
+                        <p className="text-xs text-gray-500">
+                          Начат: {new Date(run.startedAt).toLocaleString('ru-RU')}
+                        </p>
+                      </div>
+                    </div>
+                    <Badge variant="default" className="bg-green-100 text-green-800">
+>>>>>>> Stashed changes
                       {run.status}
                     </Badge>
                   </div>
@@ -616,7 +824,11 @@ export default function TaskMonitorPage() {
           </Card>
         )}
 
+<<<<<<< Updated upstream
         {/* Вкладки с логами */}
+=======
+        {/* Логи */}
+>>>>>>> Stashed changes
         <Card>
           <CardHeader>
             <div className="flex items-center justify-between">
@@ -633,6 +845,7 @@ export default function TaskMonitorPage() {
                   {showDebugLogs ? <EyeOff className="w-4 h-4 mr-2" /> : <Eye className="w-4 h-4 mr-2" />}
                   {showDebugLogs ? 'Скрыть DEBUG' : 'Показать DEBUG'}
                 </Button>
+<<<<<<< Updated upstream
                 <Button
                   variant="outline"
                   size="sm"
@@ -642,6 +855,8 @@ export default function TaskMonitorPage() {
                   <Download className="w-4 h-4 mr-2" />
                   Экспорт
                 </Button>
+=======
+>>>>>>> Stashed changes
               </div>
             </div>
             <CardDescription>
@@ -649,6 +864,7 @@ export default function TaskMonitorPage() {
             </CardDescription>
           </CardHeader>
           <CardContent>
+<<<<<<< Updated upstream
             <Tabs value={activeTab} onValueChange={setActiveTab}>
               <TabsList className="grid w-full grid-cols-3">
                 <TabsTrigger value="overview">Обзор</TabsTrigger>
@@ -782,5 +998,56 @@ export default function TaskMonitorPage() {
         </Card>
       </div>
     </DashboardLayout>
+=======
+            <div className="space-y-2 max-h-96 overflow-y-auto">
+              {filteredLogs.length === 0 ? (
+                <div className="text-center py-8 text-gray-500">
+                  <Clock className="w-8 h-8 mx-auto mb-2" />
+                  <p>Логи не найдены</p>
+                </div>
+              ) : (
+                filteredLogs.map((log) => (
+                  <div
+                    key={log.id}
+                    className={`p-3 rounded-lg border ${getLogLevelColor(log.level)}`}
+                  >
+                    <div className="flex items-start space-x-3">
+                      <div className="flex-shrink-0 mt-0.5">
+                        {getLogLevelIcon(log.level)}
+                      </div>
+                      <div className="flex-1 min-w-0">
+                        <div className="flex items-center space-x-2 mb-1">
+                          <span className="text-xs font-medium uppercase">
+                            {log.level}
+                          </span>
+                          <span className="text-xs text-gray-500">
+                            {new Date(log.ts).toLocaleString('ru-RU')}
+                          </span>
+                          <Badge variant="outline" className="text-xs">
+                            {log.run.status}
+                          </Badge>
+                        </div>
+                        <p className="text-sm">{log.message}</p>
+                        {log.meta && (
+                          <details className="mt-2">
+                            <summary className="text-xs text-gray-500 cursor-pointer">
+                              Детали
+                            </summary>
+                            <pre className="text-xs mt-1 p-2 bg-gray-100 rounded overflow-x-auto">
+                              {JSON.stringify(log.meta, null, 2)}
+                            </pre>
+                          </details>
+                        )}
+                      </div>
+                    </div>
+                  </div>
+                ))
+              )}
+            </div>
+          </CardContent>
+        </Card>
+      </div>
+    </div>
+>>>>>>> Stashed changes
   );
 }

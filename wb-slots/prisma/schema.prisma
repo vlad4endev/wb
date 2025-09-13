@@ -76,7 +76,11 @@ model WarehousePref {
 
 model Task {
   id          String   @id @default(cuid())
+<<<<<<< Updated upstream
   taskNumber  Int      @unique @default(autoincrement()) @map("task_number")
+=======
+  taskNumber  Int      @unique @default(autoincrement()) @map("task_number") // Автоинкрементный номер задачи
+>>>>>>> Stashed changes
   userId      String   @map("user_id")
   name        String
   description String?
@@ -106,7 +110,11 @@ model Run {
   startedAt DateTime @map("started_at")
   finishedAt DateTime? @map("finished_at")
   foundSlots Int?    @default(0) @map("found_slots")
+<<<<<<< Updated upstream
   summary   Json?
+=======
+  summary   Json?    // { foundSlots: 0, bookedSlots: 0, errors: [] }
+>>>>>>> Stashed changes
   createdAt DateTime @default(now()) @map("created_at")
 
   // Relations
@@ -300,6 +308,16 @@ enum TaskStatus {
   COMPLETED
 }
 
+enum TaskStatus {
+  PENDING
+  RUNNING
+  SUCCESS
+  FAILED
+  STOPPED
+  BOOKING
+  COMPLETED
+}
+
 enum LogLevel {
   DEBUG
   INFO
@@ -313,6 +331,67 @@ enum NotificationType {
   WEBHOOK
 }
 
+<<<<<<< Updated upstream
+=======
+model WBSession {
+  id          String    @id @default(cuid())
+  userId      String    @map("user_id")
+  sessionId   String    @unique @map("session_id")
+  cookies     Json      // Зашифрованные cookies
+  userAgent   String?   @map("user_agent")
+  ipAddress   String?   @map("ip_address")
+  isActive    Boolean   @default(true) @map("is_active")
+  expiresAt   DateTime  @map("expires_at")
+  lastUsedAt  DateTime? @map("last_used_at")
+  createdAt   DateTime  @default(now()) @map("created_at")
+  updatedAt   DateTime  @updatedAt @map("updated_at")
+
+  // Relations
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("wb_sessions")
+}
+
+model UserSettings {
+  id        String   @id @default(cuid())
+  userId    String   @map("user_id")
+  category  String   // SEARCH, NOTIFICATION, etc.
+  settings  Json     // Настройки в JSON формате
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  // Relations
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, category])
+  @@map("user_settings")
+}
+
+model Warehouse {
+  id        Int      @id
+  name      String
+  isActive  Boolean  @default(true) @map("is_active")
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  @@map("warehouses")
+}
+
+model NotificationTemplate {
+  id          String   @id @default(cuid())
+  name        String
+  description String?
+  type        NotificationTemplateType
+  template    String   // HTML template with variables
+  variables   Json     // Available variables description
+  isActive    Boolean  @default(true) @map("is_active")
+  createdAt   DateTime @default(now()) @map("created_at")
+  updatedAt   DateTime @updatedAt @map("updated_at")
+
+  @@map("notification_templates")
+}
+
+>>>>>>> Stashed changes
 enum NotificationTemplateType {
   SLOT_FOUND
   BOOKING_SUCCESS

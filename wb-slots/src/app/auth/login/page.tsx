@@ -8,6 +8,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Alert, AlertDescription } from '@/components/ui/alert';
+<<<<<<< Updated upstream
 import {
   FiLoader as Loader2,
   FiEye as Eye,
@@ -21,6 +22,9 @@ import {
   FiStar as Star,
   FiUserPlus as UserPlus
 } from 'react-icons/fi';
+=======
+import { Loader2, Eye, EyeOff, ArrowRight, CheckCircle } from 'lucide-react';
+>>>>>>> Stashed changes
 
 export default function LoginPage() {
   const router = useRouter();
@@ -72,7 +76,11 @@ export default function LoginPage() {
   };
 
   return (
+<<<<<<< Updated upstream
     <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 dark:from-gray-900 dark:to-gray-800">
+=======
+    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-indigo-50 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900">
+>>>>>>> Stashed changes
       {/* Background Pattern */}
       <div className="absolute inset-0 bg-[url('data:image/svg+xml,%3Csvg%20width%3D%2260%22%20height%3D%2260%22%20viewBox%3D%220%200%2060%2060%22%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%3E%3Cg%20fill%3D%22none%22%20fill-rule%3D%22evenodd%22%3E%3Cg%20fill%3D%22%236366f1%22%20fill-opacity%3D%220.05%22%3E%3Ccircle%20cx%3D%2230%22%20cy%3D%2230%22%20r%3D%222%22/%3E%3C/g%3E%3C/g%3E%3C/svg%3E')] opacity-40"></div>
       
@@ -80,6 +88,7 @@ export default function LoginPage() {
         {/* Left Side - Branding */}
         <div className="hidden lg:flex lg:w-1/2 flex-col justify-center px-12 xl:px-16">
           <div className="max-w-md">
+<<<<<<< Updated upstream
             {/* Logo with Text */}
             <div className="mb-12 animate-fade-in">
               <Link href="/" className="inline-flex items-center space-x-4 group">
@@ -156,6 +165,63 @@ export default function LoginPage() {
                 <div className="mx-auto w-12 h-12 bg-gradient-to-r from-blue-600 to-indigo-600 rounded-full flex items-center justify-center mb-4">
                   <LogIn className="w-6 h-6 text-white" />
                 </div>
+=======
+            <div className="flex items-center space-x-3 mb-8">
+              <img src="/logo.svg" alt="Авто Лоты WB" className="w-12 h-12" />
+              <div>
+                <h1 className="text-3xl font-bold text-gray-900 dark:text-white">
+                  Авто Лоты WB
+                </h1>
+                <p className="text-gray-600 dark:text-gray-400">
+                  WB стал проще
+                </p>
+              </div>
+            </div>
+            
+            <div className="space-y-6">
+              <div className="flex items-start space-x-3">
+                <CheckCircle className="w-6 h-6 text-green-500 mt-0.5" />
+                <div>
+                  <h3 className="font-semibold text-gray-900 dark:text-white">Автоматический поиск слотов</h3>
+                  <p className="text-sm text-gray-600 dark:text-gray-400">Находим свободные слоты поставки 24/7</p>
+                </div>
+              </div>
+              
+              <div className="flex items-start space-x-3">
+                <CheckCircle className="w-6 h-6 text-green-500 mt-0.5" />
+                <div>
+                  <h3 className="font-semibold text-gray-900 dark:text-white">Умное бронирование</h3>
+                  <p className="text-sm text-gray-600 dark:text-gray-400">Автоматически бронируем найденные слоты</p>
+                </div>
+              </div>
+              
+              <div className="flex items-start space-x-3">
+                <CheckCircle className="w-6 h-6 text-green-500 mt-0.5" />
+                <div>
+                  <h3 className="font-semibold text-gray-900 dark:text-white">Уведомления в Telegram</h3>
+                  <p className="text-sm text-gray-600 dark:text-gray-400">Получайте мгновенные уведомления о результатах</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Right Side - Login Form */}
+        <div className="w-full lg:w-1/2 flex items-center justify-center px-4 sm:px-6 lg:px-8">
+          <div className="w-full max-w-md">
+            {/* Mobile Logo */}
+            <div className="lg:hidden text-center mb-8">
+              <Link href="/" className="inline-flex items-center space-x-2">
+                <img src="/logo.svg" alt="Авто Лоты WB" className="w-10 h-10" />
+                <span className="text-2xl font-bold text-gray-900 dark:text-white">
+                  Авто Лоты WB
+                </span>
+              </Link>
+            </div>
+
+            <Card className="border-0 shadow-2xl bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm">
+              <CardHeader className="space-y-2 text-center pb-8">
+>>>>>>> Stashed changes
                 <CardTitle className="text-2xl font-bold text-gray-900 dark:text-white">
                   Добро пожаловать!
                 </CardTitle>
@@ -263,7 +329,11 @@ export default function LoginPage() {
                 <div className="text-center">
                   <Link
                     href="/auth/register"
+<<<<<<< Updated upstream
                     className="inline-flex items-center text-sm font-medium text-blue-600 hover:text-blue-500 transition-colors hover:underline"
+=======
+                    className="inline-flex items-center text-sm font-medium text-blue-600 hover:text-blue-500 transition-colors"
+>>>>>>> Stashed changes
                   >
                     Создать новый аккаунт
                     <ArrowRight className="ml-1 h-4 w-4" />

@@ -33,6 +33,7 @@ export async function GET(request: NextRequest) {
     });
   } catch (error) {
     console.error('Get warehouses error:', error);
+<<<<<<< Updated upstream
     
     // Проверяем, является ли ошибка ошибкой аутентификации
     if (error instanceof Error && error.name === 'AuthError') {
@@ -42,6 +43,8 @@ export async function GET(request: NextRequest) {
       );
     }
     
+=======
+>>>>>>> Stashed changes
     return NextResponse.json(
       { success: false, error: 'Internal server error' },
       { status: 500 }
@@ -78,7 +81,11 @@ export async function POST(request: NextRequest) {
       // Добавляем несколько складов
       const warehouses = await Promise.all(
         validatedData.warehouses.map(async (warehouseData) => {
+<<<<<<< Updated upstream
           return await prisma.warehousePref.create({
+=======
+          return await prisma.userWarehouse.create({
+>>>>>>> Stashed changes
             data: {
               userId: user.id,
               warehouseId: warehouseData.warehouseId,
@@ -99,7 +106,11 @@ export async function POST(request: NextRequest) {
       });
     } else {
       // Добавляем один склад
+<<<<<<< Updated upstream
       const warehouse = await prisma.warehousePref.create({
+=======
+      const warehouse = await prisma.userWarehouse.create({
+>>>>>>> Stashed changes
         data: {
           userId: user.id,
           warehouseId: validatedData.warehouseId!,
@@ -119,6 +130,7 @@ export async function POST(request: NextRequest) {
     }
   } catch (error) {
     console.error('Create warehouse error:', error);
+<<<<<<< Updated upstream
     
     // Проверяем, является ли ошибка ошибкой аутентификации
     if (error instanceof Error && error.name === 'AuthError') {
@@ -128,13 +140,18 @@ export async function POST(request: NextRequest) {
       );
     }
     
+=======
+>>>>>>> Stashed changes
     if (error instanceof z.ZodError) {
       return NextResponse.json(
         { success: false, error: 'Неверные данные', details: error.errors },
         { status: 400 }
       );
     }
+<<<<<<< Updated upstream
     
+=======
+>>>>>>> Stashed changes
     return NextResponse.json(
       { success: false, error: 'Internal server error' },
       { status: 500 }

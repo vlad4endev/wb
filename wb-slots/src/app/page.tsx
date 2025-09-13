@@ -8,6 +8,7 @@ import { Badge } from '@/components/ui/badge';
 import AccountMenu from '@/components/account-menu';
 import CreateTaskModal from '@/components/create-task-modal';
 import { 
+<<<<<<< Updated upstream
   FiSearch as Search, 
   FiClock as Clock, 
   FiSettings as Settings, 
@@ -37,6 +38,37 @@ import {
   FiLogIn as LogIn,
   FiUserPlus as UserPlus
 } from 'react-icons/fi';
+=======
+  Search, 
+  Clock, 
+  Settings, 
+  BarChart3, 
+  Shield, 
+  Zap,
+  CheckCircle,
+  AlertCircle,
+  Target,
+  Activity,
+  TrendingUp,
+  Users,
+  Package,
+  Bot,
+  Bell,
+  ArrowRight,
+  Play,
+  Star,
+  Award,
+  Globe,
+  Database,
+  Lock,
+  Key,
+  Warehouse,
+  MessageSquare,
+  Plus,
+  LogIn,
+  UserPlus
+} from 'lucide-react';
+>>>>>>> Stashed changes
 
 export default function HomePage() {
   const [user, setUser] = useState(null);
@@ -66,7 +98,11 @@ export default function HomePage() {
     try {
       await fetch('/api/auth/logout', { method: 'POST' });
       setUser(null);
+<<<<<<< Updated upstream
       window.location.href = '/';
+=======
+      window.location.href = '/auth/login';
+>>>>>>> Stashed changes
     } catch (error) {
       console.error('Logout error:', error);
     }
@@ -192,7 +228,11 @@ export default function HomePage() {
         </div>
 
         {/* Features Grid */}
+<<<<<<< Updated upstream
         <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8 mb-16">
+=======
+        <div className="grid md:grid-cols-3 gap-8 mb-16">
+>>>>>>> Stashed changes
           <Card className="bg-white/60 dark:bg-gray-800/60 backdrop-blur-sm border-0 shadow-lg">
             <CardContent className="p-8 text-center">
               <div className="w-16 h-16 bg-gradient-to-br from-green-500 to-emerald-600 rounded-2xl flex items-center justify-center mx-auto mb-6">
@@ -234,6 +274,7 @@ export default function HomePage() {
               </p>
             </CardContent>
           </Card>
+<<<<<<< Updated upstream
 
           <Card className="bg-white/60 dark:bg-gray-800/60 backdrop-blur-sm border-0 shadow-lg">
             <CardContent className="p-8 text-center">
@@ -248,6 +289,8 @@ export default function HomePage() {
               </p>
             </CardContent>
           </Card>
+=======
+>>>>>>> Stashed changes
         </div>
 
         {/* How it works */}
@@ -385,10 +428,13 @@ export default function HomePage() {
               </div>
             </div>
             <div className="flex items-center gap-6">
+<<<<<<< Updated upstream
               <Link href="/settings" className="text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white flex items-center gap-1">
                 <Settings className="w-4 h-4" />
                 Настройки
               </Link>
+=======
+>>>>>>> Stashed changes
               <Link href="/privacy" className="text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white">
                 Политика конфиденциальности
               </Link>

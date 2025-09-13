@@ -45,6 +45,7 @@ export async function GET(
       );
     }
 
+<<<<<<< Updated upstream
     // Убеждаемся, что filters всегда является объектом, а runs - массивом
     const taskWithFilters = {
       ...task,
@@ -52,6 +53,8 @@ export async function GET(
       runs: task.runs || []
     };
 
+=======
+>>>>>>> Stashed changes
     return NextResponse.json({
       success: true,
       data: taskWithFilters,
@@ -147,11 +150,19 @@ export async function PUT(
 
 export async function POST(
   request: NextRequest,
+<<<<<<< Updated upstream
   { params }: { params: Promise<{ id: string }> }
 ) {
   try {
     const user = await requireAuth(request);
     const { id: taskId } = await params;
+=======
+  { params }: { params: { id: string } }
+) {
+  try {
+    const user = await requireAuth(request);
+    const taskId = params.id;
+>>>>>>> Stashed changes
     const body = await request.json();
     const { action } = body;
 

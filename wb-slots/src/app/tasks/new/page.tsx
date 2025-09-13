@@ -8,6 +8,7 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Alert, AlertDescription } from '@/components/ui/alert';
 import { Badge } from '@/components/ui/badge';
+<<<<<<< Updated upstream
 import {
   FiLoader as Loader2,
   FiSave as Save,
@@ -16,6 +17,9 @@ import {
   FiX as X,
   FiCheck as Check
 } from 'react-icons/fi';
+=======
+import { Loader2, Save, ArrowLeft, Search, X, Check } from 'lucide-react';
+>>>>>>> Stashed changes
 import Link from 'next/link';
 
 interface Warehouse {
@@ -237,6 +241,7 @@ export default function NewTaskPage() {
   const handleWarehouseReferenceToggle = (warehouseId: number) => {
     setSelectedWarehouses(prev => 
       prev.includes(warehouseId) 
+<<<<<<< Updated upstream
         ? prev.filter(id => id !== warehouseId) // Убираем из выбранных
         : [...prev, warehouseId] // Добавляем к выбранным
     );
@@ -275,13 +280,24 @@ export default function NewTaskPage() {
     }
   };
 
+=======
+        ? [] // Если уже выбран, снимаем выбор
+        : [warehouseId] // Выбираем только один склад
+    );
+  };
+
+>>>>>>> Stashed changes
   const addSelectedWarehouses = () => {
     if (selectedWarehouses.length > 0) {
       setFormData(prev => ({
         ...prev,
         filters: {
           ...prev.filters,
+<<<<<<< Updated upstream
           warehouseIds: Array.from(new Set([...prev.filters.warehouseIds, ...selectedWarehouses])), // Добавляем к существующим
+=======
+          warehouseIds: selectedWarehouses, // Заменяем выбранные склады
+>>>>>>> Stashed changes
         },
       }));
       
@@ -529,6 +545,7 @@ export default function NewTaskPage() {
               <div className="space-y-4">
                 <Label>Склад *</Label>
                 
+<<<<<<< Updated upstream
                 {/* Включенные склады */}
                 <div className="space-y-2">
                   <p className="text-sm font-medium text-gray-700 dark:text-gray-300">
@@ -565,10 +582,118 @@ export default function NewTaskPage() {
                           </Button>
                         </div>
                       ))}
+=======
+                {/* Выбранные склады */}
+                {formData.filters.warehouseIds.length > 0 && (
+                  <div className="space-y-2">
+                    <p className="text-sm font-medium text-gray-700 dark:text-gray-300">
+                      Выбранный склад:
+                    </p>
+                    <div className="flex items-center gap-2">
+                      {formData.filters.warehouseIds.map(warehouseId => {
+                        const warehouseRef = warehouseRefs.find(w => w.id === warehouseId);
+                        const warehouse = warehouses.find(w => w.warehouseId === warehouseId);
+                        return (
+                          <Badge key={warehouseId} variant="default" className="flex items-center gap-1">
+                            {warehouseRef?.name || warehouse?.warehouseName || `Склад ${warehouseId}`}
+                            <button
+                              type="button"
+                              onClick={() => removeWarehouse(warehouseId)}
+                              className="ml-1 hover:text-red-500"
+                              title="Удалить склад"
+                            >
+                              <X className="w-3 h-3" />
+                            </button>
+                          </Badge>
+                        );
+                      })}
+                    </div>
+                  </div>
+                )}
+
+                {/* Поиск и выбор складов */}
+                <div className="space-y-2 warehouse-dropdown">
+                  <div className="relative">
+                    <Input
+                      placeholder="Поиск склада..."
+                      value={searchQuery}
+                      onChange={(e) => setSearchQuery(e.target.value)}
+                      onFocus={() => setShowWarehouseDropdown(true)}
+                      className="w-full"
+                    />
+                    <Search className="absolute right-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-400" />
+                  </div>
+
+                  {showWarehouseDropdown && (
+                    <div className="absolute z-10 w-full max-h-60 overflow-y-auto border rounded-lg bg-white dark:bg-gray-800 shadow-lg">
+                      {filteredWarehouseRefs.slice(0, 20).map((warehouse) => (
+                        <div
+                          key={warehouse.id}
+                          className={`flex items-center justify-between p-3 hover:bg-gray-50 dark:hover:bg-gray-700 cursor-pointer ${
+                            selectedWarehouses.includes(warehouse.id) ? 'bg-blue-50 dark:bg-blue-900' : ''
+                          }`}
+                          onClick={() => handleWarehouseReferenceToggle(warehouse.id)}
+                        >
+                          <div className="flex items-center space-x-3">
+                            <input
+                              type="radio"
+                              name="warehouse"
+                              checked={selectedWarehouses.includes(warehouse.id)}
+                              onChange={() => handleWarehouseReferenceToggle(warehouse.id)}
+                              className="border-gray-300"
+                              title={`Выбрать склад ${warehouse.name}`}
+                            />
+                            <div>
+                              <p className="font-medium text-gray-900 dark:text-white">
+                                {warehouse.name}
+                              </p>
+                              <p className="text-sm text-gray-500">
+                                ID: {warehouse.id}
+                              </p>
+                            </div>
+                          </div>
+                          <Badge variant={warehouse.isActive ? 'success' : 'secondary'}>
+                            {warehouse.isActive ? 'Активен' : 'Неактивен'}
+                          </Badge>
+                        </div>
+                      ))}
+                      {filteredWarehouseRefs.length === 0 && (
+                        <div className="text-center py-4 text-gray-500">
+                          Склады не найдены
+                        </div>
+                      )}
+                    </div>
+                  )}
+
+                  {selectedWarehouses.length > 0 && (
+                    <div className="flex items-center space-x-2">
+                      <Button
+                        type="button"
+                        onClick={addSelectedWarehouses}
+                        size="sm"
+                        className="bg-blue-600 hover:bg-blue-700"
+                      >
+                        <Check className="w-4 h-4 mr-1" />
+                        Выбрать склад
+                      </Button>
+                      <Button
+                        type="button"
+                        onClick={() => {
+                          setSelectedWarehouses([]);
+                          setSearchQuery('');
+                          setShowWarehouseDropdown(false);
+                        }}
+                        size="sm"
+                        variant="outline"
+                      >
+                        Отмена
+                      </Button>
+>>>>>>> Stashed changes
                     </div>
                   )}
                 </div>
 
+<<<<<<< Updated upstream
                 {/* Выбранные склады для задачи */}
                 {formData.filters.warehouseIds.length > 0 && (
                   <div className="space-y-2">
@@ -678,6 +803,8 @@ export default function NewTaskPage() {
                   )}
                 </div>
 
+=======
+>>>>>>> Stashed changes
                 {formData.filters.warehouseIds.length === 0 && (
                   <p className="text-sm text-red-500">Выберите склад</p>
                 )}

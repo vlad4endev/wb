@@ -5,6 +5,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Progress } from '@/components/ui/progress';
+<<<<<<< Updated upstream
 import {
   FiPlay as Play,
   FiSquare as Square,
@@ -25,6 +26,28 @@ import {
   FiCheckCircle as CheckCircle2,
   FiXCircle as XCircle
 } from 'react-icons/fi';
+=======
+import { 
+  Play, 
+  Square,
+  Settings, 
+  BarChart3, 
+  Clock, 
+  CheckCircle, 
+  Activity,
+  Warehouse,
+  Zap,
+  Eye,
+  Loader2,
+  MessageSquare,
+  TrendingUp,
+  Target,
+  ArrowRight,
+  RefreshCw,
+  CheckCircle2,
+  XCircle
+} from 'lucide-react';
+>>>>>>> Stashed changes
 import Link from 'next/link';
 import DashboardLayout from '@/app/dashboard-layout';
 
@@ -90,9 +113,15 @@ export default function DashboardPage() {
   const fetchDashboardData = async () => {
     try {
       const [tasksResponse, statsResponse, userResponse] = await Promise.all([
+<<<<<<< Updated upstream
         fetch('/api/tasks', { credentials: 'include' }),
         fetch('/api/dashboard/stats', { credentials: 'include' }),
         fetch('/api/auth/me', { credentials: 'include' }),
+=======
+        fetch('/api/tasks'),
+        fetch('/api/dashboard/stats'),
+        fetch('/api/auth/me'),
+>>>>>>> Stashed changes
       ]);
 
       const tasksData = await tasksResponse.json();

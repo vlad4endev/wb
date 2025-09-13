@@ -9,6 +9,7 @@ import { Textarea } from '@/components/ui/textarea';
 import { Alert, AlertDescription } from '@/components/ui/alert';
 import { Badge } from '@/components/ui/badge';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+<<<<<<< Updated upstream
 import {
   FiLoader as Loader2,
   FiSave as Save,
@@ -23,6 +24,9 @@ import {
   FiTrash2 as Trash2,
   FiAlertCircle as AlertCircle
 } from 'react-icons/fi';
+=======
+import { Loader2, Save, ArrowLeft, Check, X, Settings, Bot, MessageSquare, Plus, Edit, Trash2, AlertCircle } from 'lucide-react';
+>>>>>>> Stashed changes
 import Link from 'next/link';
 import TelegramAuthButton from '@/components/telegram-auth-button';
 import DashboardLayout from '@/app/dashboard-layout';

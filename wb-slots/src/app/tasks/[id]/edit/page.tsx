@@ -1,6 +1,10 @@
 'use client';
 
+<<<<<<< Updated upstream
 import { useState, useEffect, useCallback } from 'react';
+=======
+import { useState, useEffect } from 'react';
+>>>>>>> Stashed changes
 import { useRouter, useParams } from 'next/navigation';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -8,6 +12,7 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Alert, AlertDescription } from '@/components/ui/alert';
 import { Badge } from '@/components/ui/badge';
+<<<<<<< Updated upstream
 import {
   FiLoader as Loader2,
   FiSave as Save,
@@ -17,6 +22,9 @@ import {
   FiCheck as Check,
   FiEdit as Edit
 } from 'react-icons/fi';
+=======
+import { Loader2, Save, ArrowLeft, Search, X, Check, Edit } from 'lucide-react';
+>>>>>>> Stashed changes
 import Link from 'next/link';
 import DashboardLayout from '@/app/dashboard-layout';
 
@@ -56,7 +64,11 @@ const BOX_TYPES = [
 export default function EditTaskPage() {
   const router = useRouter();
   const params = useParams();
+<<<<<<< Updated upstream
   const taskId = params?.id as string;
+=======
+  const taskId = params.id as string;
+>>>>>>> Stashed changes
 
   const [task, setTask] = useState<Task | null>(null);
   const [warehouses, setWarehouses] = useState<Warehouse[]>([]);
@@ -92,7 +104,20 @@ export default function EditTaskPage() {
     priority: 1,
   });
 
+<<<<<<< Updated upstream
   const fetchTask = useCallback(async () => {
+=======
+  useEffect(() => {
+    if (taskId) {
+      fetchTask();
+      fetchWarehouses();
+      fetchWarehouseReferences();
+      fetchCurrentUser();
+    }
+  }, [taskId]);
+
+  const fetchTask = async () => {
+>>>>>>> Stashed changes
     try {
       setIsLoading(true);
       const response = await fetch(`/api/tasks/${taskId}`);
@@ -138,6 +163,7 @@ export default function EditTaskPage() {
     } finally {
       setIsLoading(false);
     }
+<<<<<<< Updated upstream
   }, [taskId]);
 
   useEffect(() => {
@@ -148,6 +174,9 @@ export default function EditTaskPage() {
       fetchCurrentUser();
     }
   }, [taskId, fetchTask]);
+=======
+  };
+>>>>>>> Stashed changes
 
   const fetchCurrentUser = async () => {
     try {

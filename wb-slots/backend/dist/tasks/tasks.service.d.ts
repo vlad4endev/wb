@@ -15,10 +15,17 @@ export declare class TasksService {
         createdAt: Date;
         userId: string;
         summary: import("@prisma/client/runtime/library").JsonValue | null;
+<<<<<<< Updated upstream
         status: import(".prisma/client").$Enums.RunStatus;
         startedAt: Date;
         finishedAt: Date | null;
         taskId: string;
+=======
+        taskId: string;
+        status: import(".prisma/client").$Enums.RunStatus;
+        startedAt: Date;
+        finishedAt: Date | null;
+>>>>>>> Stashed changes
     }>;
     getTaskStats(userId: string): Promise<{
         totalTasks: number;

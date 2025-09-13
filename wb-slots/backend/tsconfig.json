@@ -12,11 +12,18 @@
     "baseUrl": "./",
     "incremental": true,
     "skipLibCheck": true,
+<<<<<<< Updated upstream
     "strict": true,
     "strictNullChecks": true,
     "noImplicitAny": true,
     "strictBindCallApply": true,
     "forceConsistentCasingInFileNames": true,
+=======
+    "strictNullChecks": false,
+    "noImplicitAny": false,
+    "strictBindCallApply": false,
+    "forceConsistentCasingInFileNames": false,
+>>>>>>> Stashed changes
     "noFallthroughCasesInSwitch": false,
     "paths": {
       "@/*": ["src/*"]

@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Alert, AlertDescription } from '@/components/ui/alert';
+<<<<<<< Updated upstream
 import {
   FiShield as Shield,
   FiCheckCircle as CheckCircle,
@@ -12,6 +13,16 @@ import {
   FiExternalLink as ExternalLink,
   FiX as X
 } from 'react-icons/fi';
+=======
+import { 
+  Shield, 
+  CheckCircle, 
+  AlertCircle, 
+  Loader2,
+  ExternalLink,
+  X
+} from 'lucide-react';
+>>>>>>> Stashed changes
 
 interface WBAuthPopupProps {
   isOpen: boolean;

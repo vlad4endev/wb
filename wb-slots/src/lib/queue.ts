@@ -486,6 +486,7 @@ export const monitorWorker = new Worker<MonitorJobData>(
       });
 
       if (!suppliesToken) {
+<<<<<<< Updated upstream
         // Диагностика: проверяем, есть ли токены у пользователя вообще
         const userTokens = await prisma.userToken.findMany({
           where: { userId },
@@ -496,6 +497,9 @@ export const monitorWorker = new Worker<MonitorJobData>(
         console.error(`User has ${userTokens.length} tokens:`, userTokens);
         
         throw new Error(`No active supplies token found. User has ${userTokens.length} tokens. Please add a SUPPLIES token in settings.`);
+=======
+        throw new Error('No active supplies token found');
+>>>>>>> Stashed changes
       }
 
       // Decrypt token

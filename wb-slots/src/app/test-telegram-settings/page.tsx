@@ -7,6 +7,7 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Badge } from '@/components/ui/badge';
 import { Alert, AlertDescription } from '@/components/ui/alert';
+<<<<<<< Updated upstream
 import {
   FiLoader2 as Loader2,
   FiMessageSquare as MessageSquare,
@@ -14,6 +15,9 @@ import {
   FiX as X,
   FiSettings as Settings
 } from 'react-icons/fi';
+=======
+import { Loader2, MessageSquare, Check, X, Settings } from 'lucide-react';
+>>>>>>> Stashed changes
 import Link from 'next/link';
 
 export default function TestTelegramSettingsPage() {

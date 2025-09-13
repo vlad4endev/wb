@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
+<<<<<<< Updated upstream
 import { requireAuth } from '@/lib/auth';
 import fs from 'fs';
 import path from 'path';
@@ -12,6 +13,19 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ 
         error: 'Access denied. Developer or Admin role required.' 
       }, { status: 403 });
+=======
+import { getCurrentUser } from '@/lib/auth';
+import fs from 'fs';
+import path from 'path';
+
+const ADMIN_USER_ID = 'cmf8sg2w8000085vkomhit4hv';
+
+export async function POST(request: NextRequest) {
+  try {
+    const user = await getCurrentUser(request);
+    if (!user || user.id !== ADMIN_USER_ID) {
+      return NextResponse.json({ error: 'Access denied' }, { status: 403 });
+>>>>>>> Stashed changes
     }
 
     const { botToken } = await request.json();
@@ -119,6 +133,7 @@ RATE_LIMIT_WINDOW="900000"
 
 export async function GET(request: NextRequest) {
   try {
+<<<<<<< Updated upstream
     const user = await requireAuth(request);
     
     // Проверяем права доступа - только DEVELOPER и ADMIN могут управлять токенами
@@ -126,6 +141,11 @@ export async function GET(request: NextRequest) {
       return NextResponse.json({ 
         error: 'Access denied. Developer or Admin role required.' 
       }, { status: 403 });
+=======
+    const user = await getCurrentUser(request);
+    if (!user || user.id !== ADMIN_USER_ID) {
+      return NextResponse.json({ error: 'Access denied' }, { status: 403 });
+>>>>>>> Stashed changes
     }
 
     // Проверяем текущий токен

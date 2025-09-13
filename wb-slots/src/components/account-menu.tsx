@@ -2,6 +2,7 @@
 
 import { useState, useRef, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
+<<<<<<< Updated upstream
 import {
   FiUser as User,
   FiSettings as Settings,
@@ -21,6 +22,25 @@ import {
   FiShield as Shield,
   FiAward as BadgeIcon
 } from 'react-icons/fi';
+=======
+import { 
+  User, 
+  Settings, 
+  LogOut, 
+  ChevronDown,
+  UserCircle,
+  Cog,
+  Power,
+  Wrench,
+  TestTube,
+  Bug,
+  MessageSquare,
+  Bot,
+  Database,
+  Monitor,
+  Plus
+} from 'lucide-react';
+>>>>>>> Stashed changes
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import CreateTaskModal from '@/components/create-task-modal';
@@ -31,8 +51,11 @@ interface UserProfile {
   name?: string;
   phone?: string;
   timezone: string;
+<<<<<<< Updated upstream
   role?: string;
   isProtected?: boolean;
+=======
+>>>>>>> Stashed changes
 }
 
 interface AccountMenuProps {
@@ -82,6 +105,7 @@ export default function AccountMenu({ user, onLogout }: AccountMenuProps) {
         onClick={() => setIsOpen(!isOpen)}
         className="flex items-center space-x-2 px-3 py-2"
       >
+<<<<<<< Updated upstream
         <div className={`w-6 h-6 rounded-full flex items-center justify-center ${
           user.role === 'DEVELOPER' 
             ? 'bg-purple-100 dark:bg-purple-900/20'
@@ -118,6 +142,10 @@ export default function AccountMenu({ user, onLogout }: AccountMenuProps) {
             )}
           </div>
         </div>
+=======
+        <UserCircle className="w-5 h-5" />
+        <span className="hidden sm:block">{user.name || user.email}</span>
+>>>>>>> Stashed changes
         <ChevronDown className="w-4 h-4" />
       </Button>
 
@@ -126,6 +154,7 @@ export default function AccountMenu({ user, onLogout }: AccountMenuProps) {
           {/* User Info */}
           <div className="px-4 py-3 border-b border-gray-200 dark:border-gray-700">
             <div className="flex items-center space-x-3">
+<<<<<<< Updated upstream
               <div className={`w-10 h-10 rounded-full flex items-center justify-center ${
                 user.role === 'DEVELOPER' 
                   ? 'bg-purple-100 dark:bg-purple-900/20'
@@ -171,6 +200,16 @@ export default function AccountMenu({ user, onLogout }: AccountMenuProps) {
                     Максимальные права
                   </p>
                 )}
+=======
+              <UserCircle className="w-10 h-10 text-gray-400" />
+              <div className="flex-1 min-w-0">
+                <p className="text-sm font-medium text-gray-900 dark:text-white truncate">
+                  {user.name || 'Пользователь'}
+                </p>
+                <p className="text-xs text-gray-500 dark:text-gray-400 truncate">
+                  {user.email}
+                </p>
+>>>>>>> Stashed changes
               </div>
             </div>
           </div>

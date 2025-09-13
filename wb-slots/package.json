@@ -36,6 +36,10 @@
     "framer-motion": "^10.16.16",
     "jose": "^6.1.0",
     "jsonwebtoken": "^9.0.2",
+<<<<<<< Updated upstream
+=======
+    "lucide-react": "^0.294.0",
+>>>>>>> Stashed changes
     "next": "^15.5.2",
     "nodemailer": "^6.9.7",
     "pino": "^8.17.2",

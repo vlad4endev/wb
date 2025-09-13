@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { Alert, AlertDescription } from '@/components/ui/alert';
 import { Badge } from '@/components/ui/badge';
+<<<<<<< Updated upstream
 import {
   FiLoader as Loader2,
   FiMessageSquare as MessageSquare,
@@ -11,6 +12,9 @@ import {
   FiX as X,
   FiUser as User
 } from 'react-icons/fi';
+=======
+import { Loader2, MessageSquare, Check, X, User } from 'lucide-react';
+>>>>>>> Stashed changes
 
 interface TelegramUser {
   id: number;

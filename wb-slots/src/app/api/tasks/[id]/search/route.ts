@@ -10,11 +10,19 @@ const searchSlotsSchema = z.object({
 
 export async function POST(
   request: NextRequest,
+<<<<<<< Updated upstream
   { params }: { params: Promise<{ id: string }> }
 ) {
   try {
     const user = await requireAuth(request);
     const { id: taskId } = await params;
+=======
+  { params }: { params: { id: string } }
+) {
+  try {
+    const user = await requireAuth(request);
+    const taskId = params.id;
+>>>>>>> Stashed changes
     const body = await request.json();
     const validatedData = searchSlotsSchema.parse(body);
 

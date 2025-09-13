@@ -4,6 +4,7 @@ import { useState } from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Alert, AlertDescription } from '@/components/ui/alert';
+<<<<<<< Updated upstream
 import {
   FiDownload as Download,
   FiUpload as Upload,
@@ -14,6 +15,18 @@ import {
   FiDatabase as Database,
   FiShield as Shield
 } from 'react-icons/fi';
+=======
+import { 
+  Download, 
+  Upload, 
+  CheckCircle, 
+  AlertCircle, 
+  Copy,
+  Cookie,
+  Database,
+  Shield
+} from 'lucide-react';
+>>>>>>> Stashed changes
 import DashboardLayout from '@/app/dashboard-layout';
 
 export default function ExtractCookiesPage() {
@@ -41,19 +54,33 @@ export default function ExtractCookiesPage() {
       });
 
       // Извлекаем localStorage
+<<<<<<< Updated upstream
       const localStorage: Record<string, string | null> = {};
       for (let i = 0; i < window.localStorage.length; i++) {
         const key = window.localStorage.key(i);
         if (key && (key.includes('wb') || key.includes('wildberries'))) {
+=======
+      const localStorage = {};
+      for (let i = 0; i < window.localStorage.length; i++) {
+        const key = window.localStorage.key(i);
+        if (key && key.includes('wb') || key?.includes('wildberries')) {
+>>>>>>> Stashed changes
           localStorage[key] = window.localStorage.getItem(key);
         }
       }
 
       // Извлекаем sessionStorage
+<<<<<<< Updated upstream
       const sessionStorage: Record<string, string | null> = {};
       for (let i = 0; i < window.sessionStorage.length; i++) {
         const key = window.sessionStorage.key(i);
         if (key && (key.includes('wb') || key.includes('wildberries'))) {
+=======
+      const sessionStorage = {};
+      for (let i = 0; i < window.sessionStorage.length; i++) {
+        const key = window.sessionStorage.key(i);
+        if (key && key.includes('wb') || key?.includes('wildberries')) {
+>>>>>>> Stashed changes
           sessionStorage[key] = window.sessionStorage.getItem(key);
         }
       }

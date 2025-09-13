@@ -1,12 +1,17 @@
 'use client';
 
+<<<<<<< Updated upstream
 import { useState, useEffect, useCallback } from 'react';
+=======
+import { useState, useEffect } from 'react';
+>>>>>>> Stashed changes
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Input } from '@/components/ui/input';
 import { Progress } from '@/components/ui/progress';
 import { Alert, AlertDescription } from '@/components/ui/alert';
+<<<<<<< Updated upstream
 import {
   FiSearch as Search,
   FiPlus as Plus,
@@ -34,13 +39,45 @@ import {
   FiSettings as Settings,
   FiMoreHorizontal as MoreHorizontal
 } from 'react-icons/fi';
+=======
+import { 
+  Search, 
+  Plus, 
+  Play, 
+  Pause, 
+  Square,
+  Edit, 
+  Trash2, 
+  Eye, 
+  Filter,
+  RefreshCw,
+  Loader2,
+  CheckCircle,
+  XCircle,
+  Clock,
+  AlertTriangle,
+  Activity,
+  BarChart3,
+  Calendar,
+  Warehouse,
+  Zap,
+  Target,
+  TrendingUp,
+  Users,
+  Settings,
+  MoreHorizontal
+} from 'lucide-react';
+>>>>>>> Stashed changes
 import Link from 'next/link';
 import DashboardLayout from '@/app/dashboard-layout';
 import CreateTaskModal from '@/components/create-task-modal';
 
 interface Task {
   id: string;
+<<<<<<< Updated upstream
   taskNumber: number;
+=======
+>>>>>>> Stashed changes
   name: string;
   description?: string;
   enabled: boolean;
@@ -72,7 +109,11 @@ interface TaskStats {
   foundSlots: number;
 }
 
+<<<<<<< Updated upstream
 type FilterStatus = 'all' | 'active' | 'inactive' | 'successful' | 'failed' | 'stopped' | 'running';
+=======
+type FilterStatus = 'all' | 'active' | 'inactive' | 'successful' | 'failed' | 'stopped';
+>>>>>>> Stashed changes
 
 export default function TasksPage() {
   const [tasks, setTasks] = useState<Task[]>([]);
@@ -93,6 +134,7 @@ export default function TasksPage() {
   const [error, setError] = useState<string | null>(null);
   const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
 
+<<<<<<< Updated upstream
   const filterTasks = useCallback(() => {
     let filtered = tasks;
 
@@ -133,6 +175,17 @@ export default function TasksPage() {
   }, [tasks, searchQuery, statusFilter]);
 
   const fetchTasks = useCallback(async () => {
+=======
+  useEffect(() => {
+    fetchTasks();
+  }, []);
+
+  useEffect(() => {
+    filterTasks();
+  }, [tasks, searchQuery, statusFilter]);
+
+  const fetchTasks = async () => {
+>>>>>>> Stashed changes
     try {
       setIsLoading(true);
       setError(null);
@@ -158,7 +211,11 @@ export default function TasksPage() {
     } finally {
       setIsLoading(false);
     }
+<<<<<<< Updated upstream
   }, []);
+=======
+  };
+>>>>>>> Stashed changes
 
   const calculateTaskStats = (tasks: Task[]): TaskStats => {
     const stats = {
@@ -194,6 +251,7 @@ export default function TasksPage() {
     return stats;
   };
 
+<<<<<<< Updated upstream
   useEffect(() => {
     fetchTasks();
   }, [fetchTasks]);
@@ -201,6 +259,44 @@ export default function TasksPage() {
   useEffect(() => {
     filterTasks();
   }, [filterTasks]);
+=======
+  const filterTasks = () => {
+    let filtered = tasks;
+
+    // Фильтр по поисковому запросу
+    if (searchQuery) {
+      filtered = filtered.filter(task =>
+        task.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        (task.description && task.description.toLowerCase().includes(searchQuery.toLowerCase()))
+      );
+    }
+
+    // Фильтр по статусу
+    switch (statusFilter) {
+      case 'active':
+        filtered = filtered.filter(task => task.enabled);
+        break;
+      case 'inactive':
+        filtered = filtered.filter(task => !task.enabled);
+        break;
+      case 'successful':
+        filtered = filtered.filter(task => 
+          task.runs.length > 0 && task.runs[0].status === 'completed'
+        );
+        break;
+      case 'failed':
+        filtered = filtered.filter(task => 
+          task.runs.length > 0 && task.runs[0].status === 'failed'
+        );
+        break;
+      case 'stopped':
+        filtered = filtered.filter(task => !task.enabled);
+        break;
+    }
+
+    setFilteredTasks(filtered);
+  };
+>>>>>>> Stashed changes
 
   const handleTaskAction = async (taskId: string, action: 'start' | 'stop' | 'delete') => {
     setActionLoading(taskId);
@@ -487,7 +583,11 @@ export default function TasksPage() {
                         <div className="flex-1">
                           <div className="flex items-center gap-3 mb-2">
                             <h3 className="font-medium text-gray-900 dark:text-white">
+<<<<<<< Updated upstream
                               #{task.taskNumber} {task.name}
+=======
+                              {task.name}
+>>>>>>> Stashed changes
                             </h3>
                             <Badge
                               variant={task.enabled ? "default" : "secondary"}

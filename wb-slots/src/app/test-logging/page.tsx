@@ -8,6 +8,7 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Badge } from '@/components/ui/badge';
 import { Alert, AlertDescription } from '@/components/ui/alert';
+<<<<<<< Updated upstream
 import {
   FiDatabase as Database,
   FiPlay as Play,
@@ -20,6 +21,20 @@ import {
   FiFileText as FileText,
   FiClock as Clock
 } from 'react-icons/fi';
+=======
+import { 
+  Database, 
+  Play, 
+  Square, 
+  Loader2, 
+  CheckCircle, 
+  XCircle, 
+  ArrowLeft,
+  RefreshCw,
+  FileText,
+  Clock
+} from 'lucide-react';
+>>>>>>> Stashed changes
 import Link from 'next/link';
 
 interface LogEntry {

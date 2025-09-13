@@ -8,6 +8,7 @@ import { Label } from '@/components/ui/label';
 import { Badge } from '@/components/ui/badge';
 import { Alert, AlertDescription } from '@/components/ui/alert';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+<<<<<<< Updated upstream
 import ProtectedRoute from '@/components/protected-route';
 import ChangePasswordForm from '@/components/change-password-form';
 import { 
@@ -47,6 +48,45 @@ import {
   FiDollarSign as DollarSign,
   FiFileText as FileText
 } from 'react-icons/fi';
+=======
+import { 
+  Settings, 
+  Key, 
+  Warehouse, 
+  User, 
+  Plus, 
+  Edit, 
+  Trash2,
+  Save,
+  Eye,
+  EyeOff,
+  ArrowLeft,
+  Shield,
+  Search,
+  MessageSquare,
+  Bot,
+  Bell,
+  Globe,
+  Database,
+  Lock,
+  RefreshCw,
+  CheckCircle,
+  XCircle,
+  AlertTriangle,
+  Info,
+  Activity,
+  BarChart3,
+  Zap,
+  Target,
+  Calendar,
+  Clock,
+  Users,
+  TrendingUp,
+  Package,
+  DollarSign,
+  FileText
+} from 'lucide-react';
+>>>>>>> Stashed changes
 import Link from 'next/link';
 import DashboardLayout from '@/app/dashboard-layout';
 
@@ -99,8 +139,11 @@ export default function SettingsPage() {
   const [error, setError] = useState('');
   const [showToken, setShowToken] = useState<string | null>(null);
   const [isSaving, setIsSaving] = useState(false);
+<<<<<<< Updated upstream
   const [isSyncingWarehouses, setIsSyncingWarehouses] = useState(false);
   const [warehouseStats, setWarehouseStats] = useState({ total: 0, active: 0, inactive: 0 });
+=======
+>>>>>>> Stashed changes
 
   // Формы
   const [newToken, setNewToken] = useState({
@@ -132,6 +175,7 @@ export default function SettingsPage() {
       setIsLoading(true);
       setError('');
       
+<<<<<<< Updated upstream
       // Сначала проверяем аутентификацию
       const profileRes = await fetch('/api/auth/me');
       const profileData = await profileRes.json();
@@ -167,6 +211,54 @@ export default function SettingsPage() {
         setTokens((tokensData.data as any).tokens || []);
       } else {
         console.error('Error loading tokens:', tokensData.error);
+=======
+      const [tokensRes, warehousesRes, warehouseRefsRes, profileRes] = await Promise.all([
+        fetch('/api/tokens'),
+        fetch('/api/warehouses'),
+        fetch('/api/warehouses'),
+        fetch('/api/auth/me'),
+      ]);
+
+      const [tokensData, warehousesData, warehouseRefsData, profileData] = await Promise.all([
+        tokensRes.json(),
+        warehousesRes.json(),
+        warehouseRefsRes.json(),
+        profileRes.json(),
+      ]);
+
+      // Обрабатываем токены
+      if (tokensData.success) {
+        setTokens(tokensData.data?.tokens || []);
+      } else {
+        console.error('Error loading tokens:', tokensData.error);
+      }
+
+      // Обрабатываем склады пользователя
+      if (warehousesData.success) {
+        setWarehouses(warehousesData.data?.warehouses || []);
+      } else {
+        console.error('Error loading warehouses:', warehousesData.error);
+      }
+
+      // Обрабатываем справочник складов
+      if (warehouseRefsData.success) {
+        setWarehouseRefs(warehouseRefsData.data?.warehouses || []);
+      } else {
+        console.error('Error loading warehouse refs:', warehouseRefsData.error);
+      }
+
+      // Обрабатываем профиль
+      if (profileData.success) {
+        const userData = profileData.data?.user;
+        setProfile(userData);
+        setProfileForm({
+          name: userData?.name || '',
+          phone: userData?.phone || '',
+          timezone: userData?.timezone || 'Europe/Moscow',
+        });
+      } else {
+        console.error('Error loading profile:', profileData.error);
+>>>>>>> Stashed changes
       }
 
       // Обрабатываем склады пользователя
@@ -318,7 +410,11 @@ export default function SettingsPage() {
         };
       });
 
+<<<<<<< Updated upstream
       const response = await fetch('/api/warehouses/user', {
+=======
+      const response = await fetch('/api/warehouses', {
+>>>>>>> Stashed changes
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ warehouses: warehousesToAdd }),
@@ -337,6 +433,7 @@ export default function SettingsPage() {
     }
   };
 
+<<<<<<< Updated upstream
   const handleToggleWarehouse = async (warehouseId: number, enabled: boolean) => {
     try {
       const response = await fetch('/api/warehouses/user', {
@@ -422,6 +519,8 @@ export default function SettingsPage() {
     }
   };
 
+=======
+>>>>>>> Stashed changes
   const filteredWarehouses = warehouseRefs.filter(warehouse =>
     warehouse.name.toLowerCase().includes(searchQuery.toLowerCase())
   );
@@ -450,9 +549,14 @@ export default function SettingsPage() {
   }
 
   return (
+<<<<<<< Updated upstream
     <ProtectedRoute>
       <DashboardLayout>
         <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
+=======
+    <DashboardLayout>
+      <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
+>>>>>>> Stashed changes
         {/* Header */}
         <div className="bg-white dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700">
           <div className="px-6 py-4">
@@ -471,6 +575,7 @@ export default function SettingsPage() {
                 </div>
               </div>
               <div className="flex items-center space-x-3">
+<<<<<<< Updated upstream
                 {profile && (
                   <div className="flex items-center space-x-2">
                     <Badge 
@@ -495,6 +600,8 @@ export default function SettingsPage() {
                     )}
                   </div>
                 )}
+=======
+>>>>>>> Stashed changes
                 <Button
                   onClick={fetchData}
                   variant="outline"
@@ -596,22 +703,33 @@ export default function SettingsPage() {
             </CardHeader>
             <CardContent>
               <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
+<<<<<<< Updated upstream
                 <TabsList className="grid w-full grid-cols-5">
+=======
+                <TabsList className="grid w-full grid-cols-4">
+>>>>>>> Stashed changes
                   <TabsTrigger value="profile" className="flex items-center gap-2">
                     <User className="w-4 h-4" />
                     Профиль
                   </TabsTrigger>
+<<<<<<< Updated upstream
                   <TabsTrigger value="security" className="flex items-center gap-2">
                     <Lock className="w-4 h-4" />
                     Безопасность
                   </TabsTrigger>
+=======
+>>>>>>> Stashed changes
                   <TabsTrigger value="tokens" className="flex items-center gap-2">
                     <Key className="w-4 h-4" />
                     Токены
                   </TabsTrigger>
                   <TabsTrigger value="warehouses" className="flex items-center gap-2">
                     <Warehouse className="w-4 h-4" />
+<<<<<<< Updated upstream
                     Склады и справочник
+=======
+                    Склады
+>>>>>>> Stashed changes
                   </TabsTrigger>
                   <TabsTrigger value="notifications" className="flex items-center gap-2">
                     <Bell className="w-4 h-4" />
@@ -627,6 +745,7 @@ export default function SettingsPage() {
                         <User className="w-5 h-5" />
                         Профиль пользователя
                       </CardTitle>
+<<<<<<< Updated upstream
                     <CardDescription>
                       Основная информация о вашем аккаунте
                     </CardDescription>
@@ -778,6 +897,14 @@ export default function SettingsPage() {
                     )}
 
                     <form onSubmit={handleUpdateProfile} className="space-y-4">
+=======
+                      <CardDescription>
+                        Основная информация о вашем аккаунте
+                      </CardDescription>
+                    </CardHeader>
+                    <CardContent>
+                      <form onSubmit={handleUpdateProfile} className="space-y-4">
+>>>>>>> Stashed changes
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                           <div className="space-y-2">
                             <Label htmlFor="name">Имя</Label>
@@ -833,6 +960,7 @@ export default function SettingsPage() {
                   </Card>
                 </TabsContent>
 
+<<<<<<< Updated upstream
                 {/* Security Tab */}
                 <TabsContent value="security" className="space-y-6">
                   <ChangePasswordForm 
@@ -846,6 +974,8 @@ export default function SettingsPage() {
                   />
                 </TabsContent>
 
+=======
+>>>>>>> Stashed changes
                 {/* Tokens Tab */}
                 <TabsContent value="tokens" className="space-y-6">
                   <Card>
@@ -970,6 +1100,7 @@ export default function SettingsPage() {
                     </CardContent>
                   </Card>
                 </TabsContent>
+<<<<<<< Updated upstream
 
                 {/* Warehouses Tab */}
                 <TabsContent value="warehouses" className="space-y-6">
@@ -1108,6 +1239,53 @@ export default function SettingsPage() {
                           )}
                         </div>
 
+=======
+
+                {/* Warehouses Tab */}
+                <TabsContent value="warehouses" className="space-y-6">
+                  <Card>
+                    <CardHeader>
+                      <CardTitle className="flex items-center gap-2">
+                        <Warehouse className="w-5 h-5" />
+                        Управление складами
+                      </CardTitle>
+                      <CardDescription>
+                        Настройка складов для поиска слотов
+                      </CardDescription>
+                    </CardHeader>
+                    <CardContent>
+                      <div className="space-y-6">
+                        {/* Add Warehouse Form */}
+                        <form onSubmit={handleAddWarehouse} className="space-y-4">
+                          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div className="space-y-2">
+                              <Label htmlFor="warehouseId">ID склада</Label>
+                              <Input
+                                id="warehouseId"
+                                value={newWarehouse.warehouseId}
+                                onChange={(e) => setNewWarehouse(prev => ({ ...prev, warehouseId: e.target.value }))}
+                                placeholder="301983"
+                                required
+                              />
+                            </div>
+                            <div className="space-y-2">
+                              <Label htmlFor="warehouseName">Название склада</Label>
+                              <Input
+                                id="warehouseName"
+                                value={newWarehouse.warehouseName}
+                                onChange={(e) => setNewWarehouse(prev => ({ ...prev, warehouseName: e.target.value }))}
+                                placeholder="Москва"
+                                required
+                              />
+                            </div>
+                          </div>
+                          <Button type="submit">
+                            <Plus className="w-4 h-4 mr-2" />
+                            Добавить склад
+                          </Button>
+                        </form>
+
+>>>>>>> Stashed changes
                         {/* Warehouse List */}
                         <div className="space-y-4">
                           {warehouses.map((warehouse) => (
@@ -1156,6 +1334,7 @@ export default function SettingsPage() {
                                 </div>
                               </div>
                               <div className="flex items-center gap-2">
+<<<<<<< Updated upstream
                                 <Button
                                   variant="outline"
                                   size="sm"
@@ -1177,13 +1356,18 @@ export default function SettingsPage() {
                                     </>
                                   )}
                                 </Button>
+=======
+>>>>>>> Stashed changes
                                 <Button variant="outline" size="sm">
                                   <Edit className="w-4 h-4" />
                                 </Button>
                                 <Button
                                   variant="outline"
                                   size="sm"
+<<<<<<< Updated upstream
                                   onClick={() => handleDeleteWarehouse(warehouse.warehouseId)}
+=======
+>>>>>>> Stashed changes
                                   className="text-red-600 border-red-200 hover:bg-red-50 dark:text-red-400 dark:border-red-800 dark:hover:bg-red-900/20"
                                 >
                                   <Trash2 className="w-4 h-4" />
@@ -1266,6 +1450,9 @@ export default function SettingsPage() {
         </div>
       </div>
     </DashboardLayout>
+<<<<<<< Updated upstream
     </ProtectedRoute>
+=======
+>>>>>>> Stashed changes
   );
 }

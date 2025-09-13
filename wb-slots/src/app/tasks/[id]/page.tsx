@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useEffect, useCallback } from 'react';
+<<<<<<< Updated upstream
 import { useParams, useRouter } from 'next/navigation';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -49,12 +50,49 @@ interface Task {
   createdAt: string;
   updatedAt: string;
   runs: Array<{
+=======
+import { useParams } from 'next/navigation';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { Button } from '@/components/ui/button';
+import { Badge } from '@/components/ui/badge';
+import { 
+  ArrowLeft, 
+  Play, 
+  Square,
+  Zap, 
+  Calendar, 
+  Warehouse, 
+  Settings,
+  Activity,
+  Clock,
+  CheckCircle,
+  AlertCircle,
+  Loader2
+} from 'lucide-react';
+import Link from 'next/link';
+import DashboardLayout from '@/app/dashboard-layout';
+
+interface Task {
+  id: string;
+  name: string;
+  description?: string;
+  enabled: boolean;
+  scheduleCron?: string;
+  autoBook: boolean;
+  autoBookSupplyId?: string;
+  filters?: any;
+  priority: number;
+  createdAt: string;
+  updatedAt: string;
+  runs?: Array<{
+>>>>>>> Stashed changes
     id: string;
     status: string;
     startedAt: string;
     finishedAt?: string;
     foundSlots?: number;
     summary?: any;
+<<<<<<< Updated upstream
     foundSlotsDetails?: Array<{
       id: string;
       warehouseId: number;
@@ -103,6 +141,21 @@ export default function TaskDetailPage() {
   }, []);
 
   // Загружаем данные задачи
+=======
+  }>;
+  _count?: {
+    runs: number;
+  };
+}
+
+export default function TaskViewPage() {
+  const params = useParams();
+  const taskId = params.id as string;
+  const [task, setTask] = useState<Task | null>(null);
+  const [isLoading, setIsLoading] = useState(true);
+  const [isActionLoading, setIsActionLoading] = useState(false);
+
+>>>>>>> Stashed changes
   const fetchTask = useCallback(async () => {
     try {
       const response = await fetch(`/api/tasks/${taskId}`);
@@ -110,6 +163,7 @@ export default function TaskDetailPage() {
       
       if (data.success) {
         setTask(data.data);
+<<<<<<< Updated upstream
         
         // Загружаем информацию о складах
         if (data.data.filters?.warehouseIds?.length > 0) {
@@ -148,6 +202,17 @@ export default function TaskDetailPage() {
       alert('Failed to delete task');
     }
   };
+=======
+      } else {
+        console.error('Error fetching task:', data.error);
+      }
+    } catch (error) {
+      console.error('Error fetching task:', error);
+    } finally {
+      setIsLoading(false);
+    }
+  }, [taskId]);
+>>>>>>> Stashed changes
 
   useEffect(() => {
     if (taskId) {
@@ -155,6 +220,7 @@ export default function TaskDetailPage() {
     }
   }, [taskId, fetchTask]);
 
+<<<<<<< Updated upstream
   if (loading) {
     return (
       <DashboardLayout>
@@ -162,12 +228,97 @@ export default function TaskDetailPage() {
           <div className="flex items-center gap-2">
             <Loader2 className="h-6 w-6 animate-spin" />
             <span>Загрузка задачи...</span>
+=======
+  const toggleTask = async (action: 'start' | 'stop') => {
+    setIsActionLoading(true);
+    try {
+      const response = await fetch(`/api/tasks/${taskId}/${action}`, {
+        method: 'POST',
+      });
+      const data = await response.json();
+      
+      if (data.success) {
+        setTask(prev => prev ? { ...prev, enabled: action === 'start' } : null);
+      } else {
+        console.error('Error toggling task:', data.error);
+      }
+    } catch (error) {
+      console.error('Error toggling task:', error);
+    } finally {
+      setIsActionLoading(false);
+    }
+  };
+
+  const runTask = async () => {
+    setIsActionLoading(true);
+    try {
+      const response = await fetch(`/api/tasks/${taskId}/run`, {
+        method: 'POST',
+      });
+      const data = await response.json();
+      
+      if (data.success) {
+        // Обновляем данные задачи
+        fetchTask();
+      } else {
+        console.error('Error running task:', data.error);
+      }
+    } catch (error) {
+      console.error('Error running task:', error);
+    } finally {
+      setIsActionLoading(false);
+    }
+  };
+
+  const runAutoBooking = async () => {
+    setIsActionLoading(true);
+    try {
+      const response = await fetch(`/api/tasks/${taskId}/auto-book`, {
+        method: 'POST',
+      });
+      const data = await response.json();
+      
+      if (data.success) {
+        // Обновляем данные задачи
+        fetchTask();
+      } else {
+        console.error('Error running auto booking:', data.error);
+      }
+    } catch (error) {
+      console.error('Error running auto booking:', error);
+    } finally {
+      setIsActionLoading(false);
+    }
+  };
+
+  const getStatusBadge = (status: string) => {
+    switch (status) {
+      case 'SUCCESS':
+        return <Badge variant="success">Успешно</Badge>;
+      case 'FAILED':
+        return <Badge variant="destructive">Ошибка</Badge>;
+      case 'RUNNING':
+        return <Badge variant="warning">Выполняется</Badge>;
+      default:
+        return <Badge variant="secondary">Ожидание</Badge>;
+    }
+  };
+
+  if (isLoading) {
+    return (
+      <DashboardLayout>
+        <div className="flex items-center justify-center min-h-screen">
+          <div className="text-center">
+            <Loader2 className="w-8 h-8 animate-spin mx-auto mb-4 text-blue-500" />
+            <p className="text-gray-600 dark:text-gray-400">Загрузка задачи...</p>
+>>>>>>> Stashed changes
           </div>
         </div>
       </DashboardLayout>
     );
   }
 
+<<<<<<< Updated upstream
   if (error || !task) {
     return (
       <DashboardLayout>
@@ -177,10 +328,22 @@ export default function TaskDetailPage() {
             {error || 'Задача не найдена'}
           </AlertDescription>
         </Alert>
+=======
+  if (!task) {
+    return (
+      <DashboardLayout>
+        <div className="flex items-center justify-center min-h-screen">
+          <div className="text-center">
+            <AlertCircle className="w-8 h-8 mx-auto mb-4 text-red-500" />
+            <p className="text-gray-600 dark:text-gray-400">Задача не найдена</p>
+          </div>
+        </div>
+>>>>>>> Stashed changes
       </DashboardLayout>
     );
   }
 
+<<<<<<< Updated upstream
   const getStatusColor = (status: string) => {
     switch (status) {
       case 'RUNNING':
@@ -270,10 +433,97 @@ export default function TaskDetailPage() {
                   <Settings className="h-5 w-5" />
                   Настройки задачи
                 </CardTitle>
+=======
+  return (
+    <DashboardLayout>
+      <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
+        {/* Header */}
+        <div className="bg-white dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700">
+          <div className="px-6 py-4">
+            <div className="flex items-center justify-between">
+              <div className="flex items-center gap-3">
+                <Link href="/tasks">
+                  <Button variant="outline" size="sm">
+                    <ArrowLeft className="w-4 h-4 mr-2" />
+                    Назад к задачам
+                  </Button>
+                </Link>
+                <div className="w-10 h-10 bg-gradient-to-br from-blue-500 to-purple-600 rounded-lg flex items-center justify-center">
+                  <Settings className="w-6 h-6 text-white" />
+                </div>
+                <div>
+                  <h1 className="text-2xl font-bold text-gray-900 dark:text-white">
+                    {task.name}
+                  </h1>
+                  <p className="text-gray-600 dark:text-gray-400">
+                    {task.description || 'Без описания'}
+                  </p>
+                </div>
+              </div>
+              <div className="flex items-center space-x-2">
+                {task.enabled ? (
+                  <Button 
+                    onClick={() => toggleTask('stop')} 
+                    variant="destructive"
+                    disabled={isActionLoading}
+                  >
+                    {isActionLoading ? (
+                      <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+                    ) : (
+                      <Square className="w-4 h-4 mr-2" />
+                    )}
+                    Остановить задачу
+                  </Button>
+                ) : (
+                  <Button 
+                    onClick={() => toggleTask('start')} 
+                    className="bg-green-600 hover:bg-green-700"
+                    disabled={isActionLoading}
+                  >
+                    {isActionLoading ? (
+                      <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+                    ) : (
+                      <Play className="w-4 h-4 mr-2" />
+                    )}
+                    Запустить задачу
+                  </Button>
+                )}
+                <Link href={`/tasks/${taskId}/monitor`}>
+                  <Button variant="outline" disabled={isActionLoading}>
+                    <Activity className="w-4 h-4 mr-2" />
+                    Мониторинг
+                  </Button>
+                </Link>
+                <Button onClick={runTask} variant="outline" disabled={isActionLoading}>
+                  <Play className="w-4 h-4 mr-2" />
+                  Запустить поиск
+                </Button>
+                {task.autoBook && (
+                  <Button onClick={runAutoBooking} className="bg-blue-600 hover:bg-blue-700" disabled={isActionLoading}>
+                    <Zap className="w-4 h-4 mr-2" />
+                    Автобронирование
+                  </Button>
+                )}
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div className="p-6 space-y-6">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+            {/* Task Info */}
+            <Card>
+              <CardHeader>
+                <CardTitle>Информация о задаче</CardTitle>
+                <CardDescription>
+                  Основные параметры и настройки
+                </CardDescription>
+>>>>>>> Stashed changes
               </CardHeader>
               <CardContent className="space-y-4">
                 <div className="grid grid-cols-2 gap-4">
                   <div>
+<<<<<<< Updated upstream
                     <label className="text-sm font-medium text-gray-500">Статус</label>
                     <div className="mt-1">
                       <Badge className={getStatusColor(task.status)}>
@@ -316,10 +566,46 @@ export default function TaskDetailPage() {
                   <div>
                     <label className="text-sm font-medium text-gray-500">ID поставки для бронирования</label>
                     <p className="mt-1 text-sm font-mono text-gray-900 dark:text-white">
+=======
+                    <p className="text-sm font-medium text-gray-500">Статус</p>
+                    <p className="text-sm">
+                      {task.enabled ? (
+                        <Badge variant="success">Активна</Badge>
+                      ) : (
+                        <Badge variant="secondary">Отключена</Badge>
+                      )}
+                    </p>
+                  </div>
+                  <div>
+                    <p className="text-sm font-medium text-gray-500">Приоритет</p>
+                    <p className="text-sm">{task.priority}</p>
+                  </div>
+                  <div>
+                    <p className="text-sm font-medium text-gray-500">Автобронирование</p>
+                    <p className="text-sm">
+                      {task.autoBook ? (
+                        <Badge variant="warning">Включено</Badge>
+                      ) : (
+                        <Badge variant="secondary">Отключено</Badge>
+                      )}
+                    </p>
+                  </div>
+                  <div>
+                    <p className="text-sm font-medium text-gray-500">Запусков</p>
+                    <p className="text-sm">{task._count?.runs || 0}</p>
+                  </div>
+                </div>
+
+                {task.autoBook && task.autoBookSupplyId && (
+                  <div>
+                    <p className="text-sm font-medium text-gray-500">ID приемки для автобронирования</p>
+                    <p className="text-sm font-mono bg-gray-100 dark:bg-gray-800 px-2 py-1 rounded">
+>>>>>>> Stashed changes
                       {task.autoBookSupplyId}
                     </p>
                   </div>
                 )}
+<<<<<<< Updated upstream
               </CardContent>
             </Card>
 
@@ -394,10 +680,17 @@ export default function TaskDetailPage() {
                       )}
                     </div>
                   </div>
+=======
+
+                <div>
+                  <p className="text-sm font-medium text-gray-500">Создана</p>
+                  <p className="text-sm">{new Date(task.createdAt).toLocaleString('ru-RU')}</p>
+>>>>>>> Stashed changes
                 </div>
               </CardContent>
             </Card>
 
+<<<<<<< Updated upstream
             {/* Непрерывный поиск слотов */}
             <ContinuousSearchStatus
               taskId={task.id}
@@ -443,10 +736,54 @@ export default function TaskDetailPage() {
                       {task.runs?.reduce((sum, run) => sum + (run.foundSlots || 0), 0) || 0}
                     </span>
                   </div>
+=======
+            {/* Filters */}
+            <Card>
+              <CardHeader>
+                <CardTitle>Параметры поиска</CardTitle>
+                <CardDescription>
+                  Настройки фильтров и условий
+                </CardDescription>
+              </CardHeader>
+              <CardContent className="space-y-4">
+                <div>
+                  <p className="text-sm font-medium text-gray-500">Склады</p>
+                  <p className="text-sm">{task.filters?.warehouseIds?.length || 0} выбрано</p>
+                </div>
+                
+                <div>
+                  <p className="text-sm font-medium text-gray-500">Коэффициент</p>
+                  <p className="text-sm">
+                    {task.filters?.coefficientMin || 0} - {task.filters?.coefficientMax || 20}
+                  </p>
+                </div>
+
+                <div>
+                  <p className="text-sm font-medium text-gray-500">Период поиска</p>
+                  <p className="text-sm">
+                    {task.filters?.dates?.from ? new Date(task.filters.dates.from).toLocaleDateString('ru-RU') : 'Не указан'} - 
+                    {task.filters?.dates?.to ? new Date(task.filters.dates.to).toLocaleDateString('ru-RU') : 'Не указан'}
+                  </p>
+                </div>
+
+                <div>
+                  <p className="text-sm font-medium text-gray-500">Типы тары</p>
+                  <p className="text-sm">
+                    {task.filters?.boxTypeIds?.map((id: number) => {
+                      switch (id) {
+                        case 5: return 'Box';
+                        case 6: return 'Monopallet';
+                        case 7: return 'Supersafe';
+                        default: return `ID ${id}`;
+                      }
+                    }).join(', ') || 'Не указаны'}
+                  </p>
+>>>>>>> Stashed changes
                 </div>
               </CardContent>
             </Card>
 
+<<<<<<< Updated upstream
             {/* Последние запуски */}
             <Card>
               <CardHeader>
@@ -494,6 +831,63 @@ export default function TaskDetailPage() {
                     </div>
                   ))}
                 </div>
+=======
+            {/* Recent Runs */}
+            <Card className="lg:col-span-2">
+              <CardHeader>
+                <CardTitle>Последние запуски</CardTitle>
+                <CardDescription>
+                  История выполнения задачи
+                </CardDescription>
+              </CardHeader>
+              <CardContent>
+                {!task.runs || task.runs.length === 0 ? (
+                  <div className="text-center py-8">
+                    <Activity className="w-12 h-12 text-gray-400 mx-auto mb-4" />
+                    <p className="text-gray-500 dark:text-gray-400">
+                      Задача еще не запускалась
+                    </p>
+                  </div>
+                ) : (
+                  <div className="space-y-4">
+                    {(task.runs || []).slice(0, 10).map((run) => (
+                      <div
+                        key={run.id}
+                        className="flex items-center space-x-3 p-3 border rounded-lg"
+                      >
+                        <div className="flex-shrink-0">
+                          {run.status === 'SUCCESS' ? (
+                            <CheckCircle className="w-5 h-5 text-green-500" />
+                          ) : run.status === 'FAILED' ? (
+                            <AlertCircle className="w-5 h-5 text-red-500" />
+                          ) : run.status === 'RUNNING' ? (
+                            <Clock className="w-5 h-5 text-blue-500 animate-spin" />
+                          ) : (
+                            <Clock className="w-5 h-5 text-gray-500" />
+                          )}
+                        </div>
+                        <div className="flex-1 min-w-0">
+                          <div className="flex items-center space-x-2">
+                            <p className="text-sm font-medium text-gray-900 dark:text-white">
+                              Запуск #{run.id.slice(-8)}
+                            </p>
+                            {getStatusBadge(run.status)}
+                          </div>
+                          <p className="text-xs text-gray-500 dark:text-gray-400">
+                            {new Date(run.startedAt).toLocaleString('ru-RU')}
+                            {run.finishedAt && ` - ${new Date(run.finishedAt).toLocaleString('ru-RU')}`}
+                          </p>
+                          {run.foundSlots && run.foundSlots > 0 && (
+                            <p className="text-xs text-green-600 dark:text-green-400">
+                              Найдено слотов: {run.foundSlots}
+                            </p>
+                          )}
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                )}
+>>>>>>> Stashed changes
               </CardContent>
             </Card>
           </div>

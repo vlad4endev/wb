@@ -6,6 +6,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Alert, AlertDescription } from '@/components/ui/alert';
+<<<<<<< Updated upstream
 import {
   FiSearch as Search,
   FiArrowLeft as ArrowLeft,
@@ -14,6 +15,16 @@ import {
   FiRefreshCw as RefreshCw,
   FiSettings as Settings
 } from 'react-icons/fi';
+=======
+import { 
+  Search, 
+  ArrowLeft, 
+  Save, 
+  Clock,
+  RefreshCw,
+  Settings
+} from 'lucide-react';
+>>>>>>> Stashed changes
 import Link from 'next/link';
 
 interface SearchSettings {

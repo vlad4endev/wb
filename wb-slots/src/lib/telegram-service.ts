@@ -271,6 +271,7 @@ export class TelegramService {
       },
     });
   }
+<<<<<<< Updated upstream
 
   /**
    * Отправка уведомления о найденных слотах
@@ -359,4 +360,6 @@ export class TelegramService {
       return false;
     }
   }
+=======
+>>>>>>> Stashed changes
 }

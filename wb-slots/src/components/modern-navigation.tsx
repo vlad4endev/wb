@@ -6,6 +6,7 @@ import { usePathname } from 'next/navigation';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { 
+<<<<<<< Updated upstream
   FiHome as Home, 
   FiSearch as Search, 
   FiSettings as Settings, 
@@ -22,6 +23,24 @@ import {
   FiShield as Shield,
   FiDatabase as Database
 } from 'react-icons/fi';
+=======
+  Home, 
+  Search, 
+  Settings, 
+  BarChart3, 
+  Plus,
+  Menu,
+  X,
+  Zap,
+  Clock,
+  Warehouse,
+  MessageSquare,
+  Bot,
+  Activity,
+  Shield,
+  Database
+} from 'lucide-react';
+>>>>>>> Stashed changes
 import CreateTaskModal from '@/components/create-task-modal';
 
 interface UserProfile {
@@ -30,8 +49,11 @@ interface UserProfile {
   name?: string;
   phone?: string;
   timezone: string;
+<<<<<<< Updated upstream
   role?: string;
   isProtected?: boolean;
+=======
+>>>>>>> Stashed changes
 }
 
 interface ModernNavigationProps {
@@ -95,7 +117,11 @@ export default function ModernNavigation({ user }: ModernNavigationProps) {
     if (href === '/dashboard') {
       return pathname === '/dashboard' || pathname === '/';
     }
+<<<<<<< Updated upstream
     return pathname?.startsWith(href) || false;
+=======
+    return pathname.startsWith(href);
+>>>>>>> Stashed changes
   };
 
   return (

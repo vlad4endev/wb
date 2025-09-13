@@ -8,6 +8,7 @@ import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
 import { Badge } from '@/components/ui/badge';
 import { Alert, AlertDescription } from '@/components/ui/alert';
+<<<<<<< Updated upstream
 import {
   FiLoader2 as Loader2,
   FiSearch as Search,
@@ -18,6 +19,9 @@ import {
   FiCheckCircle as CheckCircle,
   FiXCircle as XCircle
 } from 'react-icons/fi';
+=======
+import { Loader2, Search, BookOpen, MessageSquare, Play, Square, CheckCircle, XCircle } from 'lucide-react';
+>>>>>>> Stashed changes
 
 export default function TestServicesPage() {
   const [slotSearchStatus, setSlotSearchStatus] = useState<any>(null);

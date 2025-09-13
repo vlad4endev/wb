@@ -2,7 +2,11 @@
 
 import * as React from 'react';
 import * as DialogPrimitive from '@radix-ui/react-dialog';
+<<<<<<< Updated upstream
 import { FiX as X } from 'react-icons/fi';
+=======
+import { X } from 'lucide-react';
+>>>>>>> Stashed changes
 
 import { cn } from '@/lib/utils';
 

@@ -12,8 +12,13 @@ export declare class AuthService {
         user: {
             id: string;
             email: string;
+<<<<<<< Updated upstream
             phone: string | null;
             name: string | null;
+=======
+            phone: string;
+            name: string;
+>>>>>>> Stashed changes
             role: import(".prisma/client").$Enums.UserRole;
         };
         token: string;
@@ -22,8 +27,13 @@ export declare class AuthService {
         user: {
             id: string;
             email: string;
+<<<<<<< Updated upstream
             phone: string | null;
             name: string | null;
+=======
+            phone: string;
+            name: string;
+>>>>>>> Stashed changes
             role: import(".prisma/client").$Enums.UserRole;
         };
         token: string;
@@ -41,5 +51,9 @@ export declare class AuthService {
         emailVerified: Date | null;
         createdAt: Date;
         updatedAt: Date;
+<<<<<<< Updated upstream
     } | null>;
+=======
+    }>;
+>>>>>>> Stashed changes
 }

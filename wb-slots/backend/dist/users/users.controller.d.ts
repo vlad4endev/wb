@@ -15,7 +15,11 @@ export declare class UsersController {
         emailVerified: Date | null;
         createdAt: Date;
         updatedAt: Date;
+<<<<<<< Updated upstream
     } | null>;
+=======
+    }>;
+>>>>>>> Stashed changes
     updateProfile(req: any, updateUserDto: UpdateUserDto): Promise<{
         email: string;
         phone: string | null;
@@ -63,7 +67,11 @@ export declare class UsersController {
         emailVerified: Date | null;
         createdAt: Date;
         updatedAt: Date;
+<<<<<<< Updated upstream
     } | null>;
+=======
+    }>;
+>>>>>>> Stashed changes
     remove(id: string): Promise<{
         email: string;
         phone: string | null;

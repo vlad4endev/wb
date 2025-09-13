@@ -6,6 +6,7 @@ import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Progress } from '@/components/ui/progress';
 import { Alert, AlertDescription } from '@/components/ui/alert';
+<<<<<<< Updated upstream
 import {
   FiZap as Zap,
   FiCheckCircle as CheckCircle,
@@ -30,6 +31,32 @@ import {
   FiAlertCircle as AlertCircle,
   FiInfo as Info
 } from 'react-icons/fi';
+=======
+import { 
+  Zap, 
+  CheckCircle, 
+  XCircle, 
+  Clock, 
+  AlertTriangle,
+  Activity,
+  BarChart3,
+  TrendingUp,
+  Users,
+  Target,
+  RefreshCw,
+  Loader2,
+  ExternalLink,
+  Shield,
+  Key,
+  Database,
+  Calendar,
+  DollarSign,
+  Package,
+  Truck,
+  AlertCircle,
+  Info
+} from 'lucide-react';
+>>>>>>> Stashed changes
 import Link from 'next/link';
 import DashboardLayout from '@/app/dashboard-layout';
 

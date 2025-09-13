@@ -5,6 +5,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Button } from '@/components/ui/button';
 import { Alert, AlertDescription } from '@/components/ui/alert';
 import { Badge } from '@/components/ui/badge';
+<<<<<<< Updated upstream
 import {
   FiLoader as Loader2,
   FiMessageSquare as MessageSquare,
@@ -15,6 +16,9 @@ import {
   FiExternalLink as ExternalLink,
   FiArrowLeft as ArrowLeft
 } from 'react-icons/fi';
+=======
+import { Loader2, MessageSquare, Check, X, User, Bot, ExternalLink, ArrowLeft } from 'lucide-react';
+>>>>>>> Stashed changes
 import Link from 'next/link';
 
 interface TelegramUser {
@@ -200,6 +204,7 @@ export default function TestTelegramWebAppPage() {
       </div>
 
       <div className="container mx-auto p-6 space-y-6">
+<<<<<<< Updated upstream
         <div className="grid gap-6 md:grid-cols-2">
           {/* Статус Telegram Web App */}
           <Card>
@@ -325,10 +330,59 @@ export default function TestTelegramWebAppPage() {
                 <X className="h-4 w-4" />
                 <AlertDescription>{error}</AlertDescription>
               </Alert>
+=======
+
+      <div className="grid gap-6 md:grid-cols-2">
+        {/* Статус Telegram Web App */}
+        <Card>
+          <CardHeader>
+            <CardTitle className="flex items-center gap-2">
+              <Bot className="h-5 w-5" />
+              Статус Telegram Web App
+            </CardTitle>
+            <CardDescription>
+              Информация о запуске в Telegram Web App
+            </CardDescription>
+          </CardHeader>
+          <CardContent className="space-y-4">
+            <div className="flex items-center gap-2">
+              {isTelegramWebApp ? (
+                <Badge variant="default" className="bg-green-100 text-green-800">
+                  <Check className="h-3 w-3 mr-1" />
+                  Запущено в Telegram
+                </Badge>
+              ) : (
+                <Badge variant="secondary">
+                  <X className="h-3 w-3 mr-1" />
+                  Не в Telegram
+                </Badge>
+              )}
+            </div>
+
+            {!isTelegramWebApp && (
+              <Alert>
+                <MessageSquare className="h-4 w-4" />
+                <AlertDescription>
+                  <strong>Для тестирования:</strong>
+                  <ol className="list-decimal list-inside mt-2 space-y-1">
+                    <li>Откройте эту страницу в Telegram через бота</li>
+                    <li>Или нажмите кнопку ниже для перехода в Telegram</li>
+                  </ol>
+                </AlertDescription>
+              </Alert>
+            )}
+
+            {!isTelegramWebApp && (
+              <Button onClick={handleOpenInTelegram} className="w-full">
+                <ExternalLink className="h-4 w-4 mr-2" />
+                Открыть в Telegram
+              </Button>
+>>>>>>> Stashed changes
             )}
           </CardContent>
         </Card>
 
+<<<<<<< Updated upstream
         {/* Данные Web App */}
         {webAppData && (
           <Card>
@@ -349,3 +403,104 @@ export default function TestTelegramWebAppPage() {
     </div>
   );
 }
+=======
+        {/* Данные пользователя */}
+        <Card>
+          <CardHeader>
+            <CardTitle className="flex items-center gap-2">
+              <User className="h-5 w-5" />
+              Данные пользователя
+            </CardTitle>
+            <CardDescription>
+              Информация о пользователе из Telegram
+            </CardDescription>
+          </CardHeader>
+          <CardContent className="space-y-4">
+            {telegramUser ? (
+              <div className="space-y-2">
+                <div className="p-3 bg-green-50 border border-green-200 rounded-lg">
+                  <div className="flex items-center gap-2 mb-2">
+                    <Check className="h-4 w-4 text-green-600" />
+                    <span className="font-medium text-green-800">Пользователь найден</span>
+                  </div>
+                  <div className="space-y-1 text-sm">
+                    <p><strong>ID:</strong> {telegramUser.id}</p>
+                    <p><strong>Имя:</strong> {telegramUser.first_name} {telegramUser.last_name || ''}</p>
+                    {telegramUser.username && (
+                      <p><strong>Username:</strong> @{telegramUser.username}</p>
+                    )}
+                  </div>
+                </div>
+              </div>
+            ) : (
+              <Alert variant="destructive">
+                <X className="h-4 w-4" />
+                <AlertDescription>
+                  Данные пользователя не найдены
+                </AlertDescription>
+              </Alert>
+            )}
+          </CardContent>
+        </Card>
+      </div>
+
+      {/* Тест API */}
+      <Card>
+        <CardHeader>
+          <CardTitle>Тест API получения Telegram ID</CardTitle>
+          <CardDescription>
+            Тестирование автоматического получения и сохранения Telegram ID
+          </CardDescription>
+        </CardHeader>
+        <CardContent className="space-y-4">
+          <Button 
+            onClick={handleTestGetUserId}
+            disabled={!isTelegramWebApp || !telegramUser || isLoading}
+            className="w-full"
+          >
+            {isLoading ? (
+              <Loader2 className="h-4 w-4 mr-2 animate-spin" />
+            ) : (
+              <User className="h-4 w-4 mr-2" />
+            )}
+            {isLoading ? 'Тестирование...' : 'Получить Telegram ID'}
+          </Button>
+
+          {result && (
+            <div className="p-4 bg-blue-50 border border-blue-200 rounded-lg">
+              <h4 className="font-medium text-blue-800 mb-2">Результат API:</h4>
+              <pre className="text-sm text-blue-700 whitespace-pre-wrap">
+                {JSON.stringify(result, null, 2)}
+              </pre>
+            </div>
+          )}
+
+          {error && (
+            <Alert variant="destructive">
+              <X className="h-4 w-4" />
+              <AlertDescription>{error}</AlertDescription>
+            </Alert>
+          )}
+        </CardContent>
+      </Card>
+
+      {/* Данные Web App */}
+      {webAppData && (
+        <Card>
+          <CardHeader>
+            <CardTitle>Данные Telegram Web App</CardTitle>
+            <CardDescription>
+              Полная информация о Web App (для отладки)
+            </CardDescription>
+          </CardHeader>
+          <CardContent>
+            <pre className="text-xs bg-gray-100 p-4 rounded-lg overflow-auto">
+              {JSON.stringify(webAppData, null, 2)}
+            </pre>
+          </CardContent>
+        </Card>
+      )}
+    </div>
+  );
+}
+>>>>>>> Stashed changes

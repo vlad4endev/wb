@@ -7,12 +7,20 @@ const JWT_SECRET = new TextEncoder().encode(process.env.JWT_SECRET || 'wb-slots-
 export async function middleware(request: NextRequest) {
   console.log('Middleware checking:', request.nextUrl.pathname);
   
+<<<<<<< Updated upstream
   // Пропускаем маршруты авторизации и главную страницу
   if (request.nextUrl.pathname.startsWith('/auth/') || 
       request.nextUrl.pathname.startsWith('/api/auth/login') ||
       request.nextUrl.pathname.startsWith('/api/auth/register') ||
       request.nextUrl.pathname === '/') {
     console.log('Skipping auth route or home page:', request.nextUrl.pathname);
+=======
+  // Пропускаем маршруты авторизации
+  if (request.nextUrl.pathname.startsWith('/auth/') || 
+      request.nextUrl.pathname.startsWith('/api/auth/login') ||
+      request.nextUrl.pathname.startsWith('/api/auth/register')) {
+    console.log('Skipping auth route:', request.nextUrl.pathname);
+>>>>>>> Stashed changes
     return NextResponse.next();
   }
 
@@ -27,15 +35,24 @@ export async function middleware(request: NextRequest) {
     console.log('Token found:', !!token);
     
     if (!token) {
+<<<<<<< Updated upstream
       console.log('No token, redirecting to home page');
       // Если нет токена, перенаправляем на главную страницу
+=======
+      console.log('No token, redirecting to login');
+      // Если нет токена, перенаправляем на страницу входа
+>>>>>>> Stashed changes
       if (request.nextUrl.pathname.startsWith('/api/')) {
         return NextResponse.json(
           { success: false, error: 'Not authenticated' },
           { status: 401 }
         );
       }
+<<<<<<< Updated upstream
       return NextResponse.redirect(new URL('/', request.url));
+=======
+      return NextResponse.redirect(new URL('/auth/login', request.url));
+>>>>>>> Stashed changes
     }
 
     try {
@@ -55,7 +72,11 @@ export async function middleware(request: NextRequest) {
             { success: false, error: 'Invalid or expired token' },
             { status: 401 }
           )
+<<<<<<< Updated upstream
         : NextResponse.redirect(new URL('/', request.url));
+=======
+        : NextResponse.redirect(new URL('/auth/login', request.url));
+>>>>>>> Stashed changes
       
       response.cookies.set('auth-token', '', {
         httpOnly: true,

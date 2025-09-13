@@ -4,6 +4,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Button } from '@/components/ui/button';
 import { Alert, AlertDescription } from '@/components/ui/alert';
 import { Badge } from '@/components/ui/badge';
+<<<<<<< Updated upstream
 import {
   FiMessageSquare as MessageSquare,
   FiMessageSquare as Bot,
@@ -14,6 +15,18 @@ import {
   FiExternalLink as ExternalLink,
   FiSettings as Settings
 } from 'react-icons/fi';
+=======
+import { 
+  MessageSquare, 
+  Bot, 
+  Key, 
+  Copy, 
+  Check, 
+  AlertCircle,
+  ExternalLink,
+  Settings
+} from 'lucide-react';
+>>>>>>> Stashed changes
 import Link from 'next/link';
 import { useState } from 'react';
 
